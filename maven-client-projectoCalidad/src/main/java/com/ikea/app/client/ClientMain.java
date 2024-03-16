@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.ikea.app.pojo.Cliente;
-
+import com.ikea.app.client.window.ClientRegistration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,26 +24,14 @@ public class ClientMain{
 
 	private Client client;
 	private WebTarget webTarget;
-
+	
     public ClientMain(String hostname, String port) {
 		client = ClientBuilder.newClient();
 		webTarget = client.target(String.format("http://%s:%s/rest/resource", hostname, port));
 	}
 
-    public void registrarCliente(String email, String contrasena, String nombre) {
-		WebTarget WebTargetRegistrarUsuario = webTarget.path("register");
-		Invocation.Builder invocationBuilder = WebTargetRegistrarUsuario.request(MediaType.APPLICATION_JSON);
-		
-		Cliente cliente = new Cliente();
-		cliente.setEmail(email);
-		cliente.setContrasena(contrasena);
-        cliente.setNombre(nombre);
-		Response response = invocationBuilder.post(Entity.entity(cliente, MediaType.APPLICATION_JSON));
-		if (response.getStatus() != Status.OK.getStatusCode()) {
-			logger.error("Error connecting with the server. Code: {}", response.getStatus());
-		} else {
-			logger.info("Cliente registrado correctamente");
-		}
+	public static Logger getLogger(){
+		return logger;
 	}
 
     public static void main( String[] args )
@@ -57,6 +45,6 @@ public class ClientMain{
 		String port = args[1];
 
 		ClientMain clientMain = new ClientMain(hostname, port);
-		clientMain.registrarCliente(EMAIL,CONTRASENA,NOMBRE);	
+		ClientRegistration window = new ClientRegistration(clientMain.webTarget);
 	}
 }
