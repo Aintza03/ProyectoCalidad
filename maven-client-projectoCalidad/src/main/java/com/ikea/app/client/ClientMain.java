@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 public class ClientMain{
     protected static final Logger logger = LogManager.getLogger();
 
+	private String hola;
 	private static final String EMAIL = "ABCD";
 	private static final String CONTRASENA = "EFGH";
 	private static final String NOMBRE = "IJKL";

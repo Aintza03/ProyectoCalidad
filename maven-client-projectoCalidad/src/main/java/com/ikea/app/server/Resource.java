@@ -75,4 +75,40 @@ public class Resource{
 		}
 	}
 
+	@POST
+	@Path("/login")
+	public Response loginCliente(Cliente cliente){
+		try {	
+            tx.begin();
+            logger.info("Comprobando que el usuario exista: '{}'", cliente.getEmail());
+			logger.info("Comprobando si la contraseña es correcta: '{}", cliente.getContrasena());
+			ClienteJDO clienteJDO_User = null;
+			ClienteJDO clienteJDO_Pass = null;
+			try {
+				clienteJDO_User = pm.getObjectById(ClienteJDO.class, cliente.getEmail());
+				clienteJDO_Pass = pm.getObjectById(ClienteJDO.class, cliente.getContrasena());
+			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+			}
+			//logger.info("Cliente: {}", clienteJDO);
+			if(clienteJDO_User != null){
+				if(clienteJDO_Pass.equals(cliente.getContrasena())) {
+					//entrar a la aplicacion
+				} else {
+					logger.info("La contraseña no es correcta");
+				}
+			} else {
+				logger.info("No existe dicho usuario, porfavor registrese para que pueda realizar su compra");
+			}
+			tx.commit();
+			return Response.ok().build();
+        }
+        finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+      
+		}
+	}
+
 }
