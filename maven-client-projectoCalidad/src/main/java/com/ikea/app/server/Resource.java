@@ -75,40 +75,38 @@ public class Resource{
 		}
 	}
 
-	@POST
+	@GET
 	@Path("/login")
+	@Produces(MediaType.TEXT_PLAIN)
 	public Response loginCliente(Cliente cliente){
 		try {	
             tx.begin();
             logger.info("Comprobando que el usuario exista: '{}'", cliente.getEmail());
 			logger.info("Comprobando si la contraseña es correcta: '{}", cliente.getContrasena());
-			ClienteJDO clienteJDO_User = null;
-			ClienteJDO clienteJDO_Pass = null;
-			try {
-				clienteJDO_User = pm.getObjectById(ClienteJDO.class, cliente.getEmail());
-				clienteJDO_Pass = pm.getObjectById(ClienteJDO.class, cliente.getContrasena());
+			ClienteJDO clienteJDO = null;
+			try (Query<?> q = pm.newQuery("SELECT FROM " + clienteJDO.getEmail() + " WHERE login == \"" + cliente.getEmail() + "\" && password == \"" + cliente.getContrasena() + "\"")) {
+				q.setUnique(true);
+				clienteJDO = (ClienteJDO)q.execute();
+				logger.info("Client retrieved: {}", clienteJDO);
 			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
 				logger.info("Exception launched: {}", ex1.getMessage());
 			}
-			//logger.info("Cliente: {}", clienteJDO);
-			if(clienteJDO_User != null){
-				if(clienteJDO_Pass.equals(cliente.getContrasena())) {
-					//entrar a la aplicacion
+			tx.commit();
+		}
+		finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+			if (clienteJDO != null) {
+				if(clienteJDO.getContrasena().equals(cliente.getContrasena())) {
+					return Response.ok("Felicidades, has entrado!!!").build();
 				} else {
-					logger.info("La contraseña no es correcta");
+					return Response.status(Response.Status.BAD_REQUEST).entity("La contrasena no es correcta").build();
 				}
 			} else {
-				logger.info("No existe dicho usuario, porfavor registrese para que pueda realizar su compra");
+				return Response.status(Response.Status.BAD_REQUEST).entity("No existe dicho usuario, porfavor registrese para que pueda realizar su compra").build();
 			}
-			tx.commit();
-			return Response.ok().build();
-        }
-        finally {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-      
-		}
 	}
 
 }
