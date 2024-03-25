@@ -4,11 +4,11 @@ import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 import javax.jdo.JDOHelper;
 import javax.jdo.Transaction;
+import javax.jdo.Extent;
 
 import com.ikea.app.server.jdo.ClienteJDO;
 import com.ikea.app.pojo.Cliente;
 
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-
+import java.util.List;
 @Path("/resource")
 @Produces(MediaType.APPLICATION_JSON)
 public class Resource{
@@ -71,8 +71,47 @@ public class Resource{
             {
                 tx.rollback();
             }
-      
+			pm.close();
 		}
+	}
+
+	@POST
+	@Path("/login")
+	public Response loginCliente(Cliente cliente){
+		ClienteJDO clienteJDO = null;
+		try {	
+            tx.begin();
+            logger.info("Comprobando que el usuario exista: '{}'", cliente.getEmail());
+			logger.info("Comprobando si la contraseña es correcta: '{}", cliente.getContrasena());
+			try (Query<ClienteJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM clientejdo WHERE email = '" + cliente.getEmail() + "' AND contrasena = '" + cliente.getContrasena() + "'")) {
+				q.setClass(ClienteJDO.class);
+				List<ClienteJDO> results = q.executeList();
+				clienteJDO = results.get(0);
+				logger.info("Client retrieved: {}", clienteJDO);
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+			}
+			tx.commit();
+			if (clienteJDO != null) {
+				if(clienteJDO.getContrasena().equals(cliente.getContrasena())) {
+					System.out.println("Contraseña correcta");
+					return Response.ok("Dentro").build();
+				} else{
+					System.out.println("Contraseña incorrecta");
+					return Response.status(Status.UNAUTHORIZED).build();
+				}
+			}else{
+				System.out.println("Cliente Vacio");
+				return Response.status(Status.NOT_FOUND).build();
+			}
+		}
+		finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+			 
 	}
 
 }

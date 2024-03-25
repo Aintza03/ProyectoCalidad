@@ -11,12 +11,14 @@ import javax.ws.rs.core.Response.Status;
 
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.window.ClientRegistration;
+import com.ikea.app.client.window.ClientLogin;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ClientMain{
     protected static final Logger logger = LogManager.getLogger();
 
+	private String hola;
 	private static final String EMAIL = "ABCD";
 	private static final String CONTRASENA = "EFGH";
 	private static final String NOMBRE = "IJKL";
@@ -45,6 +47,7 @@ public class ClientMain{
 		String port = args[1];
 
 		ClientMain clientMain = new ClientMain(hostname, port);
-		ClientRegistration window = new ClientRegistration(clientMain.webTarget);
+		ClientRegistration window_registration = new ClientRegistration(clientMain.webTarget);
+		ClientLogin window_login = new ClientLogin(clientMain.webTarget);
 	}
 }

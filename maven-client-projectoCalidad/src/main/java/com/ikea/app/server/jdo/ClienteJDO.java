@@ -14,7 +14,7 @@ public class ClienteJDO{
     String contrasena = null;
     String nombre = null;
 
-    public ClienteJDO(String email,String contrasena,String nombre) {
+    public ClienteJDO(String email, String contrasena, String nombre) {
 		this.email = email;
 		this.contrasena = contrasena;
         this.nombre = nombre;
