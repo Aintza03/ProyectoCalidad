@@ -54,8 +54,8 @@ public class ClientLogin extends JFrame{
     }
 
     public void loginCliente(WebTarget webTarget,String email, String contrasena) {
-		WebTarget WebTargetRegistrarUsuario = webTarget.path("login");
-		Invocation.Builder invocationBuilder = WebTargetRegistrarUsuario.request(MediaType.APPLICATION_JSON);
+		WebTarget WebTargetLogin = webTarget.path("login");
+		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
 		
 		Cliente cliente = new Cliente();
 		cliente.setEmail(email);

@@ -1,4 +1,8 @@
+com\ikea\app\client\window\ClientRegistration.class
 com\ikea\app\pojo\Cliente.class
 com\ikea\app\client\window\ClientLogin.class
+com\ikea\app\server\Resource.class
 com\ikea\app\client\window\ClientLogin$1.class
+com\ikea\app\client\window\ClientRegistration$1.class
+com\ikea\app\client\ClientMain.class
 com\ikea\app\server\jdo\ClienteJDO.class
