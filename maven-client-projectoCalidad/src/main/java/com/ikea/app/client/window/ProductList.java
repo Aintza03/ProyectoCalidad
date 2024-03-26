@@ -54,7 +54,7 @@ public class ProductList extends JFrame{
 
     private void initTable() {
 		//Cabecera del modelo de datos
-		Vector<String> cabeceraProducto = new Vector<String>(Arrays.asList( "ID", p.get("tipo").toString() , p.get("fecha_nac").toString(), p.get("raza").toString(), p.get("especial").toString(), p.getProperty("acoger2")));				
+		Vector<String> cabeceraProducto = new Vector<String>(Arrays.asList( "Nombre", "Tipo", "Precio", "Cantidad"));				
 		//Se crea el modelo de datos para la tabla de comics sÃ³lo con la cabecera	
 		
 		this.modeloTablaProductos = new DefaultTableModel(new Vector<Vector<Object>>(), cabeceraProducto) {
@@ -73,7 +73,7 @@ public class ProductList extends JFrame{
 		DefaultTableCellRenderer a = new DefaultTableCellRenderer() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			public javax.swing.JComponent getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				
 				if(!(value instanceof JButton)) {
 				JLabel label = new JLabel(value.toString());
@@ -116,28 +116,29 @@ public class ProductList extends JFrame{
 		}
 					
 			
-		this.tablaAnimales.addMouseListener(new MouseAdapter() {						
+		this.tablaProductos.addMouseListener(new MouseAdapter() {						
 			@Override
 			public void mousePressed(MouseEvent e) {
-				int row = tablaAnimales.rowAtPoint(e.getPoint());
-				int col = tablaAnimales.columnAtPoint(e.getPoint());
+				int row = tablaProductos.rowAtPoint(e.getPoint());
+				int col = tablaProductos.columnAtPoint(e.getPoint());
 			}
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				int row = tablaAnimales.rowAtPoint(e.getPoint());
-				int col = tablaAnimales.columnAtPoint(e.getPoint());
+				int row = tablaProductos.rowAtPoint(e.getPoint());
+				int col = tablaProductos.columnAtPoint(e.getPoint());
 			}
 			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				int row = tablaAnimales.rowAtPoint(e.getPoint());
-				int col = tablaAnimales.columnAtPoint(e.getPoint());
+			
+			/*@Override
+            public void mouseClicked(MouseEvent e) {
+				int row = tablaProductos.rowAtPoint(e.getPoint());
+				int col = tablaProductos.columnAtPoint(e.getPoint());
 				
 				if(col == 5) {
 					try {
 						int d = 0; 
-						d = Integer.parseInt(modeloDatosAnimales.getValueAt(tablaAnimales.getSelectedRow(), 0).toString());
+						d = Integer.parseInt(modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());
 						for (Animal animal : animales) {
 							if(animal.getId() == d) {
 						v.actualizarAnimal(animal, dni, null);
@@ -148,18 +149,18 @@ public class ProductList extends JFrame{
 						System.err.println("No se ha escogido animal");
 					}	
 				}
-			}
+			}*/
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				int row = tablaAnimales.rowAtPoint(e.getPoint());
-				int col = tablaAnimales.columnAtPoint(e.getPoint());
+				int row = tablaProductos.rowAtPoint(e.getPoint());
+				int col = tablaProductos.columnAtPoint(e.getPoint());
 			}
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				int row = tablaAnimales.rowAtPoint(e.getPoint());
-				int col = tablaAnimales.columnAtPoint(e.getPoint());
+				int row = tablaProductos.rowAtPoint(e.getPoint());
+				int col = tablaProductos.columnAtPoint(e.getPoint());
 				//Cuando el ratÃ³n sale de la tabla, se resetea la columna/fila sobre la que estÃ¡ el ratÃ³n				
 				mouseRow = -1;
 				mouseCol = -1;
@@ -167,12 +168,12 @@ public class ProductList extends JFrame{
 			
 		});
 		
-		tablaAnimales.addMouseMotionListener(new MouseMotionAdapter() {
+		tablaProductos.addMouseMotionListener(new MouseMotionAdapter() {
 			
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				int row = tablaAnimales.rowAtPoint(e.getPoint());
-				int col = tablaAnimales.columnAtPoint(e.getPoint());
+				int row = tablaProductos.rowAtPoint(e.getPoint());
+				int col = tablaProductos.columnAtPoint(e.getPoint());
 				mouseRow = row;
 				mouseCol = col;
 				
