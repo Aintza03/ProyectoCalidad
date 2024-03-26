@@ -11,7 +11,7 @@ import com.ikea.app.pojo.Cliente;
 import com.ikea.app.server.jdo.ProductoJDO;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
-import structures.ArrayList;
+import java.util.ArrayList;
 
 import com.ikea.app.pojo.Producto;
 
