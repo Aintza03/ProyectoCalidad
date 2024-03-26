@@ -48,7 +48,12 @@ public class ProductList extends JFrame{
         this.setSize(300,150);
         this.setTitle("Lista de Productos");
         this.setLocationRelativeTo(null);
+
+        cp.add(new JScrollPane(this.tablaProductos));
+
         this.initTable();
+        this.loadProducto();
+
 
     }
 
@@ -106,8 +111,12 @@ public class ProductList extends JFrame{
 				label.setOpaque(true);
 				
 				return label;
-			}
+                
+			}else {
+                JButton boton1 = (JButton) value;
+                    return boton1;
             }
+        }
 		};
 		
 		for(int i = 0; i < this.tablaProductos.getColumnModel().getColumnCount(); i++ ) {
@@ -183,6 +192,23 @@ public class ProductList extends JFrame{
 		});
 		
 		
+	}
+    
+    private void loadProducto() {
+		//Se borran los datos del modelo de datos Animales
+		this.modeloTablaProductos.setRowCount(0);
+
+        Producto b = new Producto();
+        b.setNombre("Mesa");
+        b.setPrecio(100.0);
+        b.setTipo("Mueble");
+        b.setCantidad(1);
+        productoList.add(b);
+		
+		//Se aÃ±ade al modelo una fila de datos por cada comic
+		for (Producto a : this.productoList) {
+			this.modeloTablaProductos.addRow( new Object[] {a.getNombre(), a.getTipo(), a.getPrecio(),  a.getCantidad(), new JButton("->")} );
+		}		
 	}
 }
     
