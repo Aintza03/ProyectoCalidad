@@ -11,6 +11,8 @@ import javax.ws.rs.core.Response.Status;
 
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.window.ClientRegistration;
+
+import com.ikea.app.client.window.ClientLogin;
 import com.ikea.app.client.window.ProductList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 public class ClientMain{
     protected static final Logger logger = LogManager.getLogger();
 
+	private String hola;
 	private static final String EMAIL = "ABCD";
 	private static final String CONTRASENA = "EFGH";
 	private static final String NOMBRE = "IJKL";
@@ -47,6 +50,7 @@ public class ClientMain{
 
 		ClientMain clientMain = new ClientMain(hostname, port);
 		ClientRegistration window = new ClientRegistration(clientMain.webTarget);
+		ClientLogin window_login = new ClientLogin(clientMain.webTarget);
 		ProductList window2 = new ProductList(clientMain.webTarget);
 	}
 }
