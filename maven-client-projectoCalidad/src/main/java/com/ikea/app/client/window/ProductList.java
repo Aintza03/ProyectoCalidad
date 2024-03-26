@@ -4,13 +4,13 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
-
+import java.util.*;
 import javax.swing.*;
 import javax.swing.table.TableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
- 
+import javax.swing.border.TitledBorder;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -29,7 +29,7 @@ import com.ikea.app.client.ClientMain;
 
 public class ProductList extends JFrame{
 
-    protected ArrayList<Producto> productoList;
+    protected ArrayList<Producto> productoList = new ArrayList<Producto>();
     protected JTable tablaProductos;
     protected DefaultTableModel modeloTablaProductos;
 
@@ -40,19 +40,21 @@ public class ProductList extends JFrame{
     public ProductList(WebTarget webTargets){
         Container cp = this.getContentPane();
         cp.setLayout(new GridLayout(2,1));
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3,3));
-        cp.add(panel);
+        //JPanel panel = new JPanel();
+        //panel.setLayout(new GridLayout(3,3));
+        //cp.add(panel);
+        this.initTable();
+        this.loadProducto();
+
+        JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
+        scrollPaneProductos.setBorder(new TitledBorder("Productos"));
+        cp.add(scrollPaneProductos);
+
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
         this.setSize(300,150);
         this.setTitle("Lista de Productos");
         this.setLocationRelativeTo(null);
-
-        cp.add(new JScrollPane(this.tablaProductos));
-
-        this.initTable();
-        this.loadProducto();
 
 
     }
@@ -195,7 +197,6 @@ public class ProductList extends JFrame{
 	}
     
     private void loadProducto() {
-		//Se borran los datos del modelo de datos Animales
 		this.modeloTablaProductos.setRowCount(0);
 
         Producto b = new Producto();
@@ -205,10 +206,21 @@ public class ProductList extends JFrame{
         b.setCantidad(1);
         productoList.add(b);
 		
-		//Se aÃ±ade al modelo una fila de datos por cada comic
 		for (Producto a : this.productoList) {
 			this.modeloTablaProductos.addRow( new Object[] {a.getNombre(), a.getTipo(), a.getPrecio(),  a.getCantidad(), new JButton("->")} );
 		}		
+	}
+
+    public void datosDeProductos(WebTarget webTarget) {
+		WebTarget WebTargetRegistrarUsuario = webTarget.path("listProducts");
+		Invocation.Builder invocationBuilder = WebTargetRegistrarUsuario.request(MediaType.APPLICATION_JSON);
+		
+		Response response = invocationBuilder.get();
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+		} else {
+			ClientMain.getLogger().info("Cliente registrado correctamente");
+		}
 	}
 }
     
