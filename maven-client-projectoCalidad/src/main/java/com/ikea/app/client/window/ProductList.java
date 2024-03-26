@@ -1,21 +1,22 @@
 package com.ikea.app.client.window;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Vector;
 import java.util.*;
+import java.util.List;
+
 import javax.swing.*;
 import javax.swing.table.TableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.border.TitledBorder;
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -212,15 +213,25 @@ public class ProductList extends JFrame{
 	}
 
     public void datosDeProductos(WebTarget webTarget) {
-		WebTarget WebTargetRegistrarUsuario = webTarget.path("listProducts");
-		Invocation.Builder invocationBuilder = WebTargetRegistrarUsuario.request(MediaType.APPLICATION_JSON);
-		
-		Response response = invocationBuilder.get();
-		if (response.getStatus() != Status.OK.getStatusCode()) {
-			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
-		} else {
-			ClientMain.getLogger().info("Cliente registrado correctamente");
-		}
+        // issuing a GET request to the users endpoint with some query parameters
+        try {
+            Response response = webTarget.path("listsProducts")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+
+            // check that the response was HTTP OK
+            if (response.getStatusInfo().toEnum() == Status.OK) {
+                // the response is a generic type (a List<User>)
+                GenericType<List<Producto>> listType = new GenericType<List<Producto>>(){};
+                List<Producto> product = response.readEntity(listType);
+                System.out.println(product);
+            } else {
+                System.out.format("Error obtaining user list. %s%n", response);
+            }
+        } catch (ProcessingException e) {
+            System.out.format("Error obtaining user list. %s%n", e.getMessage());
+        }
+
 	}
 }
     
