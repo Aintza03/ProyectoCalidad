@@ -8,6 +8,14 @@ import javax.jdo.Transaction;
 import com.ikea.app.server.jdo.ClienteJDO;
 import com.ikea.app.pojo.Cliente;
 
+import com.ikea.app.server.jdo.ProductoJDO;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
+
+import structures.ArrayList;
+
+import com.ikea.app.pojo.Producto;
+
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -75,4 +83,12 @@ public class Resource{
 		}
 	}
 
-}
+	@GET
+	@Path("/listProducts")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response listaProductos(ArrayList<Producto> listaProductos) {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
+		return Response.ok(listaProductos).build();
+		}
+	}
+
