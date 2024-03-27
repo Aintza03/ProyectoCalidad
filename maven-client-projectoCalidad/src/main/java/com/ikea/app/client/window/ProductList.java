@@ -30,7 +30,7 @@ import com.ikea.app.client.ClientMain;
 
 public class ProductList extends JFrame{
 
-    protected ArrayList<Producto> productoList = new ArrayList<Producto>();
+    protected List<Producto> productoList = new ArrayList<Producto>();
     protected JTable tablaProductos;
     protected DefaultTableModel modeloTablaProductos;
 
@@ -40,12 +40,12 @@ public class ProductList extends JFrame{
 
     public ProductList(WebTarget webTargets){
         Container cp = this.getContentPane();
-        cp.setLayout(new GridLayout(2,1));
+        cp.setLayout(new GridLayout(1,1));
         //JPanel panel = new JPanel();
         //panel.setLayout(new GridLayout(3,3));
         //cp.add(panel);
         this.initTable();
-        this.loadProducto();
+        this.loadProducto(webTargets);
 
         JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
         scrollPaneProductos.setBorder(new TitledBorder("Productos"));
@@ -197,25 +197,25 @@ public class ProductList extends JFrame{
 		
 	}
     
-    private void loadProducto() {
+    private void loadProducto(WebTarget webTarget) {
 		this.modeloTablaProductos.setRowCount(0);
-
-        Producto b = new Producto();
-        b.setNombre("Mesa");
-        b.setPrecio(100.0);
-        b.setTipo("Mueble");
-        b.setCantidad(1);
-        productoList.add(b);
+		this.productoList = datosDeProductos(webTarget);
+        //Producto b = new Producto();
+        //b.setNombre("Mesa");
+        //b.setPrecio(100.0);
+        //b.setTipo("Mueble");
+        //b.setCantidad(1);
+        //productoList.add(b);
 		
 		for (Producto a : this.productoList) {
 			this.modeloTablaProductos.addRow( new Object[] {a.getNombre(), a.getTipo(), a.getPrecio(),  a.getCantidad(), new JButton("->")} );
 		}		
 	}
 
-    public void datosDeProductos(WebTarget webTarget) {
+    public List<Producto> datosDeProductos(WebTarget webTarget) {
         // issuing a GET request to the users endpoint with some query parameters
         try {
-            Response response = webTarget.path("listsProducts")
+            Response response = webTarget.path("listProducts")
                 .request(MediaType.APPLICATION_JSON)
                 .get();
 
@@ -224,12 +224,15 @@ public class ProductList extends JFrame{
                 // the response is a generic type (a List<User>)
                 GenericType<List<Producto>> listType = new GenericType<List<Producto>>(){};
                 List<Producto> product = response.readEntity(listType);
-                System.out.println(product);
+                //System.out.println(product);
+				return product;
             } else {
-                System.out.format("Error obtaining user list. %s%n", response);
+				System.out.format("Error obtaining user list. %s%n", response);
+				return new ArrayList<Producto>();
             }
         } catch (ProcessingException e) {
             System.out.format("Error obtaining user list. %s%n", e.getMessage());
+			return new ArrayList<Producto>();
         }
 
 	}

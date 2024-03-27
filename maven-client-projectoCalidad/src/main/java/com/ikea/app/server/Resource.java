@@ -15,7 +15,7 @@ import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 import java.util.ArrayList;
 
 import com.ikea.app.pojo.Producto;
-
+import java.util.stream.*;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -126,9 +126,65 @@ public class Resource{
 	@GET
 	@Path("/listProducts")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listaProductos(ArrayList<Producto> listaProductos) {
+	public List<Producto> listaProductos() {
 		//Tiene que devolver la lista de todos los productos que estan en el sistema
-		return Response.ok(listaProductos).build();
+		List<Producto> productos = new ArrayList<Producto>();
+		try {	
+            tx.begin();
+            logger.info("Obteniendo productos");
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo")) {
+				q.setClass(ProductoJDO.class);
+				List<ProductoJDO> results = q.executeList();
+				System.out.println("Productos: " + results);
+				for (ProductoJDO productoJDO : results) {
+					Producto producto = new Producto();
+					producto.setNombre(productoJDO.getNombre());
+					producto.setPrecio(productoJDO.getPrecio());
+					producto.setTipo(productoJDO.getTipo());
+					producto.setCantidad(productoJDO.getCantidad());
+					productos.add(producto);
+					logger.info("Product retrieved: {}", productoJDO);
+				}
+				
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
+			tx.commit();
+			if (productos.size() != 0) {	
+        		return productos;
+			}else{
+				System.out.println("Producto Vacio");
+				return productos;
+			}
+		}
+		finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+		/*users.add(new User(0, "John", "Smith"));
+        users.add(new User(1, "Isaac", "Newton"));
+        users.add(new User(0, "Albert", "Einstein"));
+
+        Stream<User> stream = users.stream();
+        // check if the query parameter was passed in the URL
+        if (str != null) {
+            stream = stream.filter(user -> user.getSurname().contains(str));
+        }
+
+        // sort the stream by the passed parameter
+        // as the parameter has a default value there is no need to
+        // check if the parameter is null
+        if (order == Order.DESC) {
+            stream = stream.sorted(Comparator.comparing(User::getSurname).reversed());
+        } else {
+            stream = stream.sorted(Comparator.comparing(User::getSurname));
+        }
+
+        // return the resulting stream as a list
+        return stream.collect(Collectors.toList());*/
 		}
 	}
 

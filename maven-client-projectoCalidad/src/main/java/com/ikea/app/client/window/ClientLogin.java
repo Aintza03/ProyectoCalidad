@@ -11,7 +11,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
+import com.ikea.app.client.window.ProductList;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.ClientMain;
 public class ClientLogin extends JFrame{
@@ -20,7 +20,7 @@ public class ClientLogin extends JFrame{
     protected JTextField email = new JTextField();
     protected JPasswordField contrasena = new JPasswordField();
     protected JButton login = new JButton("Iniciar sesion");
-
+	protected ProductList window2;
 	public ClientLogin(WebTarget webTargets){
     Container cp = this.getContentPane();
 	cp.setLayout(new GridLayout(2, 1));
@@ -64,7 +64,8 @@ public class ClientLogin extends JFrame{
 		Response response = invocationBuilder.post(Entity.entity(cliente, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
-		} else {
+		} else {	
+			window2 = new ProductList(webTarget);
 			ClientMain.getLogger().info("Cliente registrado correctamente");
 		}
 	}
