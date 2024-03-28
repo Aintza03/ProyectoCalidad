@@ -11,7 +11,9 @@ import javax.ws.rs.core.Response.Status;
 
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.window.ClientRegistration;
+
 import com.ikea.app.client.window.ClientLogin;
+import com.ikea.app.client.window.ProductList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,7 +48,7 @@ public class ClientMain{
 		String port = args[1];
 		//Pruebas.guardarDatosEjemplo();
 		ClientMain clientMain = new ClientMain(hostname, port);
-		ClientRegistration window_registration = new ClientRegistration(clientMain.webTarget);
+		ClientRegistration window = new ClientRegistration(clientMain.webTarget);
 		ClientLogin window_login = new ClientLogin(clientMain.webTarget);
 	}
 }
