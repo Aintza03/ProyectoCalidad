@@ -1,0 +1,520 @@
+16:17:30,139 (main) DEBUG [DataNucleus.General] - Using PluginRegistry org.datanucleus.plugin.NonManagedPluginRegistry
+16:17:30,170 (main) DEBUG [DataNucleus.General] - Registering bundle org.eclipse.sisu.inject version 0.3.4 at URL file:/C:/Users/usuario/.m2/repository/org/eclipse/sisu/org.eclipse.sisu.inject/0.3.4/org.eclipse.sisu.inject-0.3.4.jar.
+16:17:30,186 (main) DEBUG [DataNucleus.General] - Leyendo extension-points y extensiones del archivo de plug-in jar:file:/C:/Users/usuario/.m2/repository/org/eclipse/sisu/org.eclipse.sisu.inject/0.3.4/org.eclipse.sisu.inject-0.3.4.jar!/plugin.xml.
+16:17:30,202 (main) DEBUG [DataNucleus.General] - Registering bundle org.datanucleus version 6.0.7 at URL file:/C:/Users/usuario/.m2/repository/org/datanucleus/datanucleus-core/6.0.7/datanucleus-core-6.0.7.jar.
+16:17:30,202 (main) DEBUG [DataNucleus.General] - Leyendo extension-points y extensiones del archivo de plug-in jar:file:/C:/Users/usuario/.m2/repository/org/datanucleus/datanucleus-core/6.0.7/datanucleus-core-6.0.7.jar!/plugin.xml.
+16:17:30,217 (main) DEBUG [DataNucleus.General] - Registering bundle org.datanucleus.api.jdo version 6.0.2 at URL file:/C:/Users/usuario/.m2/repository/org/datanucleus/datanucleus-api-jdo/6.0.2/datanucleus-api-jdo-6.0.2.jar.
+16:17:30,217 (main) DEBUG [DataNucleus.General] - Leyendo extension-points y extensiones del archivo de plug-in jar:file:/C:/Users/usuario/.m2/repository/org/datanucleus/datanucleus-api-jdo/6.0.2/datanucleus-api-jdo-6.0.2.jar!/plugin.xml.
+16:17:30,217 (main) DEBUG [DataNucleus.General] - Registering bundle org.datanucleus.store.rdbms version 6.0.7 at URL file:/C:/Users/usuario/.m2/repository/org/datanucleus/datanucleus-rdbms/6.0.7/datanucleus-rdbms-6.0.7.jar.
+16:17:30,217 (main) DEBUG [DataNucleus.General] - Leyendo extension-points y extensiones del archivo de plug-in jar:file:/C:/Users/usuario/.m2/repository/org/datanucleus/datanucleus-rdbms/6.0.7/datanucleus-rdbms-6.0.7.jar!/plugin.xml.
+16:17:30,248 (main) DEBUG [DataNucleus.Persistence] - Tipos de Java inicializando ...
+16:17:30,280 (main) DEBUG [DataNucleus.Persistence] - Soporte para tipos de Java listo : tipos soportados = [B, [C, [D, [F, [I, [J, [Ljava.lang.Boolean;, [Ljava.lang.Byte;, [Ljava.lang.Character;, [Ljava.lang.Double;, [Ljava.lang.Enum;, [Ljava.lang.Float;, [Ljava.lang.Integer;, [Ljava.lang.Long;, [Ljava.lang.Number;, [Ljava.lang.Object;, [Ljava.lang.Short;, [Ljava.lang.String;, [Ljava.math.BigDecimal;, [Ljava.math.BigInteger;, [Ljava.util.Date;, [Ljava.util.Locale;, [S, [Z, boolean, byte, char, double, float, int, java.awt.Color, java.awt.image.BufferedImage, java.lang.Boolean, java.lang.Byte, java.lang.Character, java.lang.Class, java.lang.Double, java.lang.Enum, java.lang.Float, java.lang.Integer, java.lang.Long, java.lang.Number, java.lang.Short, java.lang.String, java.lang.StringBuffer, java.lang.StringBuilder, java.math.BigDecimal, java.math.BigInteger, java.net.URI, java.net.URL, java.sql.Date, java.sql.Time, java.sql.Timestamp, java.time.Duration, java.time.Instant, java.time.LocalDate, java.time.LocalDateTime, java.time.LocalTime, java.time.MonthDay, java.time.OffsetDateTime, java.time.OffsetTime, java.time.Period, java.time.Year, java.time.YearMonth, java.time.ZonedDateTime, java.time.ZoneId, java.time.ZoneOffset, java.util.ArrayList, java.util.Arrays$ArrayList, java.util.BitSet, java.util.Calendar, java.util.Collection, java.util.Currency, java.util.Date, java.util.GregorianCalendar, java.util.HashMap, java.util.HashSet, java.util.Hashtable, java.util.LinkedHashMap, java.util.LinkedHashSet, java.util.LinkedList, java.util.List, java.util.Locale, java.util.Map, java.util.Optional, java.util.PriorityQueue, java.util.Properties, java.util.Queue, java.util.Set, java.util.SortedMap, java.util.SortedSet, java.util.Stack, java.util.TimeZone, java.util.TreeMap, java.util.TreeSet, java.util.UUID, java.util.Vector, long, short
+16:17:30,280 (main) DEBUG [DataNucleus.Persistence] - Inicializando TypeConverters ...
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverters listo
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for byte[] to : java.nio.ByteBuffer
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for char[] to : java.nio.ByteBuffer
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for double[] to : java.nio.ByteBuffer
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for float[] to : java.nio.ByteBuffer
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for int[] to : java.nio.ByteBuffer
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for long[] to : java.nio.ByteBuffer
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for [Ljava.math.BigDecimal; to : java.nio.ByteBuffer
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for [Ljava.math.BigInteger; to : java.nio.ByteBuffer
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for short[] to : java.nio.ByteBuffer
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for boolean[] to : java.nio.ByteBuffer
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.awt.Color to : java.lang.String,int[]
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.awt.image.BufferedImage to : byte[],java.nio.ByteBuffer
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.io.Serializable to : java.lang.String,byte[],java.nio.ByteBuffer
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.lang.Boolean to : java.lang.Character,java.lang.Integer
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.lang.Character to : java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.lang.Class to : java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.lang.Integer to : java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.lang.Long to : java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.lang.StringBuffer to : java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.lang.StringBuilder to : java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.math.BigDecimal to : java.lang.String,java.lang.Double
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.math.BigInteger to : java.lang.Long,java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.net.URI to : java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.net.URL to : java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.sql.Date to : java.lang.Long,java.util.Date,java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.sql.Time to : java.lang.Long,java.util.Date,java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.sql.Timestamp to : java.lang.Long,java.util.Date,java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.time.Duration to : java.lang.Long,java.lang.String,java.lang.Double
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.time.Instant to : java.util.Date,java.lang.Long,java.lang.String,java.sql.Timestamp
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.time.LocalDate to : java.util.Date,java.sql.Date,java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.time.LocalDateTime to : java.util.Date,java.lang.String,java.sql.Timestamp
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.time.LocalTime to : java.util.Date,java.lang.Long,java.lang.String,java.sql.Time
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.time.MonthDay to : java.util.Date,java.sql.Date,java.lang.String,int[]
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.time.OffsetDateTime to : java.util.Date,java.lang.String,java.sql.Timestamp
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.time.OffsetTime to : java.lang.Long,java.lang.String,java.sql.Time
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.time.Period to : java.lang.String,int[]
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.time.Year to : java.lang.String,java.lang.Integer
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.time.YearMonth to : java.util.Date,java.sql.Date,java.lang.String,int[]
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.time.ZonedDateTime to : java.lang.String,java.sql.Timestamp
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.time.ZoneId to : java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.time.ZoneOffset to : java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.util.BitSet to : java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.util.Calendar to : java.util.Date,[Ljava.lang.Object;,java.lang.String,java.sql.Timestamp
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.util.Currency to : java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.util.Date to : java.lang.Long,java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.util.Locale to : java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.util.TimeZone to : java.lang.String
+16:17:30,311 (main) DEBUG [DataNucleus.Persistence] - TypeConverter(s) available for java.util.UUID to : java.lang.String
+16:17:30,327 (main) DEBUG [DataNucleus.MetaData] - MetaDataManager : Input=(XML,Annotations), XML-Validation=false, XML-Suffices=(persistence=*.jdo, orm=orm, query=*.jdoquery), JDO-listener=false
+16:17:30,327 (main) INFO  [DataNucleus.Enhancer] - DataNucleus Enhancer (versión 6.0.7) para el API "JDO" utilizando el JRE "{2}"
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - DataNucleus Enhancer : Classpath
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\datanucleus\datanucleus-maven-plugin\6.0.0-release\datanucleus-maven-plugin-6.0.0-release.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\codehaus\plexus\plexus-utils\3.3.0\plexus-utils-3.3.0.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\apache\maven\maven-artifact\3.8.1\maven-artifact-3.8.1.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\apache\commons\commons-lang3\3.8.1\commons-lang3-3.8.1.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\apache\maven\maven-plugin-api\3.8.1\maven-plugin-api-3.8.1.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\apache\maven\maven-model\3.8.1\maven-model-3.8.1.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\eclipse\sisu\org.eclipse.sisu.plexus\0.3.4\org.eclipse.sisu.plexus-0.3.4.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\javax\enterprise\cdi-api\1.0\cdi-api-1.0.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\javax\annotation\jsr250-api\1.0\jsr250-api-1.0.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\javax\inject\javax.inject\1\javax.inject-1.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\eclipse\sisu\org.eclipse.sisu.inject\0.3.4\org.eclipse.sisu.inject-0.3.4.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\codehaus\plexus\plexus-component-annotations\1.5.5\plexus-component-annotations-1.5.5.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\codehaus\plexus\plexus-classworlds\2.6.0\plexus-classworlds-2.6.0.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\codehaus\plexus\plexus-container-default\2.1.0\plexus-container-default-2.1.0.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\apache\xbean\xbean-reflect\3.7\xbean-reflect-3.7.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\com\google\collections\google-collections\1.0\google-collections-1.0.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\maven-client-projectoCalidad\target\classes
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\datanucleus\javax.jdo\3.2.1\javax.jdo-3.2.1.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\javax\transaction\javax.transaction-api\1.3\javax.transaction-api-1.3.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\glassfish\corba\glassfish-corba-omgapi\4.2.2\glassfish-corba-omgapi-4.2.2.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\datanucleus\datanucleus-core\6.0.7\datanucleus-core-6.0.7.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\datanucleus\datanucleus-api-jdo\6.0.2\datanucleus-api-jdo-6.0.2.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\datanucleus\datanucleus-rdbms\6.0.7\datanucleus-rdbms-6.0.7.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\mysql\mysql-connector-java\8.0.29\mysql-connector-java-8.0.29.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\com\google\protobuf\protobuf-java\3.19.4\protobuf-java-3.19.4.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\apache\logging\log4j\log4j-api\2.23.1\log4j-api-2.23.1.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\apache\logging\log4j\log4j-core\2.23.1\log4j-core-2.23.1.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\glassfish\jersey\containers\jersey-container-servlet-core\2.35\jersey-container-servlet-core-2.35.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\glassfish\hk2\external\jakarta.inject\2.6.1\jakarta.inject-2.6.1.jar
+16:17:30,327 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\glassfish\jersey\core\jersey-common\2.35\jersey-common-2.35.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\jakarta\annotation\jakarta.annotation-api\1.3.5\jakarta.annotation-api-1.3.5.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\glassfish\hk2\osgi-resource-locator\1.0.3\osgi-resource-locator-1.0.3.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\glassfish\jersey\core\jersey-server\2.35\jersey-server-2.35.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\glassfish\jersey\core\jersey-client\2.35\jersey-client-2.35.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\jakarta\validation\jakarta.validation-api\2.0.2\jakarta.validation-api-2.0.2.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\jakarta\ws\rs\jakarta.ws.rs-api\2.1.6\jakarta.ws.rs-api-2.1.6.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\glassfish\jersey\inject\jersey-hk2\2.35\jersey-hk2-2.35.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\glassfish\hk2\hk2-locator\2.6.1\hk2-locator-2.6.1.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\glassfish\hk2\external\aopalliance-repackaged\2.6.1\aopalliance-repackaged-2.6.1.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\glassfish\hk2\hk2-api\2.6.1\hk2-api-2.6.1.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\glassfish\hk2\hk2-utils\2.6.1\hk2-utils-2.6.1.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\javassist\javassist\3.25.0-GA\javassist-3.25.0-GA.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\glassfish\jersey\media\jersey-media-json-jackson\2.35\jersey-media-json-jackson-2.35.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\org\glassfish\jersey\ext\jersey-entity-filtering\2.35\jersey-entity-filtering-2.35.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.12.2\jackson-annotations-2.12.2.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.12.2\jackson-databind-2.12.2.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.12.2\jackson-core-2.12.2.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\com\fasterxml\jackson\module\jackson-module-jaxb-annotations\2.12.2\jackson-module-jaxb-annotations-2.12.2.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\2.3.2\jakarta.xml.bind-api-2.3.2.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - >>  C:\Users\usuario\.m2\repository\jakarta\activation\jakarta.activation-api\1.2.1\jakarta.activation-api-1.2.1.jar
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - Reading fileListFile: C:\Users\usuario\AppData\Local\Temp\enhancer-4581247660499873708.flf
+16:17:30,330 (main) DEBUG [DataNucleus.Enhancer] - Enhancing classes
+16:17:30,330 (main) DEBUG [DataNucleus.MetaData] - MetaData Management : Carga de Metadata de las clases "[com.ikea.app.client.ClientMain, com.ikea.app.client.Pruebas, com.ikea.app.client.window.ClientLogin$1, com.ikea.app.client.window.ClientLogin, com.ikea.app.client.window.ClientRegistration$1, com.ikea.app.client.window.ClientRegistration, com.ikea.app.client.window.ProductList$1, com.ikea.app.client.window.ProductList$2, com.ikea.app.client.window.ProductList$3, com.ikea.app.client.window.ProductList$4, com.ikea.app.client.window.ProductList$5, com.ikea.app.client.window.ProductList, com.ikea.app.pojo.Cliente, com.ikea.app.pojo.Producto, com.ikea.app.server.jdo.ClienteJDO, com.ikea.app.server.jdo.ProductoJDO, com.ikea.app.server.Resource]" ...
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.ClientMain" en /META-INF/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.ClientMain" en /WEB-INF/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.ClientMain" en /package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.ClientMain" en /com/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.ClientMain" en /com/ikea/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.ClientMain" en /com/ikea/app/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.ClientMain" en /com/ikea/app/client/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.ClientMain" en /com/ikea/app/client/ClientMain.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.client.ClientMain"
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.client.ClientMain" no tener Meta-Data
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.client.ClientMain" no tiene MetaData o annotaciones.
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.Pruebas" en /META-INF/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.Pruebas" en /WEB-INF/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.Pruebas" en /package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.Pruebas" en /com/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.Pruebas" en /com/ikea/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.Pruebas" en /com/ikea/app/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.Pruebas" en /com/ikea/app/client/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.Pruebas" en /com/ikea/app/client/Pruebas.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.client.Pruebas"
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.client.Pruebas" no tener Meta-Data
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.client.Pruebas" no tiene MetaData o annotaciones.
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin$1" en /META-INF/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin$1" en /WEB-INF/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin$1" en /package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin$1" en /com/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin$1" en /com/ikea/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin$1" en /com/ikea/app/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin$1" en /com/ikea/app/client/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin$1" en /com/ikea/app/client/window/package.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin$1" en /com/ikea/app/client/window/ClientLogin$1.jdo
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin$1"
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.client.window.ClientLogin$1" no tener Meta-Data
+16:17:30,346 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.client.window.ClientLogin$1" no tiene MetaData o annotaciones.
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin" en /META-INF/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin" en /WEB-INF/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin" en /package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin" en /com/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin" en /com/ikea/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin" en /com/ikea/app/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin" en /com/ikea/app/client/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin" en /com/ikea/app/client/window/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin" en /com/ikea/app/client/window/ClientLogin.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientLogin"
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.client.window.ClientLogin" no tener Meta-Data
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.client.window.ClientLogin" no tiene MetaData o annotaciones.
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration$1" en /META-INF/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration$1" en /WEB-INF/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration$1" en /package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration$1" en /com/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration$1" en /com/ikea/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration$1" en /com/ikea/app/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration$1" en /com/ikea/app/client/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration$1" en /com/ikea/app/client/window/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration$1" en /com/ikea/app/client/window/ClientRegistration$1.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration$1"
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.client.window.ClientRegistration$1" no tener Meta-Data
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.client.window.ClientRegistration$1" no tiene MetaData o annotaciones.
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration" en /META-INF/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration" en /WEB-INF/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration" en /package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration" en /com/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration" en /com/ikea/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration" en /com/ikea/app/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration" en /com/ikea/app/client/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration" en /com/ikea/app/client/window/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration" en /com/ikea/app/client/window/ClientRegistration.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ClientRegistration"
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.client.window.ClientRegistration" no tener Meta-Data
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.client.window.ClientRegistration" no tiene MetaData o annotaciones.
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$1" en /META-INF/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$1" en /WEB-INF/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$1" en /package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$1" en /com/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$1" en /com/ikea/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$1" en /com/ikea/app/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$1" en /com/ikea/app/client/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$1" en /com/ikea/app/client/window/package.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$1" en /com/ikea/app/client/window/ProductList$1.jdo
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$1"
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.client.window.ProductList$1" no tener Meta-Data
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.client.window.ProductList$1" no tiene MetaData o annotaciones.
+16:17:30,362 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$2" en /META-INF/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$2" en /WEB-INF/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$2" en /package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$2" en /com/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$2" en /com/ikea/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$2" en /com/ikea/app/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$2" en /com/ikea/app/client/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$2" en /com/ikea/app/client/window/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$2" en /com/ikea/app/client/window/ProductList$2.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$2"
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.client.window.ProductList$2" no tener Meta-Data
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.client.window.ProductList$2" no tiene MetaData o annotaciones.
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$3" en /META-INF/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$3" en /WEB-INF/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$3" en /package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$3" en /com/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$3" en /com/ikea/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$3" en /com/ikea/app/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$3" en /com/ikea/app/client/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$3" en /com/ikea/app/client/window/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$3" en /com/ikea/app/client/window/ProductList$3.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$3"
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.client.window.ProductList$3" no tener Meta-Data
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.client.window.ProductList$3" no tiene MetaData o annotaciones.
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$4" en /META-INF/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$4" en /WEB-INF/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$4" en /package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$4" en /com/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$4" en /com/ikea/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$4" en /com/ikea/app/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$4" en /com/ikea/app/client/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$4" en /com/ikea/app/client/window/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$4" en /com/ikea/app/client/window/ProductList$4.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$4"
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.client.window.ProductList$4" no tener Meta-Data
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.client.window.ProductList$4" no tiene MetaData o annotaciones.
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$5" en /META-INF/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$5" en /WEB-INF/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$5" en /package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$5" en /com/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$5" en /com/ikea/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$5" en /com/ikea/app/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$5" en /com/ikea/app/client/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$5" en /com/ikea/app/client/window/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$5" en /com/ikea/app/client/window/ProductList$5.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList$5"
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.client.window.ProductList$5" no tener Meta-Data
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.client.window.ProductList$5" no tiene MetaData o annotaciones.
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList" en /META-INF/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList" en /WEB-INF/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList" en /package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList" en /com/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList" en /com/ikea/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList" en /com/ikea/app/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList" en /com/ikea/app/client/package.jdo
+16:17:30,377 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList" en /com/ikea/app/client/window/package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList" en /com/ikea/app/client/window/ProductList.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.client.window.ProductList"
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.client.window.ProductList" no tener Meta-Data
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.client.window.ProductList" no tiene MetaData o annotaciones.
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Cliente" en /META-INF/package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Cliente" en /WEB-INF/package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Cliente" en /package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Cliente" en /com/package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Cliente" en /com/ikea/package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Cliente" en /com/ikea/app/package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Cliente" en /com/ikea/app/pojo/package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Cliente" en /com/ikea/app/pojo/Cliente.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Cliente"
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.pojo.Cliente" no tener Meta-Data
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.pojo.Cliente" no tiene MetaData o annotaciones.
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Producto" en /META-INF/package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Producto" en /WEB-INF/package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Producto" en /package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Producto" en /com/package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Producto" en /com/ikea/package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Producto" en /com/ikea/app/package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Producto" en /com/ikea/app/pojo/package.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Producto" en /com/ikea/app/pojo/Producto.jdo
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.pojo.Producto"
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.pojo.Producto" no tener Meta-Data
+16:17:30,393 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.pojo.Producto" no tiene MetaData o annotaciones.
+16:17:30,409 (main) DEBUG [DataNucleus.MetaData] - Clase "com.ikea.app.server.jdo.ClienteJDO" tiene anotaciones de JDO y vamos a usarlas.
+16:17:30,409 (main) DEBUG [DataNucleus.MetaData] - Clase "com.ikea.app.server.jdo.ProductoJDO" tiene anotaciones de JDO y vamos a usarlas.
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - Clase "com.ikea.app.server.Resource" tiene anotaciones pero no hay ningún AnnotationReader registrado para este tipo de anotaciones. Por favor compruebe el CLASSPATH y las anotaciones para validez.
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.server.Resource" en /META-INF/package.jdo
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.server.Resource" en /WEB-INF/package.jdo
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.server.Resource" en /package.jdo
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.server.Resource" en /com/package.jdo
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.server.Resource" en /com/ikea/package.jdo
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.server.Resource" en /com/ikea/app/package.jdo
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.server.Resource" en /com/ikea/app/server/package.jdo
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - No encontramos el MetaData del tipo "jdo" por la clase "com.ikea.app.server.Resource" en /com/ikea/app/server/Resource.jdo
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - No hemos encontrado el MetaData del tipo "jdo" por la clase "com.ikea.app.server.Resource"
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - Clase "com.ikea.app.server.Resource" tiene anotaciones pero no hay ningún AnnotationReader registrado para este tipo de anotaciones. Por favor compruebe el CLASSPATH y las anotaciones para validez.
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - Registrando la clase "com.ikea.app.server.Resource" no tener Meta-Data
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - La clase "com.ikea.app.server.Resource" no tiene MetaData o annotaciones.
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - Populación del MetaData ...
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - Clase "com.ikea.app.server.jdo.ClienteJDO" : Populando Meta-Data
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - Clase "com.ikea.app.server.jdo.ClienteJDO" campo "contrasena" : añadiendo el Meta-Data por el campo como no estaba en la definición de Meta-Data.
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - Clase "com.ikea.app.server.jdo.ClienteJDO" campo "nombre" : añadiendo el Meta-Data por el campo como no estaba en la definición de Meta-Data.
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - Clase "com.ikea.app.server.jdo.ProductoJDO" : Populando Meta-Data
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - Clase "com.ikea.app.server.jdo.ProductoJDO" campo "tipo" : añadiendo el Meta-Data por el campo como no estaba en la definición de Meta-Data.
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - Clase "com.ikea.app.server.jdo.ProductoJDO" campo "precio" : añadiendo el Meta-Data por el campo como no estaba en la definición de Meta-Data.
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - Clase "com.ikea.app.server.jdo.ProductoJDO" campo "cantidad" : añadiendo el Meta-Data por el campo como no estaba en la definición de Meta-Data.
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - Inicialisación del MetaData ...
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - Clase "com.ikea.app.server.jdo.ClienteJDO" : Inicializando Meta-Data
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - Clase "com.ikea.app.server.jdo.ProductoJDO" : Inicializando Meta-Data
+16:17:30,424 (main) DEBUG [DataNucleus.MetaData] - MetaData Management : Carga de Metadata ya ha terminado
+16:17:30,424 (main) DEBUG [DataNucleus.Enhancer] - Enhance de la clase "com.ikea.app.server.jdo.ClienteJDO" empezando ...
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no implementa el interfaz "org.datanucleus.enhancement.Persistable"!
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el campo "dnStateManager" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el campo "dnInheritedFieldCount" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el campo "dnFlags" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el campo "dnFieldNames" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnReplaceField" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnGetStateManager" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnIsTransactional" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnNewInstance" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnNewInstance" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnProvideFields" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "___dn$loadClass" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnGetManagedFieldCount" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnIsDirty" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnReplaceStateManager" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnReplaceFlags" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnIsDetached" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnMakeDirty" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnIsDeleted" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnProvideField" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnPreSerialize" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnGetObjectId" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnGetVersion" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnGetTransactionalObjectId" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnIsNew" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnCopyKeyFieldsToObjectId" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnCopyKeyFieldsToObjectId" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnCopyField" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnCopyKeyFieldsFromObjectId" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnCopyKeyFieldsFromObjectId" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnGetExecutionContext" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnCopyFields" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "__dnGetInheritedFieldCount" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnNewObjectIdInstance" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnNewObjectIdInstance" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnIsPersistent" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "dnReplaceFields" pero lo necesita
+16:17:30,440 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ClienteJDO" no tiene el método "__dnFieldNamesInit" pero lo necesita
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el interfaz: org.datanucleus.enhancement.Persistable
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ClienteJDO.<init> : ignorando enhance de set del campo "com.ikea.app.server.jdo.ClienteJDO.email"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ClienteJDO.<init> : ignorando enhance de set del campo "com.ikea.app.server.jdo.ClienteJDO.contrasena"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ClienteJDO.<init> : ignorando enhance de set del campo "com.ikea.app.server.jdo.ClienteJDO.nombre"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ClienteJDO.<init> : ignorando enhance de set del campo "com.ikea.app.server.jdo.ClienteJDO.email"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ClienteJDO.<init> : ignorando enhance de set del campo "com.ikea.app.server.jdo.ClienteJDO.contrasena"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ClienteJDO.<init> : ignorando enhance de set del campo "com.ikea.app.server.jdo.ClienteJDO.nombre"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ClienteJDO.getEmail, cambiando el uso del campo "com.ikea.app.server.jdo.ClienteJDO.email" para utilizar "dnGetemail()"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ClienteJDO.getContrasena, cambiando el uso del campo "com.ikea.app.server.jdo.ClienteJDO.contrasena" para utilizar "dnGetcontrasena()"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ClienteJDO.getNombre, cambiando el uso del campo "com.ikea.app.server.jdo.ClienteJDO.nombre" para utilizar "dnGetnombre()"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ClienteJDO.setEmail, cambiando el uso del campo "com.ikea.app.server.jdo.ClienteJDO.email" para utilizar "dnSetemail()"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ClienteJDO.setContrasena, cambiando el uso del campo "com.ikea.app.server.jdo.ClienteJDO.contrasena" para utilizar "dnSetcontrasena()"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ClienteJDO.setNombre, cambiando el uso del campo "com.ikea.app.server.jdo.ClienteJDO.nombre" para utilizar "dnSetnombre()"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ClienteJDO.toString, cambiando el uso del campo "com.ikea.app.server.jdo.ClienteJDO.nombre" para utilizar "dnGetnombre()"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ClienteJDO.toString, cambiando el uso del campo "com.ikea.app.server.jdo.ClienteJDO.email" para utilizar "dnGetemail()"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el campo "org.datanucleus.enhancement.StateManager dnStateManager"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el campo "byte dnFlags"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el campo "[Ljava.lang.String; dnFieldNames"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el campo "int dnInheritedFieldCount"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void <clinit>()"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el constructor "com.ikea.app.server.jdo.ClienteJDO()"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnCopyKeyFieldsFromObjectId(org.datanucleus.enhancement.Persistable$ObjectIdFieldConsumer fc, java.lang.Object oid)"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnCopyKeyFieldsFromObjectId(java.lang.Object oid)"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnCopyKeyFieldsToObjectId(java.lang.Object oid)"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnCopyKeyFieldsToObjectId(org.datanucleus.enhancement.Persistable$ObjectIdFieldSupplier fs, java.lang.Object oid)"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.Object dnGetObjectId()"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.Object dnGetVersion()"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnPreSerialize()"
+16:17:30,456 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "org.datanucleus.enhancement.ExecutionContextReference dnGetExecutionContext()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "org.datanucleus.enhancement.StateManager dnGetStateManager()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.Object dnGetTransactionalObjectId()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "boolean dnIsDeleted()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "boolean dnIsDirty()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "boolean dnIsNew()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "boolean dnIsPersistent()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "boolean dnIsTransactional()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnMakeDirty(java.lang.String fieldName)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.Object dnNewObjectIdInstance()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.Object dnNewObjectIdInstance(java.lang.Object key)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnProvideFields([I indices)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnReplaceFields([I indices)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnReplaceFlags()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnReplaceStateManager(org.datanucleus.enhancement.StateManager sm)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "boolean dnIsDetached()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "org.datanucleus.enhancement.Persistable dnNewInstance(org.datanucleus.enhancement.StateManager sm)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "org.datanucleus.enhancement.Persistable dnNewInstance(org.datanucleus.enhancement.StateManager sm, java.lang.Object obj)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnReplaceField(int index)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnProvideField(int index)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnCopyField(com.ikea.app.server.jdo.ClienteJDO obj, int index)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnCopyFields(java.lang.Object obj, [I indices)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "[Ljava.lang.String; __dnFieldNamesInit()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "int __dnGetInheritedFieldCount()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "int dnGetManagedFieldCount()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.Class ___dn$loadClass(java.lang.String className)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.String dnGetcontrasena(com.ikea.app.server.jdo.ClienteJDO objPC)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnSetcontrasena(com.ikea.app.server.jdo.ClienteJDO objPC, java.lang.String val)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.String dnGetemail(com.ikea.app.server.jdo.ClienteJDO objPC)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnSetemail(com.ikea.app.server.jdo.ClienteJDO objPC, java.lang.String val)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.String dnGetnombre(com.ikea.app.server.jdo.ClienteJDO objPC)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnSetnombre(com.ikea.app.server.jdo.ClienteJDO objPC, java.lang.String val)"
+16:17:30,471 (main) INFO  [DataNucleus.Enhancer] - Escribiendo el archivo de clase "C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\maven-client-projectoCalidad\target\classes\com\ikea\app\server\jdo\ClienteJDO.class" con definición enhanced
+16:17:30,471 (main) INFO  [DataNucleus.Enhancer] - ENHANCED (Persistable) : com.ikea.app.server.jdo.ClienteJDO
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhance de la clase "com.ikea.app.server.jdo.ClienteJDO" ha terminado
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhance de la clase "com.ikea.app.server.jdo.ProductoJDO" empezando ...
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no implementa el interfaz "org.datanucleus.enhancement.Persistable"!
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el campo "dnStateManager" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el campo "dnInheritedFieldCount" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el campo "dnFlags" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el campo "dnFieldNames" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnReplaceField" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnGetStateManager" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnIsTransactional" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnNewInstance" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnNewInstance" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnProvideFields" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "___dn$loadClass" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnGetManagedFieldCount" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnIsDirty" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnReplaceStateManager" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnReplaceFlags" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnIsDetached" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnMakeDirty" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnIsDeleted" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnProvideField" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnPreSerialize" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnGetObjectId" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnGetVersion" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnGetTransactionalObjectId" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnIsNew" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnCopyKeyFieldsToObjectId" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnCopyKeyFieldsToObjectId" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnCopyField" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnCopyKeyFieldsFromObjectId" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnCopyKeyFieldsFromObjectId" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnGetExecutionContext" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnCopyFields" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "__dnGetInheritedFieldCount" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnNewObjectIdInstance" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnNewObjectIdInstance" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnIsPersistent" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "dnReplaceFields" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - La clase "com.ikea.app.server.jdo.ProductoJDO" no tiene el método "__dnFieldNamesInit" pero lo necesita
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el interfaz: org.datanucleus.enhancement.Persistable
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.<init> : ignorando enhance de set del campo "com.ikea.app.server.jdo.ProductoJDO.nombre"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.<init> : ignorando enhance de set del campo "com.ikea.app.server.jdo.ProductoJDO.tipo"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.<init> : ignorando enhance de set del campo "com.ikea.app.server.jdo.ProductoJDO.precio"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.<init> : ignorando enhance de set del campo "com.ikea.app.server.jdo.ProductoJDO.cantidad"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.<init> : ignorando enhance de set del campo "com.ikea.app.server.jdo.ProductoJDO.nombre"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.<init> : ignorando enhance de set del campo "com.ikea.app.server.jdo.ProductoJDO.tipo"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.<init> : ignorando enhance de set del campo "com.ikea.app.server.jdo.ProductoJDO.precio"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.<init> : ignorando enhance de set del campo "com.ikea.app.server.jdo.ProductoJDO.cantidad"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.getNombre, cambiando el uso del campo "com.ikea.app.server.jdo.ProductoJDO.nombre" para utilizar "dnGetnombre()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.getTipo, cambiando el uso del campo "com.ikea.app.server.jdo.ProductoJDO.tipo" para utilizar "dnGettipo()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.getPrecio, cambiando el uso del campo "com.ikea.app.server.jdo.ProductoJDO.precio" para utilizar "dnGetprecio()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.getCantidad, cambiando el uso del campo "com.ikea.app.server.jdo.ProductoJDO.cantidad" para utilizar "dnGetcantidad()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.setNombre, cambiando el uso del campo "com.ikea.app.server.jdo.ProductoJDO.nombre" para utilizar "dnSetnombre()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.setTipo, cambiando el uso del campo "com.ikea.app.server.jdo.ProductoJDO.tipo" para utilizar "dnSettipo()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.setPrecio, cambiando el uso del campo "com.ikea.app.server.jdo.ProductoJDO.precio" para utilizar "dnSetprecio()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.setCantidad, cambiando el uso del campo "com.ikea.app.server.jdo.ProductoJDO.cantidad" para utilizar "dnSetcantidad()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.toString, cambiando el uso del campo "com.ikea.app.server.jdo.ProductoJDO.nombre" para utilizar "dnGetnombre()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.toString, cambiando el uso del campo "com.ikea.app.server.jdo.ProductoJDO.tipo" para utilizar "dnGettipo()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Enhancing método original com.ikea.app.server.jdo.ProductoJDO.toString, cambiando el uso del campo "com.ikea.app.server.jdo.ProductoJDO.precio" para utilizar "dnGetprecio()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el campo "org.datanucleus.enhancement.StateManager dnStateManager"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el campo "byte dnFlags"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el campo "[Ljava.lang.String; dnFieldNames"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el campo "int dnInheritedFieldCount"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void <clinit>()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el constructor "com.ikea.app.server.jdo.ProductoJDO()"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnCopyKeyFieldsFromObjectId(org.datanucleus.enhancement.Persistable$ObjectIdFieldConsumer fc, java.lang.Object oid)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnCopyKeyFieldsFromObjectId(java.lang.Object oid)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnCopyKeyFieldsToObjectId(java.lang.Object oid)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnCopyKeyFieldsToObjectId(org.datanucleus.enhancement.Persistable$ObjectIdFieldSupplier fs, java.lang.Object oid)"
+16:17:30,471 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.Object dnGetObjectId()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.Object dnGetVersion()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnPreSerialize()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "org.datanucleus.enhancement.ExecutionContextReference dnGetExecutionContext()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "org.datanucleus.enhancement.StateManager dnGetStateManager()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.Object dnGetTransactionalObjectId()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "boolean dnIsDeleted()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "boolean dnIsDirty()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "boolean dnIsNew()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "boolean dnIsPersistent()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "boolean dnIsTransactional()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnMakeDirty(java.lang.String fieldName)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.Object dnNewObjectIdInstance()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.Object dnNewObjectIdInstance(java.lang.Object key)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnProvideFields([I indices)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnReplaceFields([I indices)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnReplaceFlags()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnReplaceStateManager(org.datanucleus.enhancement.StateManager sm)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "boolean dnIsDetached()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "org.datanucleus.enhancement.Persistable dnNewInstance(org.datanucleus.enhancement.StateManager sm)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "org.datanucleus.enhancement.Persistable dnNewInstance(org.datanucleus.enhancement.StateManager sm, java.lang.Object obj)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnReplaceField(int index)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnProvideField(int index)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnCopyField(com.ikea.app.server.jdo.ProductoJDO obj, int index)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnCopyFields(java.lang.Object obj, [I indices)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "[Ljava.lang.String; __dnFieldNamesInit()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "int __dnGetInheritedFieldCount()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "int dnGetManagedFieldCount()"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.Class ___dn$loadClass(java.lang.String className)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "int dnGetcantidad(com.ikea.app.server.jdo.ProductoJDO objPC)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnSetcantidad(com.ikea.app.server.jdo.ProductoJDO objPC, int val)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.String dnGetnombre(com.ikea.app.server.jdo.ProductoJDO objPC)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnSetnombre(com.ikea.app.server.jdo.ProductoJDO objPC, java.lang.String val)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "double dnGetprecio(com.ikea.app.server.jdo.ProductoJDO objPC)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnSetprecio(com.ikea.app.server.jdo.ProductoJDO objPC, double val)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "java.lang.String dnGettipo(com.ikea.app.server.jdo.ProductoJDO objPC)"
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Agregando el método "void dnSettipo(com.ikea.app.server.jdo.ProductoJDO objPC, java.lang.String val)"
+16:17:30,487 (main) INFO  [DataNucleus.Enhancer] - Escribiendo el archivo de clase "C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\maven-client-projectoCalidad\target\classes\com\ikea\app\server\jdo\ProductoJDO.class" con definición enhanced
+16:17:30,487 (main) INFO  [DataNucleus.Enhancer] - ENHANCED (Persistable) : com.ikea.app.server.jdo.ProductoJDO
+16:17:30,487 (main) DEBUG [DataNucleus.Enhancer] - Enhance de la clase "com.ikea.app.server.jdo.ProductoJDO" ha terminado
+16:17:30,487 (main) INFO  [DataNucleus.Enhancer] - DataNucleus Enhancer ha terminado con exito para 2 clases. Tiempos : input=94 ms, enhance=63 ms, total=157 ms. Compruebe el LOG para los detalles
