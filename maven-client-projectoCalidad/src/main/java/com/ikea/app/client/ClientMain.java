@@ -1,5 +1,5 @@
 package com.ikea.app.client;
-
+import com.ikea.app.client.Pruebas;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -18,7 +18,6 @@ import org.apache.logging.log4j.Logger;
 public class ClientMain{
     protected static final Logger logger = LogManager.getLogger();
 
-	private String hola;
 	private static final String EMAIL = "ABCD";
 	private static final String CONTRASENA = "EFGH";
 	private static final String NOMBRE = "IJKL";
@@ -45,7 +44,7 @@ public class ClientMain{
 
 		String hostname = args[0];
 		String port = args[1];
-
+		//Pruebas.guardarDatosEjemplo();
 		ClientMain clientMain = new ClientMain(hostname, port);
 		ClientRegistration window_registration = new ClientRegistration(clientMain.webTarget);
 		ClientLogin window_login = new ClientLogin(clientMain.webTarget);
