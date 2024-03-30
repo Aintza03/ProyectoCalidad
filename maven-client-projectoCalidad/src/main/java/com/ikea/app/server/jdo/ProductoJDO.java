@@ -1,10 +1,13 @@
 package com.ikea.app.server.jdo;
 
 import java.util.Set;
-
+import java.util.HashSet;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.PrimaryKey;
-
+import com.ikea.app.server.jdo.ClienteJDO;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.Join;
+import javax.jdo.annotations.Element;
 @PersistenceCapable
 public class ProductoJDO {
     @PrimaryKey
@@ -12,6 +15,7 @@ public class ProductoJDO {
     String tipo = null;
     double precio = 0.0;
     int cantidad = 0;
+    Set<ProductoJDO> cesta;
 
     public ProductoJDO(String nombre, String tipo, double precio, int cantidad){
         this.nombre = nombre;

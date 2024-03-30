@@ -15,7 +15,7 @@ import com.ikea.app.client.window.ProductList;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.ClientMain;
 public class ClientLogin extends JFrame{
-    protected JLabel labelEmail = new JLabel("Email: ");
+	protected JLabel labelEmail = new JLabel("Email: ");
     protected JLabel labelContrasena = new JLabel("Contrasena: ");
     protected JTextField email = new JTextField();
     protected JPasswordField contrasena = new JPasswordField();

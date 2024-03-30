@@ -62,7 +62,7 @@ public class ProductList extends JFrame{
 
     private void initTable() {
 		//Cabecera del modelo de datos
-		Vector<String> cabeceraProducto = new Vector<String>(Arrays.asList( "Nombre", "Tipo", "Precio", "Cantidad"));				
+		Vector<String> cabeceraProducto = new Vector<String>(Arrays.asList( "Nombre", "Tipo", "Precio", "Cantidad","Anadir"));				
 		//Se crea el modelo de datos para la tabla de comics sÃ³lo con la cabecera	
 		
 		this.modeloTablaProductos = new DefaultTableModel(new Vector<Vector<Object>>(), cabeceraProducto) {
@@ -200,13 +200,7 @@ public class ProductList extends JFrame{
     private void loadProducto(WebTarget webTarget) {
 		this.modeloTablaProductos.setRowCount(0);
 		this.productoList = datosDeProductos(webTarget);
-        //Producto b = new Producto();
-        //b.setNombre("Mesa");
-        //b.setPrecio(100.0);
-        //b.setTipo("Mueble");
-        //b.setCantidad(1);
-        //productoList.add(b);
-		
+        
 		for (Producto a : this.productoList) {
 			this.modeloTablaProductos.addRow( new Object[] {a.getNombre(), a.getTipo(), a.getPrecio(),  a.getCantidad(), new JButton("->")} );
 		}		
@@ -227,11 +221,11 @@ public class ProductList extends JFrame{
                 //System.out.println(product);
 				return product;
             } else {
-				System.out.format("Error obtaining user list. %s%n", response);
+				System.out.format("Error obtaining product list. %s%n", response);
 				return new ArrayList<Producto>();
             }
         } catch (ProcessingException e) {
-            System.out.format("Error obtaining user list. %s%n", e.getMessage());
+            System.out.format("Error obtaining product list. %s%n", e.getMessage());
 			return new ArrayList<Producto>();
         }
 

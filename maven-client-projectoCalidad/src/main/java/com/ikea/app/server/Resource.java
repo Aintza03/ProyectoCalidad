@@ -8,10 +8,11 @@ import javax.jdo.Extent;
 
 import com.ikea.app.server.jdo.ClienteJDO;
 import com.ikea.app.pojo.Cliente;
-
+import com.ikea.app.server.jdo.CestaJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
+import javax.ws.rs.QueryParam;
 import java.util.ArrayList;
 
 import com.ikea.app.pojo.Producto;
@@ -24,7 +25,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
+import com.ikea.app.pojo.Cesta;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import java.util.List;
@@ -68,7 +69,9 @@ public class Resource{
 			} else {
 				logger.info("Creando usuario: {}", clienteJDO);
 				clienteJDO = new ClienteJDO(cliente.getEmail(), cliente.getContrasena(), cliente.getNombre());
-				pm.makePersistent(clienteJDO);					 
+				CestaJDO cestaJDO = new CestaJDO(clienteJDO);
+				pm.makePersistent(clienteJDO);
+				pm.makePersistent(cestaJDO);					 
 				logger.info("Usuario creado: {}", clienteJDO);
 			}
 			tx.commit();
@@ -164,27 +167,51 @@ public class Resource{
 			}
 			pm.close();
 		}
-		/*users.add(new User(0, "John", "Smith"));
-        users.add(new User(1, "Isaac", "Newton"));
-        users.add(new User(0, "Albert", "Einstein"));
-
-        Stream<User> stream = users.stream();
-        // check if the query parameter was passed in the URL
-        if (str != null) {
-            stream = stream.filter(user -> user.getSurname().contains(str));
-        }
-
-        // sort the stream by the passed parameter
-        // as the parameter has a default value there is no need to
-        // check if the parameter is null
-        if (order == Order.DESC) {
-            stream = stream.sorted(Comparator.comparing(User::getSurname).reversed());
-        } else {
-            stream = stream.sorted(Comparator.comparing(User::getSurname));
-        }
-
-        // return the resulting stream as a list
-        return stream.collect(Collectors.toList());*/
 		}
+	//@GET
+	//@Path("/cesta")
+	//@Produces(MediaType.APPLICATION_JSON)
+	//public void getCesta(@QueryParam("email") String email) {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
+	//	Cesta cesta = new Cesta();
+	//	System.out.println(email);
+		
+		/*try {	
+            tx.begin();
+            logger.info("Obteniendo cesta");
+			try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '" + email +"'")) {
+				q.setClass(CestaJDO.class);
+				List<CestaJDO> results = q.executeList();
+				System.out.println("Cesta: " + results);
+				for (ProductoJDO productoJDO : results) {
+					Producto producto = new Producto();
+					producto.setNombre(productoJDO.getNombre());
+					producto.setPrecio(productoJDO.getPrecio());
+					producto.setTipo(productoJDO.getTipo());
+					producto.setCantidad(productoJDO.getCantidad());
+					productos.add(producto);
+					logger.info("Product retrieved: {}", productoJDO);
+				}
+				
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
+			tx.commit();
+			if (cesta != null) {	
+        		return cesta;
+			}else{
+				System.out.println("Cesta no existe");
+				return cesta;
+			}
+		}
+		finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}*/
+	//	}
+
 	}
 

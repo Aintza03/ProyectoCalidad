@@ -132,6 +132,7 @@
 				<version>6.0.0-release</version>
 				<configuration>
 					<api>JDO</api>
+					<fork>false</fork>
 					<verbose>true</verbose>
 					<props>${config.files.dir}/datanucleus.properties</props>
 				</configuration>
