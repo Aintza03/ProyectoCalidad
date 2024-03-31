@@ -8,10 +8,11 @@ import javax.jdo.Extent;
 
 import com.ikea.app.server.jdo.ClienteJDO;
 import com.ikea.app.pojo.Cliente;
-
+import com.ikea.app.server.jdo.CestaJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
+import javax.ws.rs.QueryParam;
 import java.util.ArrayList;
 
 import com.ikea.app.pojo.Producto;
@@ -24,7 +25,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
+import com.ikea.app.pojo.Cesta;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import java.util.List;
@@ -68,7 +69,9 @@ public class Resource{
 			} else {
 				logger.info("Creando usuario: {}", clienteJDO);
 				clienteJDO = new ClienteJDO(cliente.getEmail(), cliente.getContrasena(), cliente.getNombre());
-				pm.makePersistent(clienteJDO);					 
+				CestaJDO cestaJDO = new CestaJDO(clienteJDO);
+				pm.makePersistent(clienteJDO);
+				pm.makePersistent(cestaJDO);					 
 				logger.info("Usuario creado: {}", clienteJDO);
 			}
 			tx.commit();
@@ -141,7 +144,7 @@ public class Resource{
 					producto.setNombre(productoJDO.getNombre());
 					producto.setPrecio(productoJDO.getPrecio());
 					producto.setTipo(productoJDO.getTipo());
-					producto.setCantidad(productoJDO.getCantidad());
+					producto.setId(productoJDO.getId());
 					productos.add(producto);
 					logger.info("Product retrieved: {}", productoJDO);
 				}
@@ -164,27 +167,98 @@ public class Resource{
 			}
 			pm.close();
 		}
-		/*users.add(new User(0, "John", "Smith"));
-        users.add(new User(1, "Isaac", "Newton"));
-        users.add(new User(0, "Albert", "Einstein"));
-
-        Stream<User> stream = users.stream();
-        // check if the query parameter was passed in the URL
-        if (str != null) {
-            stream = stream.filter(user -> user.getSurname().contains(str));
-        }
-
-        // sort the stream by the passed parameter
-        // as the parameter has a default value there is no need to
-        // check if the parameter is null
-        if (order == Order.DESC) {
-            stream = stream.sorted(Comparator.comparing(User::getSurname).reversed());
-        } else {
-            stream = stream.sorted(Comparator.comparing(User::getSurname));
-        }
-
-        // return the resulting stream as a list
-        return stream.collect(Collectors.toList());*/
 		}
-	}
+	@GET
+	@Path("/cesta")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Cesta getCesta(@QueryParam("email") String email) {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
+		Cesta cesta = new Cesta();
+		Cliente cliente = new Cliente();
+		Producto producto;
+		try{
+			tx.begin();
+			logger.info("Obteniendo cesta del cliente: " + email);
+			CestaJDO cestajdo = null;
+			try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '" + email +"'")) {
+				q.setClass(CestaJDO.class);
+				List<CestaJDO> results = q.executeList();
+				cestajdo = results.get(0);
+				logger.info("Se ha obtenido cesta: " + cestajdo);
+				cliente.setEmail(cestajdo.getCliente().getEmail());
+				cliente.setContrasena(cestajdo.getCliente().getContrasena());
+				cliente.setNombre(cestajdo.getCliente().getNombre());
+				cesta.setCliente(cliente);
+				for(ProductoJDO productoJDO: cestajdo.getCesta()){
+					producto = new Producto();
+					producto.setId(productoJDO.getId());
+					producto.setNombre(productoJDO.getNombre());
+					producto.setPrecio(productoJDO.getPrecio());
+					cesta.anadirCesta(producto);
+				}
+			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
+				logger.info("Exception1 launched: {}", ex1.getMessage());
+			}
+			tx.commit();
+			if(cestajdo != null){
+				logger.info("Cesta encontrada");
+				return cesta;
+			}else{
+				logger.info("No hay cesta");
+				return null;
+			}
+		}catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+				return null;
+		}finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+		}
+	@POST
+	@Path("/modifyCesta")
+	public Response modifyCesta(Cesta cesta){
+		try{
+			logger.info("Modificando cesta del cliente: " + cesta.getCliente());
+			tx.begin();
+			
+				CestaJDO cestajdo = null;
+				try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '"+cesta.getCliente().getEmail() +"'")) {
+				//try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","UPDATE productojdo SET PRODUCTOS = '"+ cestajdo.getCliente() +"' WHERE ID = '"+productojdo.getId() +"'")) {
+				q.setClass(CestaJDO.class);
+				List<CestaJDO> results = q.executeList();
+				cestajdo = results.get(0);
+				for(Producto producto: cesta.getCesta()){
+					ProductoJDO productojdo = null;
+					try(Query<ProductoJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo WHERE ID = '"+producto.getId() +"'")){
+						q2.setClass(ProductoJDO.class);
+						List<ProductoJDO> resultsP = q2.executeList();
+						productojdo = resultsP.get(0);
+						cestajdo.AnadirCesta(productojdo);
+					}catch(javax.jdo.JDOObjectNotFoundException ex1){
+						logger.info("Exception1 launched: {}", ex1.getMessage());
+					}	
+				}
+				pm.makePersistent(cestajdo);
+				logger.info("Cesta guardada: {}", cesta);
+			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
+				logger.info("Exception1 launched: {}", ex1.getMessage());
+			}	
+			tx.commit();
+			return Response.ok().build();
+		}catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+				return Response.status(Status.NOT_FOUND).build();
+		}finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+		}
+}	
 
