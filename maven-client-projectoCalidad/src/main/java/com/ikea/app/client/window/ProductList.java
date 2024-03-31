@@ -27,7 +27,7 @@ import com.ikea.app.pojo.Cliente;
 import com.ikea.app.pojo.Producto;
 import com.ikea.app.pojo.Cesta;
 import com.ikea.app.client.ClientMain;
-
+import com.ikea.app.client.window.CestaWindow;
 public class ProductList extends JFrame{
 
     protected List<Producto> productoList = new ArrayList<Producto>();
@@ -37,15 +37,15 @@ public class ProductList extends JFrame{
     protected int mouseRow = -1;
 	protected int mouseCol = -1;
 	protected WebTarget webTargets;
-
+	protected CestaWindow cestaWindow;
     public ProductList(WebTarget webTargets, String email){
         Container cp = this.getContentPane();
         cp.setLayout(new GridLayout(1,1));
 		cesta = getCesta(webTargets,email);
+		this.cestaWindow = new CestaWindow(webTargets,cesta);
         this.webTargets = webTargets;
 		this.initTable();
         this.loadProducto(webTargets);
-
         JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
         scrollPaneProductos.setBorder(new TitledBorder("Productos"));
         cp.add(scrollPaneProductos);

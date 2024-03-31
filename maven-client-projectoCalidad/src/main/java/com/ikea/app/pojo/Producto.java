@@ -38,7 +38,7 @@ public class Producto {
         this.precio = precio;
     }
     public String toString(){
-        return "Nombre: " + this.nombre + "Tipo: " + this.tipo + " Precio: " + this.precio;
+        return "-" + this.id + ": " + this.nombre + " (" + this.tipo + " , " + this.precio + "€ )";
     }
     
 }
