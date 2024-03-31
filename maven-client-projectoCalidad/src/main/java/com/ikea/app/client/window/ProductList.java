@@ -261,6 +261,7 @@ public class ProductList extends JFrame{
 		WebTarget WebTargetLogin = webTarget.path("modifyCesta");
 		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
 		this.cesta.anadirCesta(producto);
+		this.cestaWindow.addProducto(producto);
 		Response response = invocationBuilder.post(Entity.entity(this.cesta, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());

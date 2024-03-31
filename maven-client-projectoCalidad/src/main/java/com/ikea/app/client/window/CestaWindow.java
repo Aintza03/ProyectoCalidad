@@ -36,4 +36,7 @@ public class CestaWindow extends JFrame{
 	this.setTitle("Cesta");
 	this.setLocationRelativeTo(null);
 }
+    public void addProducto(Producto producto){
+        modeloCesta.addElement(producto);
+    }
 }
