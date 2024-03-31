@@ -43,9 +43,9 @@ public static void guardarDatosEjemplo() {
         {	
             tx.begin();
             List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
-            productos.add(new ProductoJDO("Product 1","Tipo 1", 10, 10));
-            productos.add(new ProductoJDO("Product 2", "Tipo 2", 19,20));
-            productos.add(new ProductoJDO("Product 3","Tipo 3", 5,20));
+            productos.add(new ProductoJDO(1,"Product 1","Tipo 1", 10));
+            productos.add(new ProductoJDO(2,"Product 2", "Tipo 2", 19));
+            productos.add(new ProductoJDO(3,"Product 3","Tipo 3", 5));
             for (ProductoJDO producto: productos){
             pm.makePersistent(producto);					 
             }

@@ -1,15 +1,24 @@
 package com.ikea.app.pojo;
 
 public class Producto {
+    public static int idGeneral = 0;
+    private int id;
     private String nombre;
     private String tipo;
     private double precio;
-    private int cantidad;
 
     public Producto(){
-
+        this.id = idGeneral + 1;
     }
-
+    public int getId(){
+        return this.id;
+    }
+    public static void setIdGeneral(int idGeneral){
+        Producto.idGeneral = idGeneral;
+    }
+    public void setId(int id){
+        this.id = id;
+    }
     public String getNombre(){
         return this.nombre;
     }
@@ -19,9 +28,6 @@ public class Producto {
     public double getPrecio(){
         return this.precio;
     }
-    public int getCantidad(){
-        return this.cantidad;
-    }
     public void setNombre(String nombre){
         this.nombre = nombre;
     }
@@ -30,9 +36,6 @@ public class Producto {
     }
     public void setPrecio(double precio){
         this.precio = precio;
-    }
-    public void setCantidad(int cantidad){
-        this.cantidad = cantidad;
     }
     public String toString(){
         return "Nombre: " + this.nombre + "Tipo: " + this.tipo + " Precio: " + this.precio;

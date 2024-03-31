@@ -24,7 +24,7 @@ public class Cesta{
 		return this.cesta;
 	}
 	
-	public void AnadirCesta(Producto producto) {
+	public void anadirCesta(Producto producto) {
 		cesta.add(producto);
 	}
 	public void setCesta(Set<Producto> cesta) {

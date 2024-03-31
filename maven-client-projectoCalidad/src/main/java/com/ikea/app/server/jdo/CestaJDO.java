@@ -9,10 +9,13 @@ import javax.jdo.annotations.Persistent;
 import java.util.HashSet;
 import com.ikea.app.server.jdo.ProductoJDO;
 import com.ikea.app.server.jdo.ClienteJDO;
+import javax.jdo.annotations.Column;
 @PersistenceCapable
 public class CestaJDO{
     @PrimaryKey
     ClienteJDO cliente = null;
+	@Persistent
+	@Column(name = "productos")
     Set<ProductoJDO> cesta;
 
     public CestaJDO(ClienteJDO cliente) {

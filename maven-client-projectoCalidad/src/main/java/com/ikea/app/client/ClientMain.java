@@ -21,7 +21,6 @@ import javax.ws.rs.ProcessingException;
 
 public class ClientMain{
     protected static final Logger logger = LogManager.getLogger();
-	//protected Cesta cesta;
 	private static final String EMAIL = "ABCD";
 	private static final String CONTRASENA = "EFGH";
 	private static final String NOMBRE = "IJKL";
@@ -52,29 +51,5 @@ public class ClientMain{
 		ClientMain clientMain = new ClientMain(hostname, port);
 		ClientRegistration window = new ClientRegistration(clientMain.webTarget);
 		ClientLogin window_login = new ClientLogin(clientMain.webTarget);
-		//Cliente cliente = new Cliente();
-		//cliente.setEmail("ABCD");
-		//clientMain.getCesta(cliente);
 	}
-
-	/*public void getCesta(Cliente cliente){
-	try {
-            Response response = webTarget.path("cesta")
-                .queryParam("email", cliente.getEmail())
-				.request(MediaType.APPLICATION_JSON)
-				.get();
-
-            // check that the response was HTTP OK
-            if (response.getStatusInfo().toEnum() == Status.OK) {
-                Cesta cesta = response.readEntity(Cesta.class);
-				
-            } else {
-				System.out.format("Error obtaining cesta. %s%n", response);
-				
-            }
-        } catch (ProcessingException e) {
-            System.out.format("Error obtaining cesta. %s%n", e.getMessage());
-			
-        }	
-	}*/
 }

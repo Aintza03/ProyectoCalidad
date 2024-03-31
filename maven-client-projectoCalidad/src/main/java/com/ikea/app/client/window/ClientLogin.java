@@ -65,7 +65,7 @@ public class ClientLogin extends JFrame{
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
 		} else {	
-			window2 = new ProductList(webTarget);
+			window2 = new ProductList(webTarget, email);
 			ClientMain.getLogger().info("Cliente registrado correctamente");
 		}
 	}

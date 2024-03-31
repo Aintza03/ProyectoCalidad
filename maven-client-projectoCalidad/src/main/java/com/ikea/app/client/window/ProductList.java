@@ -25,7 +25,7 @@ import org.apache.logging.log4j.core.config.builder.api.Component;
 
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.pojo.Producto;
-
+import com.ikea.app.pojo.Cesta;
 import com.ikea.app.client.ClientMain;
 
 public class ProductList extends JFrame{
@@ -33,18 +33,17 @@ public class ProductList extends JFrame{
     protected List<Producto> productoList = new ArrayList<Producto>();
     protected JTable tablaProductos;
     protected DefaultTableModel modeloTablaProductos;
-
+	protected Cesta cesta;
     protected int mouseRow = -1;
 	protected int mouseCol = -1;
+	protected WebTarget webTargets;
 
-
-    public ProductList(WebTarget webTargets){
+    public ProductList(WebTarget webTargets, String email){
         Container cp = this.getContentPane();
         cp.setLayout(new GridLayout(1,1));
-        //JPanel panel = new JPanel();
-        //panel.setLayout(new GridLayout(3,3));
-        //cp.add(panel);
-        this.initTable();
+		cesta = getCesta(webTargets,email);
+        this.webTargets = webTargets;
+		this.initTable();
         this.loadProducto(webTargets);
 
         JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
@@ -62,7 +61,7 @@ public class ProductList extends JFrame{
 
     private void initTable() {
 		//Cabecera del modelo de datos
-		Vector<String> cabeceraProducto = new Vector<String>(Arrays.asList( "Nombre", "Tipo", "Precio", "Cantidad","Anadir"));				
+		Vector<String> cabeceraProducto = new Vector<String>(Arrays.asList( "ID","Nombre", "Tipo", "Precio","Anadir"));				
 		//Se crea el modelo de datos para la tabla de comics sÃ³lo con la cabecera	
 		
 		this.modeloTablaProductos = new DefaultTableModel(new Vector<Vector<Object>>(), cabeceraProducto) {
@@ -142,26 +141,26 @@ public class ProductList extends JFrame{
 			}
 			
 			
-			/*@Override
+			@Override
             public void mouseClicked(MouseEvent e) {
 				int row = tablaProductos.rowAtPoint(e.getPoint());
 				int col = tablaProductos.columnAtPoint(e.getPoint());
 				
-				if(col == 5) {
+				if(col == 4) {
 					try {
 						int d = 0; 
 						d = Integer.parseInt(modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());
-						for (Animal animal : animales) {
-							if(animal.getId() == d) {
-						v.actualizarAnimal(animal, dni, null);
-						modeloDatosAnimales.removeRow(row);
+						for (Producto producto : productoList) {
+							if(producto.getId() == d) {
+							modificarCesta(webTargets,producto);
+							modeloTablaProductos.removeRow(row);
 							}
 							}
 					} catch (Exception e2) {
 						System.err.println("No se ha escogido animal");
 					}	
 				}
-			}*/
+			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -199,10 +198,17 @@ public class ProductList extends JFrame{
     
     private void loadProducto(WebTarget webTarget) {
 		this.modeloTablaProductos.setRowCount(0);
-		this.productoList = datosDeProductos(webTarget);
-        
+		List<Integer> idProductos = new ArrayList<Integer>();
+		for (Producto a: this.cesta.getCesta()){
+			idProductos.add(a.getId());
+		}
+		for(Producto a : datosDeProductos(webTarget)){
+			if(!(idProductos.contains(a.getId()))) {
+				this.productoList.add(a);
+			}
+		}
 		for (Producto a : this.productoList) {
-			this.modeloTablaProductos.addRow( new Object[] {a.getNombre(), a.getTipo(), a.getPrecio(),  a.getCantidad(), new JButton("->")} );
+			this.modeloTablaProductos.addRow( new Object[] {a.getId(),a.getNombre(), a.getTipo(), a.getPrecio(), new JButton("->")} );
 		}		
 	}
 
@@ -229,6 +235,38 @@ public class ProductList extends JFrame{
 			return new ArrayList<Producto>();
         }
 
+	}
+	public Cesta getCesta(WebTarget webTarget,String email){
+		try {
+            Response response = webTarget.path("cesta")
+                .queryParam("email", email)
+				.request(MediaType.APPLICATION_JSON)
+				.get();
+
+            // check that the response was HTTP OK
+            if (response.getStatusInfo().toEnum() == Status.OK) {
+                Cesta cesta = response.readEntity(Cesta.class);
+				System.out.println(cesta);
+				return cesta;		
+            } else {
+				System.out.format("Error obtaining cesta. %s%n", response);
+				return null;
+            }
+        } catch (ProcessingException e) {
+            System.out.format("Error obtaining cesta. %s%n", e.getMessage());
+			return null;
+        }	
+	}
+	public void modificarCesta(WebTarget webTarget,Producto producto) {
+		WebTarget WebTargetLogin = webTarget.path("modifyCesta");
+		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
+		this.cesta.anadirCesta(producto);
+		Response response = invocationBuilder.post(Entity.entity(this.cesta, MediaType.APPLICATION_JSON));
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+		} else {	
+			ClientMain.getLogger().info("Cesta modificada correctamente");
+		}
 	}
 }
     
