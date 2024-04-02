@@ -35,9 +35,19 @@ public class CestaWindow extends JFrame{
                     }
                     JFrame jFrame = new JFrame();
                     JOptionPane.showMessageDialog(jFrame, "Se a confirmado la compra de la cesta, el precio total es de: "+precioTotal);
-                    cesta.getCesta().clear();}
-                }
-            }
+                    WebTarget WebTargetLogin = webTargets.path("clearCesta");
+                    Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
+                    cesta.clearCesta();
+                    Response response = invocationBuilder.post(Entity.entity(cesta, MediaType.APPLICATION_JSON));
+                    if (response.getStatus() != Status.OK.getStatusCode()) {
+                        ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+                    } else {	
+                        ClientMain.getLogger().info("Cesta borrada correctamente");
+                    }
+                                modeloCesta.clear();
+                                cp.repaint();
+                            }
+                        }}
         );
     modeloCesta = new DefaultListModel<Producto>();
     for(Producto producto : cesta.getCesta()){
