@@ -44,5 +44,9 @@ public class CestaJDO{
 	public String toString(){
 		return "Cliente: " + this.cliente + " Cesta: " + this.cesta;
 	}
+
+	public void clearCesta() {
+		this.cesta.clear();
+	}
 	
 }
