@@ -35,6 +35,7 @@ public class CestaWindow extends JFrame{
                     }
                     JFrame jFrame = new JFrame();
                     JOptionPane.showMessageDialog(jFrame, "Se a confirmado la compra de la cesta, el precio total es de: "+precioTotal);
+<<<<<<< Updated upstream
                     WebTarget WebTargetLogin = webTargets.path("clearCesta");
                     Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
                     cesta.clearCesta();
@@ -48,6 +49,14 @@ public class CestaWindow extends JFrame{
                                 cp.repaint();
                             }
                         }}
+=======
+                    cesta.getCesta().clear();
+                    modeloCesta.clear();
+                    vaciarCesta(webTargets, cesta);
+                    }
+                }
+            }
+>>>>>>> Stashed changes
         );
     modeloCesta = new DefaultListModel<Producto>();
     for(Producto producto : cesta.getCesta()){
@@ -66,4 +75,14 @@ public class CestaWindow extends JFrame{
     public void addProducto(Producto producto){
         modeloCesta.addElement(producto);
     }
+    public void vaciarCesta(WebTarget webTarget, Cesta cesta) {
+		WebTarget WebTargetLogin = webTarget.path("vaciarCesta");
+		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.post(Entity.entity(cesta, MediaType.APPLICATION_JSON));
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+		} else {	
+			ClientMain.getLogger().info("Cesta vaciada correctamente");
+		}
+	}
 }
