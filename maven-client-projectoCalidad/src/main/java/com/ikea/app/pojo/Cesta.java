@@ -30,7 +30,10 @@ public class Cesta{
 	public void setCesta(Set<Producto> cesta) {
 		this.cesta = cesta;
 	}
-	
+	public void clearCesta() {
+		this.cesta.clear();
+	}
+
 	public String toString(){
 		return "Cliente: " + this.cliente + " Cesta: " + this.cesta;
 	}	
