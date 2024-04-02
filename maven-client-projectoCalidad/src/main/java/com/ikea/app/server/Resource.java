@@ -193,7 +193,6 @@ public class Resource{
 					producto = new Producto();
 					producto.setId(productoJDO.getId());
 					producto.setNombre(productoJDO.getNombre());
-					producto.setTipo(productoJDO.getTipo());
 					producto.setPrecio(productoJDO.getPrecio());
 					cesta.anadirCesta(producto);
 				}
@@ -262,7 +261,6 @@ public class Resource{
 		}
 		}
 		@POST
-<<<<<<< Updated upstream
 		@Path("/clearCesta")
 		public Response clearCesta(Cesta cesta){
 			try{
@@ -293,38 +291,5 @@ public class Resource{
 				pm.close();
 			}
 			}
-=======
-	@Path("/vaciarCesta")
-	public Response vaciarCesta(Cesta cesta){
-		try{
-			logger.info("Modificando cesta del cliente: " + cesta.getCliente());
-			tx.begin();
-			
-				CestaJDO cestajdo = null;
-				try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '"+cesta.getCliente().getEmail() +"'")) {
-				//try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","UPDATE productojdo SET PRODUCTOS = '"+ cestajdo.getCliente() +"' WHERE ID = '"+productojdo.getId() +"'")) {
-				q.setClass(CestaJDO.class);
-				List<CestaJDO> results = q.executeList();
-				cestajdo = results.get(0);
-				cestajdo.getCesta().clear();
-				pm.makePersistent(cestajdo);
-				logger.info("Cesta guardada: {}", cesta);
-			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
-				logger.info("Exception1 launched: {}", ex1.getMessage());
-			}	
-			tx.commit();
-			return Response.ok().build();
-		}catch (Exception ex1) {
-				logger.info("Exception launched: {}", ex1.getMessage());
-				ex1.printStackTrace();
-				return Response.status(Status.NOT_FOUND).build();
-		}finally {
-			if (tx.isActive()) {
-				tx.rollback();
-			}
-			pm.close();
-		}
-		}
->>>>>>> Stashed changes
 }	
 
