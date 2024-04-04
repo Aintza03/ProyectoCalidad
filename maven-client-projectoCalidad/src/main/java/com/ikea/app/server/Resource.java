@@ -292,5 +292,46 @@ public class Resource{
 			pm.close();
 		}
 		}
+		@POST
+	@Path("/borrarProductoDeCesta")
+	public Response borrarProductoDeCesta(Cesta cesta){
+		try{
+			logger.info("Modificando cesta del cliente: " + cesta.getCliente());
+			tx.begin();
+			
+				CestaJDO cestajdo = null;
+				try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '"+cesta.getCliente().getEmail() +"'")) {
+				q.setClass(CestaJDO.class);
+				List<CestaJDO> results = q.executeList();
+				cestajdo = results.get(0);
+				for(Producto producto: cesta.getCesta()){
+					ProductoJDO productojdo = null;
+					try(Query<ProductoJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo WHERE ID = '"+producto.getId() +"'")){
+						q2.setClass(ProductoJDO.class);
+						List<ProductoJDO> resultsP = q2.executeList();
+						productojdo = resultsP.get(0);
+						//cestajdo.BorrarProductoDeCesta(productojdo);
+					}catch(javax.jdo.JDOObjectNotFoundException ex1){
+						logger.info("Exception1 launched: {}", ex1.getMessage());
+					}	
+				}
+				pm.makePersistent(cestajdo);
+				logger.info("Cesta guardada: {}", cesta);
+			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
+				logger.info("Exception1 launched: {}", ex1.getMessage());
+			}	
+			tx.commit();
+			return Response.ok().build();
+		}catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+				return Response.status(Status.NOT_FOUND).build();
+		}finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+		}
 }	
 

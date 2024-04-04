@@ -34,7 +34,7 @@ public class CestaWindow extends JFrame{
                         precioTotal=precioTotal + producto.getPrecio();
                     }
                     JFrame jFrame = new JFrame();
-                    JOptionPane.showMessageDialog(jFrame, "Se a confirmado la compra de la cesta, el precio total es de: "+precioTotal);
+                    JOptionPane.showMessageDialog(jFrame, "Se ha confirmado la compra de la cesta, el precio total de la compra es "+ precioTotal);
                     cesta.getCesta().clear();
                     modeloCesta.clear();
                     vaciarCesta(webTargets, cesta);
@@ -42,6 +42,21 @@ public class CestaWindow extends JFrame{
                 }
             }
         );
+        
+    JButton borrarProductoButton=new JButton("Borrar producto");
+        borrarProductoButton.setBounds(250,120,50,30);
+        add(borrarProductoButton);
+        borrarProductoButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource()==borrarProductoButton) {
+                    Producto producto = listaCesta.getSelectedValue();
+                    modeloCesta.removeElement(producto);
+                    borrarProductoDeCesta(producto, webTargets, cesta);
+                    }
+                }
+            }
+        );
+
     modeloCesta = new DefaultListModel<Producto>();
     for(Producto producto : cesta.getCesta()){
         modeloCesta.addElement(producto);
@@ -69,4 +84,15 @@ public class CestaWindow extends JFrame{
 			ClientMain.getLogger().info("Cesta vaciada correctamente");
 		}
 	}
+
+    public void borrarProductoDeCesta(Producto producto, WebTarget webTarget, Cesta cesta) {
+        WebTarget WebTargetLogin = webTarget.path("borrarProductoDeCesta");
+        Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
+        Response response = invocationBuilder.post(Entity.entity(producto, MediaType.APPLICATION_JSON));
+        if (response.getStatus() != Status.OK.getStatusCode()) {
+            ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+        } else {	
+            ClientMain.getLogger().info("Producto borrado correctamente");
+        }
+}
 }
