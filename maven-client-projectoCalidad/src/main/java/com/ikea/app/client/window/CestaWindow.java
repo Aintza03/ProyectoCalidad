@@ -42,7 +42,7 @@ public class CestaWindow extends JFrame{
                 }
             }
         );
-        
+
     JButton borrarProductoButton=new JButton("Borrar producto");
         borrarProductoButton.setBounds(250,120,50,30);
         add(borrarProductoButton);
@@ -61,6 +61,7 @@ public class CestaWindow extends JFrame{
     for(Producto producto : cesta.getCesta()){
         modeloCesta.addElement(producto);
     }
+
     listaCesta = new JList<Producto>(modeloCesta);
     listaCesta.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	JScrollPane scrollCesta = new JScrollPane(listaCesta);

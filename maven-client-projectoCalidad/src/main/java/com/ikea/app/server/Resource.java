@@ -310,7 +310,7 @@ public class Resource{
 						q2.setClass(ProductoJDO.class);
 						List<ProductoJDO> resultsP = q2.executeList();
 						productojdo = resultsP.get(0);
-						//cestajdo.BorrarProductoDeCesta(productojdo);
+						cestajdo.borrarProductoDeCesta(productojdo);
 					}catch(javax.jdo.JDOObjectNotFoundException ex1){
 						logger.info("Exception1 launched: {}", ex1.getMessage());
 					}	

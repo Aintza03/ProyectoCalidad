@@ -37,6 +37,10 @@ public class CestaJDO{
 	public void AnadirCesta(ProductoJDO producto) {
 		cesta.add(producto);
 	}
+	public void borrarProductoDeCesta (ProductoJDO producto) {
+		cesta.remove(producto);
+	}
+	
 	public void setCesta(Set<ProductoJDO> cesta) {
 		this.cesta = cesta;
 	}
