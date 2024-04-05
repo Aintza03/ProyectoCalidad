@@ -8,6 +8,7 @@ import com.ikea.app.pojo.Cliente;
 public class Cesta{
     Cliente cliente = null;
     Set<Producto> cesta = new HashSet<Producto>();
+	private double precioTotal = 0;
 
     public Cesta() {
 		
@@ -32,6 +33,12 @@ public class Cesta{
 	}
 	public void clearCesta() {
 		this.cesta.clear();
+	}
+	public double getPrecioTotal() {
+		for (Producto producto : cesta) {
+			precioTotal = precioTotal + producto.getPrecio();
+		}
+		return precioTotal;
 	}
 
 	public String toString(){
