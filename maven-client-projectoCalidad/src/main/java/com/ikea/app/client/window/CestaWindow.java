@@ -20,7 +20,7 @@ import com.ikea.app.pojo.Producto;
 public class CestaWindow extends JFrame{
 	protected DefaultListModel<Producto> modeloCesta;
 	protected JList<Producto> listaCesta;
-    protected double precioTotal;
+    protected double precioTotal = 0;
     
    public CestaWindow(WebTarget webTargets, Cesta cesta){
     Container cp = this.getContentPane();
@@ -32,6 +32,9 @@ public class CestaWindow extends JFrame{
 	JScrollPane scrollCesta = new JScrollPane(listaCesta);
     cp.add(scrollCesta);
     //Anadimos el precio final
+    for(Producto producto : cesta.getCesta()){
+        precioTotal=precioTotal + producto.getPrecio();
+    }
     JLabel labelPrecioTotal = new JLabel(precioTotal + "€");
     cp.add(labelPrecioTotal);
     //Anadimos el boton para comprar la cesta

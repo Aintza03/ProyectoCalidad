@@ -17,7 +17,6 @@ public class CestaJDO{
 	@Persistent
 	@Column(name = "productos")
     Set<ProductoJDO> cesta;
-	private double precioTotal = 0;
 
     public CestaJDO(ClienteJDO cliente) {
 		this.cliente = cliente;
@@ -40,13 +39,6 @@ public class CestaJDO{
 	}
 	public void setCesta(Set<ProductoJDO> cesta) {
 		this.cesta = cesta;
-	}
-	
-	public double getPrecioTotal() {
-		for (ProductoJDO producto : cesta) {
-			precioTotal = precioTotal + producto.getPrecio();
-		}
-		return precioTotal;
 	}
 
 	public String toString(){
