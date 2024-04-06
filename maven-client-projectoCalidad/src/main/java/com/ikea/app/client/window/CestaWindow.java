@@ -2,6 +2,7 @@ package com.ikea.app.client.window;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.*;
  
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -19,31 +20,32 @@ import com.ikea.app.pojo.Producto;
 public class CestaWindow extends JFrame{
 	protected DefaultListModel<Producto> modeloCesta;
 	protected JList<Producto> listaCesta;
+    protected double precioTotal = 0;
+    protected JLabel labelPrecioTotal; 
     
    public CestaWindow(WebTarget webTargets, Cesta cesta){
     Container cp = this.getContentPane();
-	cp.setLayout(new GridLayout(1, 2));
+    cp.setLayout(new GridLayout(1, 2));
     JPanel panel = new JPanel();
+    JPanel panel2 = new JPanel();
     panel.setLayout(new GridLayout(2, 1));
+    panel2.setLayout(new GridLayout(2,1));
     JButton comprarCestaButton=new JButton("Comprar cesta");
     comprarCestaButton.setBounds(250,120,50,30);
-    panel. add(comprarCestaButton);
+    panel.add(comprarCestaButton);
     comprarCestaButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource()==comprarCestaButton) {
-                double precioTotal = 0;
-                for(Producto producto : cesta.getCesta()){
-                    precioTotal=precioTotal + producto.getPrecio();
-                }
                 JFrame jFrame = new JFrame();
                 JOptionPane.showMessageDialog(jFrame, "Se ha confirmado la compra de la cesta, el precio total de la compra es "+ precioTotal);
                 cesta.getCesta().clear();
                 modeloCesta.clear();
+                precioTotal=0;
+                labelPrecioTotal.setText(precioTotal + "€");
                 vaciarCesta(webTargets, cesta);
                 }
                 }
             });
-
     JButton borrarProductoButton=new JButton("Borrar producto");
     borrarProductoButton.setBounds(250,120,50,30);
     panel.add(borrarProductoButton);
@@ -52,6 +54,8 @@ public class CestaWindow extends JFrame{
         if (e.getSource()==borrarProductoButton) {
                 Producto producto = listaCesta.getSelectedValue();
                 modeloCesta.removeElement(producto);
+                precioTotal=precioTotal - producto.getPrecio();
+                labelPrecioTotal.setText(precioTotal + "€");
                 cesta.getCesta().remove(producto);
                 borrarProductoDeCesta(webTargets, cesta);
             }
@@ -61,22 +65,29 @@ public class CestaWindow extends JFrame{
     modeloCesta = new DefaultListModel<Producto>();
     for(Producto producto : cesta.getCesta()){
         modeloCesta.addElement(producto);
+        precioTotal=precioTotal + producto.getPrecio();
     }
-
+    
     listaCesta = new JList<Producto>(modeloCesta);
     listaCesta.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	JScrollPane scrollCesta = new JScrollPane(listaCesta);
-    cp.add(scrollCesta);
+    panel2.add(scrollCesta);
+    labelPrecioTotal = new JLabel(precioTotal + "€");
+    panel2.add(labelPrecioTotal);
+    cp.add(panel2);
     cp.add(panel);
     this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	this.setVisible(true);
-	this.setSize(300,150);
+	this.setSize(400,150);
 	this.setTitle("Cesta");
 	this.setLocationRelativeTo(null);
+}          
+public void addProducto(Producto producto){
+    modeloCesta.addElement(producto);
+    precioTotal=precioTotal + producto.getPrecio();
+    labelPrecioTotal.setText(precioTotal + "€");
+
 }
-    public void addProducto(Producto producto){
-        modeloCesta.addElement(producto);
-    }
     public void vaciarCesta(WebTarget webTarget, Cesta cesta) {
 		WebTarget WebTargetLogin = webTarget.path("vaciarCesta");
 		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);

@@ -45,7 +45,7 @@ public class CestaJDO{
 	public void setCesta(Set<ProductoJDO> cesta) {
 		this.cesta = cesta;
 	}
-	
+
 	public String toString(){
 		return "Cliente: " + this.cliente + " Cesta: " + this.cesta;
 	}
