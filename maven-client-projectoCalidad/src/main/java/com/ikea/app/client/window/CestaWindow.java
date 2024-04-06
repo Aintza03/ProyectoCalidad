@@ -25,6 +25,8 @@ public class CestaWindow extends JFrame{
     
    public CestaWindow(WebTarget webTargets, Cesta cesta){
     Container cp = this.getContentPane();
+  //ARREGLAR EN NUEVO COMIT
+  //DE BRANCH JAVIER
 	cp.setLayout(new GridLayout(3, 1));
     //Anadimos la lista de la cesta
     modeloCesta = new DefaultListModel<Producto>();
@@ -60,10 +62,59 @@ public class CestaWindow extends JFrame{
                     modeloCesta.clear();
                     vaciarCesta(webTargets, cesta);
                     }
+  //DE BRANCH MAIN
+	cp.setLayout(new GridLayout(1, 2));
+    JPanel panel = new JPanel();
+    panel.setLayout(new GridLayout(2, 1));
+    JButton comprarCestaButton=new JButton("Comprar cesta");
+    comprarCestaButton.setBounds(250,120,50,30);
+    panel. add(comprarCestaButton);
+    comprarCestaButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource()==comprarCestaButton) {
+                double precioTotal = 0;
+                for(Producto producto : cesta.getCesta()){
+                    precioTotal=precioTotal + producto.getPrecio();
                 }
+                JFrame jFrame = new JFrame();
+                JOptionPane.showMessageDialog(jFrame, "Se ha confirmado la compra de la cesta, el precio total de la compra es "+ precioTotal);
+                cesta.getCesta().clear();
+                modeloCesta.clear();
+                vaciarCesta(webTargets, cesta);
+                }
+                }
+            });
+    //FIN DE MAIN
+    JButton borrarProductoButton=new JButton("Borrar producto");
+    borrarProductoButton.setBounds(250,120,50,30);
+    panel.add(borrarProductoButton);
+    borrarProductoButton.addActionListener(new ActionListener() {
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource()==borrarProductoButton) {
+                Producto producto = listaCesta.getSelectedValue();
+                modeloCesta.removeElement(producto);
+                cesta.getCesta().remove(producto);
+                borrarProductoDeCesta(webTargets, cesta);
             }
-        );
-}
+        }
+    });
+
+    modeloCesta = new DefaultListModel<Producto>();
+    for(Producto producto : cesta.getCesta()){
+        modeloCesta.addElement(producto);
+    }
+
+    listaCesta = new JList<Producto>(modeloCesta);
+    listaCesta.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	JScrollPane scrollCesta = new JScrollPane(listaCesta);
+    cp.add(scrollCesta);
+    cp.add(panel);
+    this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+	this.setVisible(true);
+	this.setSize(300,150);
+	this.setTitle("Cesta");
+	this.setLocationRelativeTo(null);
+              
     public void addProducto(Producto producto){
         modeloCesta.addElement(producto);
         precioTotal=precioTotal + producto.getPrecio();
@@ -80,4 +131,15 @@ public class CestaWindow extends JFrame{
 			ClientMain.getLogger().info("Cesta vaciada correctamente");
 		}
 	}
+
+    public void borrarProductoDeCesta( WebTarget webTarget, Cesta cesta) {
+        WebTarget WebTargetLogin = webTarget.path("borrarProductoDeCesta");
+        Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
+        Response response = invocationBuilder.post(Entity.entity(cesta, MediaType.APPLICATION_JSON));
+        if (response.getStatus() != Status.OK.getStatusCode()) {
+            ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+        } else {	
+            ClientMain.getLogger().info("Producto borrado correctamente");
+        }
+}
 }
