@@ -21,6 +21,7 @@ public class CestaWindow extends JFrame{
 	protected DefaultListModel<Producto> modeloCesta;
 	protected JList<Producto> listaCesta;
     protected double precioTotal = 0;
+    JLabel labelPrecioTotal = new JLabel(precioTotal + "€");
     
    public CestaWindow(WebTarget webTargets, Cesta cesta){
     Container cp = this.getContentPane();
@@ -35,7 +36,7 @@ public class CestaWindow extends JFrame{
     for(Producto producto : cesta.getCesta()){
         precioTotal=precioTotal + producto.getPrecio();
     }
-    JLabel labelPrecioTotal = new JLabel(precioTotal + "€");
+    
     cp.add(labelPrecioTotal);
     //Anadimos el boton para comprar la cesta
     JButton comprarCestaButton=new JButton("Comprar cesta");
@@ -65,6 +66,9 @@ public class CestaWindow extends JFrame{
 }
     public void addProducto(Producto producto){
         modeloCesta.addElement(producto);
+        precioTotal=precioTotal + producto.getPrecio();
+        labelPrecioTotal.setText(precioTotal + "€");
+    
     }
     public void vaciarCesta(WebTarget webTarget, Cesta cesta) {
 		WebTarget WebTargetLogin = webTarget.path("vaciarCesta");
