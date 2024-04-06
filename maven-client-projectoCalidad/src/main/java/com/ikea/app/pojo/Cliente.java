@@ -37,6 +37,9 @@ public class Cliente{
     public void anadirCesta(Producto producto){
         this.cesta.add(producto);
     }
+    public void borrarProductoCesta(Producto producto){
+        this.cesta.remove(producto);
+    }
     public String toString(){
         return "Nombre: " + this.nombre + " Email: " + this.email;
     }

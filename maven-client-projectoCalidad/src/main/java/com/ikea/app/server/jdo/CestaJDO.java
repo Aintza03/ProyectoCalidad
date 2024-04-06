@@ -30,6 +30,7 @@ public class CestaJDO{
 	public void setCliente(ClienteJDO cliente) {
         this.cliente = cliente;
     }
+	
     public Set<ProductoJDO> getCesta() {
 		return this.cesta;
 	}
@@ -37,10 +38,14 @@ public class CestaJDO{
 	public void AnadirCesta(ProductoJDO producto) {
 		cesta.add(producto);
 	}
+	public void borrarProductoDeCesta(ProductoJDO producto) {
+		cesta.remove(producto);
+	}
+	
 	public void setCesta(Set<ProductoJDO> cesta) {
 		this.cesta = cesta;
 	}
-	
+
 	public String toString(){
 		return "Cliente: " + this.cliente + " Cesta: " + this.cesta;
 	}
