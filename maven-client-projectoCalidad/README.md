@@ -5,6 +5,7 @@ Maven-Client-ProjectCalidad
 Si es la primera vez que se ejecuta el programa en este ordenador primero hay que abrir el workbench de MySQL y desde el root ejecutar todas las sentencias MySQL del fichero "create-ikea.sql". El fichero se encuentra dentro del proyecto en la carpeta "sql".
 
 En cualquier caso, sea la primera vez que se ejecuta en este ordenador o no habría que ejecutar (En cmd):
+
 1-Clean limpia las clases anteriormente compiladas.  
 
       mvn clean
