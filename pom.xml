@@ -8,7 +8,7 @@
   <artifactId>maven-client-projectoCalidad</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
-  <name>maven-client-projectoCalidad</name>
+  <name>ProyectoCalidad</name>
   <url>http://www.example.com</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
