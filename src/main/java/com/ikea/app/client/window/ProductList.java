@@ -38,9 +38,11 @@ public class ProductList extends JFrame{
 	protected int mouseCol = -1;
 	protected WebTarget webTargets;
 	protected CestaWindow cestaWindow;
+	protected JLabel imagenProducto;
     public ProductList(WebTarget webTargets, String email){
         Container cp = this.getContentPane();
-        cp.setLayout(new GridLayout(1,1));
+        cp.setLayout(new GridBagLayout());
+		GridBagConstraints constraints = new GridBagConstraints();
 		cesta = getCesta(webTargets,email);
 		this.cestaWindow = new CestaWindow(webTargets,cesta);
         this.webTargets = webTargets;
@@ -48,15 +50,26 @@ public class ProductList extends JFrame{
         this.loadProducto(webTargets);
         JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
         scrollPaneProductos.setBorder(new TitledBorder("Productos"));
-        cp.add(scrollPaneProductos);
-
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.gridheight = 1;
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.anchor = GridBagConstraints.PAGE_START;
+		cp.add(scrollPaneProductos, constraints);
+		imagenProducto = new JLabel("");
+		constraints.gridy = 1;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.ipady = 0;
+		cp.add(imagenProducto, constraints);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
-        this.setSize(300,150);
+        this.setSize(400,200);
         this.setTitle("Lista de Productos");
         this.setLocationRelativeTo(null);
-
-
     }
 
     private void initTable() {
@@ -145,11 +158,14 @@ public class ProductList extends JFrame{
             public void mouseClicked(MouseEvent e) {
 				int row = tablaProductos.rowAtPoint(e.getPoint());
 				int col = tablaProductos.columnAtPoint(e.getPoint());
-				
+				int d = 0; 
+				d = Integer.parseInt(modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());		
+				Image image = new ImageIcon("src/main/resources/MuebleFotos/"+ d + ".jpg").getImage();
+				ImageIcon image2 = new ImageIcon(image.getScaledInstance(78,124,Image.SCALE_SMOOTH));
+				imagenProducto.setIcon(image2);
+				setSize(400 + imagenProducto.getIcon().getIconWidth(),200+imagenProducto.getIcon().getIconHeight()); 
 				if(col == 4) {
 					try {
-						int d = 0; 
-						d = Integer.parseInt(modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());
 						for (Producto producto : productoList) {
 							if(producto.getId() == d) {
 							modificarCesta(webTargets,producto);
