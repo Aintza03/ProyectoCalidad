@@ -14,6 +14,7 @@ import com.ikea.app.client.window.ClientRegistration;
 import com.ikea.app.client.window.CestaWindow;
 import com.ikea.app.client.window.ClientLogin;
 import com.ikea.app.client.window.ProductList;
+import com.ikea.app.client.window.ClientChangeEraseWindow;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.ikea.app.pojo.Cesta;

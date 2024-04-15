@@ -21,6 +21,7 @@ public class ClientLogin extends JFrame{
     protected JPasswordField contrasena = new JPasswordField();
     protected JButton login = new JButton("Iniciar sesion");
 	protected ProductList window2;
+	protected ClientChangeEraseWindow window3;
 	public ClientLogin(WebTarget webTargets){
     Container cp = this.getContentPane();
 	cp.setLayout(new GridLayout(2, 1));
@@ -66,6 +67,7 @@ public class ClientLogin extends JFrame{
 			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
 		} else {	
 			window2 = new ProductList(webTarget, email);
+			window3 = new ClientChangeEraseWindow(webTarget, email, contrasena);
 			ClientMain.getLogger().info("Cliente registrado correctamente");
 		}
 	}
