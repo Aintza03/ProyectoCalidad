@@ -257,6 +257,7 @@ public class ProductList extends JFrame{
 			return null;
         }	
 	}
+	
 	public void modificarCesta(WebTarget webTarget,Producto producto) {
 		WebTarget WebTargetLogin = webTarget.path("modifyCesta");
 		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);

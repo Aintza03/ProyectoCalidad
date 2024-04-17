@@ -49,12 +49,16 @@ public class ClientLogin extends JFrame{
 				for (char c : contrasenas) {
 					stringC = stringC + c;
 				}  
-                loginCliente(webTargets,email.getText(),stringC);          
+                String result = loginCliente(webTargets,email.getText(),stringC);
+				if(result != null){
+					window3 = new ClientChangeEraseWindow(webTargets, email.getText(), stringC, result);
+			
+				}			
             }
         });	
     }
 
-    public void loginCliente(WebTarget webTarget,String email, String contrasena) {
+    public String loginCliente(WebTarget webTarget, String email, String contrasena) {
 		WebTarget WebTargetLogin = webTarget.path("login");
 		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
 		
@@ -67,8 +71,8 @@ public class ClientLogin extends JFrame{
 			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
 		} else {	
 			window2 = new ProductList(webTarget, email);
-			window3 = new ClientChangeEraseWindow(webTarget, email, contrasena);
 			ClientMain.getLogger().info("Cliente registrado correctamente");
 		}
+		return response.readEntity(String.class);
 	}
 }

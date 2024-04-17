@@ -1,6 +1,7 @@
 com\ikea\app\client\window\ProductList$1.class
 com\ikea\app\server\jdo\CestaJDO.class
 com\ikea\app\client\window\CestaWindow.class
+com\ikea\app\client\window\ConfirmacionEliminarWindow$1.class
 com\ikea\app\server\Resource.class
 com\ikea\app\client\ClientMain.class
 com\ikea\app\client\window\ClientChangeEraseWindow$1.class
@@ -10,7 +11,9 @@ com\ikea\app\pojo\Cesta.class
 com\ikea\app\client\window\ProductList$3.class
 com\ikea\app\client\window\ClientRegistration$1.class
 com\ikea\app\client\window\ProductList.class
+com\ikea\app\client\window\ConfirmacionEliminarWindow$2.class
 com\ikea\app\client\Pruebas.class
+com\ikea\app\client\window\ClientChangeEraseWindow$2.class
 com\ikea\app\client\window\ClientLogin$1.class
 com\ikea\app\client\window\ProductList$5.class
 com\ikea\app\client\window\CestaWindow$2.class
@@ -22,3 +25,4 @@ com\ikea\app\client\window\ClientChangeEraseWindow.class
 com\ikea\app\client\window\ClientLogin.class
 com\ikea\app\client\window\ProductList$4.class
 com\ikea\app\client\window\ProductList$2.class
+com\ikea\app\client\window\ConfirmacionEliminarWindow.class
