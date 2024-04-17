@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import com.ikea.app.client.window.ProductList;
 import com.ikea.app.pojo.Cliente;
-import com.ikea.app.client.ClientMain;
+import com.ikea.app.client.controller.ClientLoginController;
 public class ClientLogin extends JFrame{
 	protected JLabel labelEmail = new JLabel("Email: ");
     protected JLabel labelContrasena = new JLabel("Contrasena: ");
@@ -21,6 +21,7 @@ public class ClientLogin extends JFrame{
     protected JPasswordField contrasena = new JPasswordField();
     protected JButton login = new JButton("Iniciar sesion");
 	protected ProductList window2;
+	protected ClientLoginController controller = new ClientLoginController();
 	public ClientLogin(WebTarget webTargets){
     Container cp = this.getContentPane();
 	cp.setLayout(new GridLayout(2, 1));
@@ -48,25 +49,11 @@ public class ClientLogin extends JFrame{
 				for (char c : contrasenas) {
 					stringC = stringC + c;
 				}  
-                loginCliente(webTargets,email.getText(),stringC);          
+                Boolean result = controller.loginCliente(webTargets,email.getText(),stringC); 
+				if (result == true){
+					window2 = new ProductList(webTargets, email.getText());
+				}
             }
         });	
     }
-
-    public void loginCliente(WebTarget webTarget,String email, String contrasena) {
-		WebTarget WebTargetLogin = webTarget.path("login");
-		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
-		
-		Cliente cliente = new Cliente();
-		cliente.setEmail(email);
-		cliente.setContrasena(contrasena);
-        cliente.setNombre("");
-		Response response = invocationBuilder.post(Entity.entity(cliente, MediaType.APPLICATION_JSON));
-		if (response.getStatus() != Status.OK.getStatusCode()) {
-			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
-		} else {	
-			window2 = new ProductList(webTarget, email);
-			ClientMain.getLogger().info("Cliente registrado correctamente");
-		}
-	}
 }
