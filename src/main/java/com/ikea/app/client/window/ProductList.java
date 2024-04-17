@@ -41,10 +41,19 @@ public class ProductList extends JFrame{
 	protected CestaWindow cestaWindow;
 	protected JLabel imagenProducto;
 	protected ProductListController controller = new ProductListController();
-
+	protected JLabel idProducto = new JLabel();
+	protected JLabel nombre = new JLabel();
+	protected JLabel tipo = new JLabel();
+	protected JLabel precio = new JLabel();
     public ProductList(WebTarget webTargets, String email){
         Container cp = this.getContentPane();
         cp.setLayout(new GridBagLayout());
+		JPanel container = new JPanel();
+		container.setLayout(new GridLayout(4,1));
+		container.add(idProducto);
+		container.add(nombre);
+		container.add(tipo);
+		container.add(precio);
 		GridBagConstraints constraints = new GridBagConstraints();
 		cesta = controller.getCesta(webTargets,email);
 		this.cestaWindow = new CestaWindow(webTargets,cesta);
@@ -67,7 +76,11 @@ public class ProductList extends JFrame{
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.CENTER;
 		constraints.ipady = 0;
-		cp.add(imagenProducto, constraints);
+		JPanel total = new JPanel();
+		total.setLayout(new GridLayout(1,2));
+		total.add(imagenProducto);
+		total.add(container);
+		cp.add(total, constraints);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
         this.setSize(400,200);
@@ -174,11 +187,19 @@ public class ProductList extends JFrame{
 							}
 							}
 							imagenProducto.setIcon(null);
+							idProducto.setText("");
+							nombre.setText("");
+							tipo.setText("");
+							precio.setText("");
 							setSize(400,200);
 					} catch (Exception e2) {
 						System.err.println("No se ha escogido animal");
 					}	
 				} else{
+					idProducto.setText("ID: " + d);
+					nombre.setText("Nombre: " + modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 1).toString());
+					tipo.setText("Tipo: " + modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 2).toString());
+					precio.setText("Precio: " + modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 3).toString());nombre.setText("Nombre: " + modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());//nombre
 					Image image = new ImageIcon("src/main/resources/MuebleFotos/"+ d + ".jpg").getImage();
 					ImageIcon image2 = new ImageIcon(image.getScaledInstance(78,124,Image.SCALE_SMOOTH));
 					imagenProducto.setIcon(image2);
