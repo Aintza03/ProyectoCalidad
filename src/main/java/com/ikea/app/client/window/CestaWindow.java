@@ -17,12 +17,13 @@ import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.pojo.Cesta;
 import com.ikea.app.pojo.Producto;
+import com.ikea.app.client.controller.CestaWindowController;
 public class CestaWindow extends JFrame{
 	protected DefaultListModel<Producto> modeloCesta;
 	protected JList<Producto> listaCesta;
     protected double precioTotal = 0;
     protected JLabel labelPrecioTotal; 
-    
+    protected CestaWindowController cestaWindowController = new CestaWindowController();
    public CestaWindow(WebTarget webTargets, Cesta cesta){
     Container cp = this.getContentPane();
     cp.setLayout(new GridLayout(1, 2));
@@ -42,7 +43,7 @@ public class CestaWindow extends JFrame{
                 modeloCesta.clear();
                 precioTotal=0;
                 labelPrecioTotal.setText(precioTotal + "€");
-                vaciarCesta(webTargets, cesta);
+                cestaWindowController.vaciarCesta(webTargets, cesta);
                 }
                 }
             });
@@ -57,7 +58,7 @@ public class CestaWindow extends JFrame{
                 precioTotal=precioTotal - producto.getPrecio();
                 labelPrecioTotal.setText(precioTotal + "€");
                 cesta.getCesta().remove(producto);
-                borrarProductoDeCesta(webTargets, cesta);
+                cestaWindowController.borrarProductoDeCesta(webTargets, cesta);
             }
         }
     });
@@ -88,25 +89,5 @@ public void addProducto(Producto producto){
     labelPrecioTotal.setText(precioTotal + "€");
 
 }
-    public void vaciarCesta(WebTarget webTarget, Cesta cesta) {
-		WebTarget WebTargetLogin = webTarget.path("vaciarCesta");
-		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
-		Response response = invocationBuilder.post(Entity.entity(cesta, MediaType.APPLICATION_JSON));
-		if (response.getStatus() != Status.OK.getStatusCode()) {
-			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
-		} else {	
-			ClientMain.getLogger().info("Cesta vaciada correctamente");
-		}
-	}
-
-    public void borrarProductoDeCesta( WebTarget webTarget, Cesta cesta) {
-        WebTarget WebTargetLogin = webTarget.path("borrarProductoDeCesta");
-        Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
-        Response response = invocationBuilder.post(Entity.entity(cesta, MediaType.APPLICATION_JSON));
-        if (response.getStatus() != Status.OK.getStatusCode()) {
-            ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
-        } else {	
-            ClientMain.getLogger().info("Producto borrado correctamente");
-        }
-}
+   
 }
