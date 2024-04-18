@@ -33,7 +33,7 @@ public class ClientChangeEraseWindow extends JFrame{
         nombre = new JTextField(nom);
         labelEmailAnt = new JLabel(mail);
         contrasena = new JPasswordField(contra);
-        contrasenaRep = new JPasswordField(contra);
+        contrasenaRep = new JPasswordField();
        
         Container cp = this.getContentPane();
         cp.setLayout(new GridLayout(2, 1));
