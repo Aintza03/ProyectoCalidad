@@ -4,6 +4,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.PrimaryKey;
 import java.util.Set;
 import javax.jdo.annotations.Column;
+import java.util.HashSet;
 @PersistenceCapable
 public class AdminJDO {
     @PrimaryKey
@@ -16,12 +17,15 @@ public class AdminJDO {
     public AdminJDO(String usuario, String contrasena) {
         this.usuario = usuario;
         this.contrasena = contrasena;
+        this.lista = new HashSet<ProductoJDO>();
     }
 
     public String getUsuario() {
         return this.usuario;
     }
-
+    public Set<ProductoJDO> getLista() {
+        return this.lista;
+    }
     public String getContrasena() {
         return this.contrasena;
     }
@@ -30,8 +34,15 @@ public class AdminJDO {
         this.usuario = usuario;
     }
 
+    public void setLista(Set<ProductoJDO> lista) {
+        this.lista = lista;
+    }
+
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+    public void anadirLista(ProductoJDO producto) {
+        lista.add(producto);
     }
 
     public String toString() {
