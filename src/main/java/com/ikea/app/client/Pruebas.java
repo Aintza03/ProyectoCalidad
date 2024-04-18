@@ -8,7 +8,7 @@ import javax.jdo.Extent;
 
 import com.ikea.app.server.jdo.ClienteJDO;
 import com.ikea.app.pojo.Cliente;
-
+import com.ikea.app.server.jdo.AdminJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
@@ -46,9 +46,17 @@ public static void guardarDatosEjemplo() {
             productos.add(new ProductoJDO(1,"Product 1","Tipo 1", 10));
             productos.add(new ProductoJDO(2,"Product 2", "Tipo 2", 19));
             productos.add(new ProductoJDO(3,"Product 3","Tipo 3", 5));
+            
+            AdminJDO admin = new AdminJDO("admin", "admin");
+            admin.anadirLista(productos.get(0));
+            admin.anadirLista(productos.get(1));
+            AdminJDO admin2 = new AdminJDO("admin2", "admin2");
+            admin2.anadirLista(productos.get(2));
             for (ProductoJDO producto: productos){
             pm.makePersistent(producto);					 
             }
+            pm.makePersistent(admin);
+            pm.makePersistent(admin2);
 			tx.commit();
         }
         finally

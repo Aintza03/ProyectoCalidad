@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response.Status;
 
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.window.ClientRegistration;
+import com.ikea.app.client.window.AdminIniciarSesionWindow;
 import com.ikea.app.client.window.CestaWindow;
 import com.ikea.app.client.window.ClientLogin;
 import com.ikea.app.client.window.ProductList;
@@ -51,5 +52,6 @@ public class ClientMain{
 		ClientMain clientMain = new ClientMain(hostname, port);
 		ClientRegistration window = new ClientRegistration(clientMain.webTarget);
 		ClientLogin window_login = new ClientLogin(clientMain.webTarget);
+		AdminIniciarSesionWindow window_admin = new AdminIniciarSesionWindow(clientMain.webTarget);
 	}
 }
