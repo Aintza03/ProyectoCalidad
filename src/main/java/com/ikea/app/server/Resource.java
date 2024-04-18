@@ -7,7 +7,9 @@ import javax.jdo.Transaction;
 import javax.jdo.Extent;
 
 import com.ikea.app.server.jdo.ClienteJDO;
+import com.ikea.app.server.jdo.AdminJDO;
 import com.ikea.app.pojo.Cliente;
+import com.ikea.app.pojo.Admin;
 import com.ikea.app.server.jdo.CestaJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
@@ -342,5 +344,46 @@ public class Resource{
 			pm.close();
 		}
 	}
+	
+	@POST
+	@Path("/loginAdmin")
+	public Response loginAdmin(Admin admin){
+		AdminJDO adminJDO = null;
+		try {	
+            tx.begin();
+            logger.info("Comprobando que el admin exista: '{}'", admin.getUsuario());
+			logger.info("Comprobando si la contraseña es correcta: '{}", admin.getContrasena());
+			try (Query<AdminJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM adminjdo WHERE usuario = '" + admin.getUsuario() + "' AND contrasena = '" + admin.getContrasena() + "'")) {
+				q.setClass(AdminJDO.class);
+				List<AdminJDO> results = q.executeList();
+				adminJDO = results.get(0);
+				logger.info("Client retrieved: {}", adminJDO);
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+			}
+			tx.commit();
+			if (adminJDO != null) {
+				if(adminJDO.getContrasena().equals(admin.getContrasena())) {
+					System.out.println("Contraseña correcta");
+					return Response.ok("Dentro").build();
+				} else{
+					System.out.println("Contraseña incorrecta");
+					return Response.status(Status.UNAUTHORIZED).build();
+				}
+			}else{
+				System.out.println("Admin Vacio");
+				return Response.status(Status.NOT_FOUND).build();
+			}
+		}
+		finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+			 
+	}
+
+	
 }	
 

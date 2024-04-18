@@ -6,9 +6,13 @@ C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\src\main\java\com\ik
 C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\src\main\java\com\ikea\app\client\controller\ClientRegistrationController.java
 C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\src\main\java\com\ikea\app\client\controller\ClientLoginController.java
 C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\src\main\java\com\ikea\app\client\window\ClientRegistration.java
+C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\src\main\java\com\ikea\app\pojo\Admin.java
 C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\src\main\java\com\ikea\app\client\window\ClientLogin.java
+C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\src\main\java\com\ikea\app\client\window\AdminIniciarSesionWindow.java
 C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\src\main\java\com\ikea\app\server\jdo\ProductoJDO.java
 C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\src\main\java\com\ikea\app\server\jdo\ClienteJDO.java
+C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\src\main\java\com\ikea\app\server\jdo\AdminJDO.java
+C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\src\main\java\com\ikea\app\client\controller\AdminLoginController.java
 C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\src\main\java\com\ikea\app\server\Resource.java
 C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\src\main\java\com\ikea\app\client\controller\ProductListController.java
 C:\SoftLabs\SD\SDLab23-24\eAuctionWorkspace\ProyectoCalidad\src\main\java\com\ikea\app\client\window\ProductList.java
