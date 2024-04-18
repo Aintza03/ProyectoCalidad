@@ -15,7 +15,7 @@ import com.ikea.app.client.window.ProductList;
 import com.ikea.app.pojo.Admin;
 import com.ikea.app.client.controller.AdminLoginController;
 public class AdminIniciarSesionWindow extends JFrame{
-	protected JLabel labelEmail = new JLabel("Email: ");
+	protected JLabel labelUsuario = new JLabel("Usuario: ");
     protected JLabel labelContrasena = new JLabel("Contrasena: ");
     protected JTextField usuario = new JTextField();
     protected JPasswordField contrasena = new JPasswordField();
@@ -27,7 +27,7 @@ public class AdminIniciarSesionWindow extends JFrame{
 	cp.setLayout(new GridLayout(2, 1));
     JPanel panel = new JPanel();
     panel.setLayout(new GridLayout(2, 2));
-    panel.add(labelEmail);
+    panel.add(labelUsuario);
     panel.add(usuario);
     panel.add(labelContrasena);
     panel.add(contrasena);
@@ -51,7 +51,8 @@ public class AdminIniciarSesionWindow extends JFrame{
 				}  
                 Boolean result = controller.loginAdmin(webTargets,usuario.getText(),stringC); 
 				if (result == true){
-					window2 = new ProductList(webTargets, usuario.getText());
+					JFrame jFrame = new JFrame();
+					JOptionPane.showMessageDialog(jFrame, "Inicio de sesion correcto");
 				}
             }
         });	

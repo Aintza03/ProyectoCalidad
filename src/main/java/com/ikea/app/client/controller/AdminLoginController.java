@@ -17,7 +17,7 @@ public class AdminLoginController{
     }
 
     public boolean loginAdmin(WebTarget webTarget,String usuario, String contrasena) {
-		WebTarget WebTargetLogin = webTarget.path("login");
+		WebTarget WebTargetLogin = webTarget.path("loginAdmin");
 		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
 
 		Admin admin = new Admin();
