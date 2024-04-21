@@ -383,6 +383,46 @@ public class Resource{
 		}
 			 
 	}
+	@POST
+	@Path("/listProductsAdmin")
+	public response listProductsAdmin(){
+		List<Producto> productos = new ArrayList<Producto>();
+		try {	
+			tx.begin();
+			logger.info("Obteniendo productos");
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo")) {
+				q.setClass(ProductoJDO.class);
+				List<ProductoJDO> results = q.executeList();
+				System.out.println("Productos: " + results);
+				for (ProductoJDO productoJDO : results) {
+					Producto producto = new Producto();
+					producto.setNombre(productoJDO.getNombre());
+					producto.setPrecio(productoJDO.getPrecio());
+					producto.setTipo(productoJDO.getTipo());
+					producto.setId(productoJDO.getId());
+					productos.add(producto);
+					logger.info("Product retrieved: {}", productoJDO);
+				}
+				
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
+			tx.commit();
+			if (productos.size() != 0) {	
+				return Response.ok(productos).build();
+			}else{
+				System.out.println("Producto Vacio");
+				return Response.status(Status.NOT_FOUND).build();
+			}
+		}
+		finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
 
 	
 }	
