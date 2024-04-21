@@ -42,16 +42,28 @@ public static void guardarDatosEjemplo() {
         try
         {	
             tx.begin();
+
             List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
-            productos.add(new ProductoJDO(1,"Product 1","Tipo 1", 10));
-            productos.add(new ProductoJDO(2,"Product 2", "Tipo 2", 19));
-            productos.add(new ProductoJDO(3,"Product 3","Tipo 3", 5));
+
+            productos.add(new ProductoJDO(1,"Product 1","Tipo 1", 10, "Alfredo"));
+            productos.add(new ProductoJDO(2,"Product 2", "Tipo 1", 19, "Alfredo"));
+            productos.add(new ProductoJDO(3,"Product 3","Tipo 1", 5, "Rocio"));
+            productos.add(new ProductoJDO(4,"Product 4","Tipo 2", 15, "Rocio"));
+            productos.add(new ProductoJDO(5,"Product 5","Tipo 2", 20, "Alfredo"));
+            productos.add(new ProductoJDO(6,"Product 6","Tipo 3", 25, "Rocio"));
+            productos.add(new ProductoJDO(7,"Product 7","Tipo 3", 30, "Rocio"));
             
-            AdminJDO admin = new AdminJDO("admin", "admin");
+            AdminJDO admin = new AdminJDO("Alfredo", "1234");
             admin.anadirLista(productos.get(0));
             admin.anadirLista(productos.get(1));
-            AdminJDO admin2 = new AdminJDO("admin2", "admin2");
+            admin.anadirLista(productos.get(4));
+
+            AdminJDO admin2 = new AdminJDO("Rocio", "1234");
             admin2.anadirLista(productos.get(2));
+            admin2.anadirLista(productos.get(3));
+            admin2.anadirLista(productos.get(5));
+            admin2.anadirLista(productos.get(6));
+            
             for (ProductoJDO producto: productos){
             pm.makePersistent(producto);					 
             }

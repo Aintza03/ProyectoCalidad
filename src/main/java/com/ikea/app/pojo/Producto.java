@@ -6,6 +6,7 @@ public class Producto {
     private String nombre;
     private String tipo;
     private double precio;
+    private String vendedor;
 
     public Producto(){
         this.id = idGeneral + 1;
@@ -28,6 +29,9 @@ public class Producto {
     public double getPrecio(){
         return this.precio;
     }
+    public String getVendedor(){
+        return this.vendedor;
+    }
     public void setNombre(String nombre){
         this.nombre = nombre;
     }
@@ -37,8 +41,11 @@ public class Producto {
     public void setPrecio(double precio){
         this.precio = precio;
     }
+    public void setVendedor(String vendedor){
+        this.vendedor = vendedor;
+    }
     public String toString(){
-        return "-" + this.id + ": " + this.nombre + " (" + this.tipo + " , " + this.precio + "€ )";
+        return "-" + this.id + ": " + this.nombre + " (" + this.tipo + " , " + this.precio + "€ )" + this.vendedor;
     }
     
 }

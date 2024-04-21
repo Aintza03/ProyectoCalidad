@@ -1,4 +1,4 @@
-package com.ikea.app.server.jdo;
+package main.java.com.ikea.app.server.jdo;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.PrimaryKey;
