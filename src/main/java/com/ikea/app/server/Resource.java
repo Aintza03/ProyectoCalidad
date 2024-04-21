@@ -6,8 +6,8 @@ import javax.jdo.JDOHelper;
 import javax.jdo.Transaction;
 import javax.jdo.Extent;
 
-import main.java.com.ikea.app.server.jdo.ClienteJDO;
-import main.java.com.ikea.app.server.jdo.AdminJDO;
+import com.ikea.app.server.jdo.ClienteJDO;
+import com.ikea.app.server.jdo.AdminJDO;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.pojo.Admin;
 import com.ikea.app.server.jdo.CestaJDO;
@@ -385,7 +385,7 @@ public class Resource{
 	}
 	@POST
 	@Path("/listProductsAdmin")
-	public response listProductsAdmin(Admin admin){
+	public Response listProductsAdmin(Admin admin){
 		List<Producto> productos = new ArrayList<Producto>();
 		try {	
 			tx.begin();

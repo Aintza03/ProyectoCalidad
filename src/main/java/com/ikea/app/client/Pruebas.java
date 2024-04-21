@@ -6,9 +6,9 @@ import javax.jdo.JDOHelper;
 import javax.jdo.Transaction;
 import javax.jdo.Extent;
 
-import main.java.com.ikea.app.server.jdo.ClienteJDO;
+import com.ikea.app.server.jdo.ClienteJDO;
 import com.ikea.app.pojo.Cliente;
-import main.java.com.ikea.app.server.jdo.AdminJDO;
+import com.ikea.app.server.jdo.AdminJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 

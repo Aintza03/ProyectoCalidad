@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response.Status;
 import com.ikea.app.client.window.ProductList;
 import com.ikea.app.pojo.Admin;
 import com.ikea.app.client.controller.AdminLoginController;
-import main.java.com.ikea.app.client.window.ProductListAdmin;
+import com.ikea.app.client.window.ProductListAdmin;
 
 public class AdminIniciarSesionWindow extends JFrame{
 	protected JLabel labelUsuario = new JLabel("Usuario: ");

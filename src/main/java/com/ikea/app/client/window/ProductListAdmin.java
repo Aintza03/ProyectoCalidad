@@ -1,4 +1,4 @@
-package main.java.com.ikea.app.client.window;
+package com.ikea.app.client.window;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -28,7 +28,7 @@ import com.ikea.app.pojo.Producto;
 import com.ikea.app.pojo.Cesta;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.client.window.CestaWindow;
-import main.java.com.ikea.app.client.controller.ProductListAdminController;
+import com.ikea.app.client.controller.ProductListAdminController;
 
 public class ProductListAdmin extends JFrame{
 
@@ -40,32 +40,15 @@ public class ProductListAdmin extends JFrame{
 	protected WebTarget webTargets;
 	//protected ProductListAdminController controller = new ProductListAdminController();
 
-    public ProductListAdmin(WebTarget webTargets, String email){
+    public ProductListAdmin(WebTarget webTargets, String usuario){
         Container cp = this.getContentPane();
-        cp.setLayout(new GridBagLayout());
-		GridBagConstraints constraints = new GridBagConstraints();
-		this.cestaWindow = new CestaWindow(webTargets,cesta);
-        this.webTargets = webTargets;
+        cp.setLayout(new GridLayout(1,1));
+		this.webTargets = webTargets;
 		this.initTable();
         this.loadProducto(webTargets);
         JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
         scrollPaneProductos.setBorder(new TitledBorder("Productos"));
-        constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.gridwidth = 1;
-		constraints.gridheight = 1;
-		constraints.weightx = 1;
-		constraints.weighty = 1;
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.anchor = GridBagConstraints.PAGE_START;
-		cp.add(scrollPaneProductos, constraints);
-		constraints.gridy = 1;
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.ipady = 0;
-		JPanel total = new JPanel();
-		total.setLayout(new GridLayout(1,2));
-		cp.add(total, constraints);
+        cp.add(scrollPaneProductos);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
         this.setSize(400,200);

@@ -1,4 +1,4 @@
-package main.java.com.ikea.app.client.controller;
+package com.ikea.app.client.controller;
 
 import java.util.*;
 import java.util.List;
@@ -39,6 +39,7 @@ public class ProductListAdminController {
                 GenericType<List<Producto>> listType = new GenericType<List<Producto>>(){};
                 List<Producto> product = response.readEntity(listType);
                 //System.out.println(product);
+                return product;
             } else {
                 System.out.format("Error obtaining product list. %s%n", response);
                 return new ArrayList<Producto>();
