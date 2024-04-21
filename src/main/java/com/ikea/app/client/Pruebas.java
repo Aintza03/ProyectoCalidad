@@ -6,9 +6,9 @@ import javax.jdo.JDOHelper;
 import javax.jdo.Transaction;
 import javax.jdo.Extent;
 
-import com.ikea.app.server.jdo.ClienteJDO;
+import main.java.com.ikea.app.server.jdo.ClienteJDO;
 import com.ikea.app.pojo.Cliente;
-import com.ikea.app.server.jdo.AdminJDO;
+import main.java.com.ikea.app.server.jdo.AdminJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
@@ -46,7 +46,7 @@ public static void guardarDatosEjemplo() {
             List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
 
             productos.add(new ProductoJDO(1,"Product 1","Tipo 1", 10, "Alfredo"));
-            productos.add(new ProductoJDO(2,"Product 2", "Tipo 1", 19, "Alfredo"));
+            productos.add(new ProductoJDO(2,"Product 2","Tipo 1", 19, "Alfredo"));
             productos.add(new ProductoJDO(3,"Product 3","Tipo 1", 5, "Rocio"));
             productos.add(new ProductoJDO(4,"Product 4","Tipo 2", 15, "Rocio"));
             productos.add(new ProductoJDO(5,"Product 5","Tipo 2", 20, "Alfredo"));

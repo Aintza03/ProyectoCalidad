@@ -28,7 +28,7 @@ import com.ikea.app.pojo.Producto;
 import com.ikea.app.pojo.Cesta;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.client.window.CestaWindow;
-import com.ikea.app.client.controller.ProductListController;
+import main.java.com.ikea.app.client.controller.ProductListAdminController;
 
 public class ProductListAdmin extends JFrame{
 
@@ -38,7 +38,7 @@ public class ProductListAdmin extends JFrame{
     protected int mouseRow = -1;
 	protected int mouseCol = -1;
 	protected WebTarget webTargets;
-	protected ProductListAdminController controller = new ProductListAdminController();
+	//protected ProductListAdminController controller = new ProductListAdminController();
 
     public ProductListAdmin(WebTarget webTargets, String email){
         Container cp = this.getContentPane();

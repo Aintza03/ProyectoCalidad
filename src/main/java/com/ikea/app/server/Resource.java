@@ -6,8 +6,8 @@ import javax.jdo.JDOHelper;
 import javax.jdo.Transaction;
 import javax.jdo.Extent;
 
-import com.ikea.app.server.jdo.ClienteJDO;
-import com.ikea.app.server.jdo.AdminJDO;
+import main.java.com.ikea.app.server.jdo.ClienteJDO;
+import main.java.com.ikea.app.server.jdo.AdminJDO;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.pojo.Admin;
 import com.ikea.app.server.jdo.CestaJDO;
@@ -385,12 +385,12 @@ public class Resource{
 	}
 	@POST
 	@Path("/listProductsAdmin")
-	public response listProductsAdmin(){
+	public response listProductsAdmin(Admin admin){
 		List<Producto> productos = new ArrayList<Producto>();
 		try {	
 			tx.begin();
 			logger.info("Obteniendo productos");
-			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo")) {
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo where vendedor =' " + admin.getUsuario())) {
 				q.setClass(ProductoJDO.class);
 				List<ProductoJDO> results = q.executeList();
 				System.out.println("Productos: " + results);

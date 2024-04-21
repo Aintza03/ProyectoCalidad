@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response.Status;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.pojo.Producto;
 import com.ikea.app.pojo.Cesta;
+import com.ikea.app.pojo.Admin;
 import com.ikea.app.client.ClientMain;
 
 public class ProductListAdminController {
@@ -28,7 +29,7 @@ public class ProductListAdminController {
     public List<Producto> datosDeProductos(WebTarget webTarget) {
         // issuing a GET request to the users endpoint with some query parameters
         try {
-            Response response = webTarget.path("listProducts")
+            Response response = webTarget.path("listProductsAdmin")
                 .request(MediaType.APPLICATION_JSON)
                 .get();
 
