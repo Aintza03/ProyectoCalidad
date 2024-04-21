@@ -378,45 +378,53 @@ public class Resource{
 			pm.close();
 		}
 	}
-	/*
+
 	@POST
 	@Path("/borrarCliente")
-	public Response borrarCliente(Cliente cesta){
+	public Response borrarCliente(Cliente cliente){
 		try{
-			logger.info("Modificando cesta del cliente: " + cesta.getCliente());
+			logger.info("Modificando cesta del cliente: " + cliente.getNombre());
 			tx.begin();
-			
-				ClienteJDO cestajdo = null;
-				try (Query<ClienteJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM Clientejdo WHERE CLIENTE_EMAIL_OID = '" + cesta.getCliente().getEmail() + "'")) {
+			ClienteJDO clienteJDO = null;
+			CestaJDO cestaJDO = null;
+			Cesta cesta = cliente.getCesta();
+			try (Query<ClienteJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM clienteJDO WHERE email = '" + cliente.getEmail() + "'")) {
 				q.setClass(ClienteJDO.class);
-				List<ClienteJDO> results = q.executeList();
-				clientejdo = results.get(0);
-					try(Query<ProductoJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo WHERE PRODUCTOS = '" + cesta.getCliente().getEmail() + "'")){
-						q2.setClass(ProductoJDO.class);
-						List<ProductoJDO> resultsP = q2.executeList();
-						boolean result = false;
-						for(ProductoJDO productojdo: resultsP){
-							result = false;
-							for(Producto producto: cesta.getCesta()){
-								if(productojdo.getId() == producto.getId()){
-									result = true;
-									break;
-								}
-							}
-							if(result == false){
-								cestajdo.borrarProductoDeCesta(productojdo);
+				List<ClienteJDO> resultsCliente = q.executeList();
+				clienteJDO = resultsCliente.get(0);
+				try(Query<CestaJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '" + clienteJDO.getEmail() +"'")){
+					q2.setClass(CestaJDO.class);
+					List<CestaJDO> results = q2.executeList();
+					cestaJDO = results.get(0);
+					logger.info("Se ha obtenido cesta: " + cestaJDO);
+					for(ProductoJDO productoJDO: cestaJDO.getCesta()){
+						cestaJDO.AnadirCesta(productoJDO);
+					}
+					boolean result = false;
+					for(ProductoJDO productojdo: cestaJDO.getCesta()){
+						result = false;
+						for(Producto producto: cesta.getCesta()){
+							if(productojdo.getId() == producto.getId()){
+								result = true;
+								break;
 							}
 						}
-					}catch(javax.jdo.JDOObjectNotFoundException ex1){
-						logger.info("Exception1 launched: {}", ex1.getMessage());
-					}	
-
-				pm.makePersistent(cestajdo);
-				logger.info("Cesta guardada: {}", cesta);
+						if(result == false){
+							cestaJDO.borrarProductoDeCesta(productojdo);
+						}
+					}
+					pm.deletePersistent(cestaJDO);
+					pm.deletePersistent(clienteJDO);
+				}catch(javax.jdo.JDOObjectNotFoundException ex1){
+					logger.info("Exception1 launched: {}", ex1.getMessage());
+				}	
+				/*pm.makePersistent(cestajdo);*/
 			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
 				logger.info("Exception1 launched: {}", ex1.getMessage());
-			}	
+			}
+			logger.info("Ha pasado por aqui: " + cliente);	
 			tx.commit();
+			logger.info("Ha pasado por aqui: " + cliente);
 			return Response.ok().build();
 		}catch (Exception ex1) {
 				logger.info("Exception launched: {}", ex1.getMessage());
@@ -428,6 +436,6 @@ public class Resource{
 			}
 			pm.close();
 		}
-	}*/
+	}
 }	
 

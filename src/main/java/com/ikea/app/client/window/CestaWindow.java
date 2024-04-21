@@ -109,5 +109,5 @@ public void addProducto(Producto producto){
         } else {	
             ClientMain.getLogger().info("Producto borrado correctamente");
         }
-}
+    }
 }
