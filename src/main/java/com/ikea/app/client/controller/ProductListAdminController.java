@@ -26,10 +26,11 @@ public class ProductListAdminController {
 
     }
 
-    public List<Producto> datosDeProductos(WebTarget webTarget) {
+    public List<Producto> datosDeProductos(WebTarget webTarget, String usuario) {
         // issuing a GET request to the users endpoint with some query parameters
         try {
             Response response = webTarget.path("listProductsAdmin")
+                .queryParam("admin", usuario)
                 .request(MediaType.APPLICATION_JSON)
                 .get();
 

@@ -38,14 +38,14 @@ public class ProductListAdmin extends JFrame{
     protected int mouseRow = -1;
 	protected int mouseCol = -1;
 	protected WebTarget webTargets;
-	//protected ProductListAdminController controller = new ProductListAdminController();
+	protected ProductListAdminController controller = new ProductListAdminController();
 
     public ProductListAdmin(WebTarget webTargets, String usuario){
         Container cp = this.getContentPane();
         cp.setLayout(new GridLayout(1,1));
 		this.webTargets = webTargets;
 		this.initTable();
-        this.loadProducto(webTargets);
+        this.loadProducto(webTargets,usuario);
         JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
         scrollPaneProductos.setBorder(new TitledBorder("Productos"));
         cp.add(scrollPaneProductos);
@@ -58,7 +58,7 @@ public class ProductListAdmin extends JFrame{
 
     private void initTable() {
 		//Cabecera del modelo de datos
-		Vector<String> cabeceraProducto = new Vector<String>(Arrays.asList( "ID","Nombre", "Tipo", "Precio","Vendedor"));				
+		Vector<String> cabeceraProducto = new Vector<String>(Arrays.asList( "ID","Nombre", "Tipo", "Precio","Anadir"));				
 		//Se crea el modelo de datos para la tabla de comics sÃ³lo con la cabecera	
 		
 		this.modeloTablaProductos = new DefaultTableModel(new Vector<Vector<Object>>(), cabeceraProducto) {
@@ -142,38 +142,6 @@ public class ProductListAdmin extends JFrame{
             public void mouseClicked(MouseEvent e) {
 				int row = tablaProductos.rowAtPoint(e.getPoint());
 				int col = tablaProductos.columnAtPoint(e.getPoint());
-				int d = 0; 
-				d = Integer.parseInt(modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());		
-				if(col == 4) {
-					try {
-						for (Producto producto : productoList) {
-							if(producto.getId() == d) {
-							cesta.anadirCesta(producto);
-							cestaWindow.addProducto(producto);
-							controller.modificarCesta(webTargets, cesta);
-							modeloTablaProductos.removeRow(row);
-							}
-							}
-							imagenProducto.setIcon(null);
-							idProducto.setText("");
-							nombre.setText("");
-							tipo.setText("");
-							precio.setText("");
-							setSize(400,200);
-					} catch (Exception e2) {
-						System.err.println("No se ha escogido animal");
-					}	
-				} else{
-					idProducto.setText("ID: " + d);
-					nombre.setText("Nombre: " + modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 1).toString());
-					tipo.setText("Tipo: " + modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 2).toString());
-					precio.setText("Precio: " + modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 3).toString());nombre.setText("Nombre: " + modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());//nombre
-					Image image = new ImageIcon("src/main/resources/MuebleFotos/"+ d + ".jpg").getImage();
-					ImageIcon image2 = new ImageIcon(image.getScaledInstance(78,124,Image.SCALE_SMOOTH));
-					imagenProducto.setIcon(image2);
-					setSize(400 + imagenProducto.getIcon().getIconWidth(),200+imagenProducto.getIcon().getIconHeight()); 
-				
-				}
 			}
 			
 			@Override
@@ -210,22 +178,13 @@ public class ProductListAdmin extends JFrame{
 		
 	}
     
-    private void loadProducto(WebTarget webTarget) {
+    private void loadProducto(WebTarget webTarget, String usuario) {
 		this.modeloTablaProductos.setRowCount(0);
-		List<Integer> idProductos = new ArrayList<Integer>();
-		for (Producto a: this.cesta.getCesta()){
-			idProductos.add(a.getId());
-		}
-		for(Producto a : controller.datosDeProductos(webTarget)){
-			if(!(idProductos.contains(a.getId()))) {
-				this.productoList.add(a);
-			}
-		}
+		this.productoList = controller.datosDeProductos(webTarget,usuario);
 		for (Producto a : this.productoList) {
 			this.modeloTablaProductos.addRow( new Object[] {a.getId(),a.getNombre(), a.getTipo(), a.getPrecio(), new JButton("->")} );
 		}		
 	}
-
     }
     
 

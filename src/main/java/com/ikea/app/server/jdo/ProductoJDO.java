@@ -18,14 +18,12 @@ public class ProductoJDO {
     String nombre = null;
     String tipo = null;
     double precio = 0.0;
-    String vendedor = null;
 
-    public ProductoJDO(int id,String nombre, String tipo, double precio, String vendedor){
+    public ProductoJDO(int id,String nombre, String tipo, double precio){
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
         this.precio = precio;
-        this.vendedor = vendedor;
     }
     public int getId(){
         return this.id;
@@ -51,14 +49,9 @@ public class ProductoJDO {
     public void setPrecio(double precio){
         this.precio = precio;
     }
-    public void setVendedor(String vendedor){
-        this.vendedor = vendedor;
-    }
-    public String getVendedor(){
-        return this.vendedor;
-    }
+    
     public String toString(){
-        return "Nombre: " + this.nombre + "Tipo: " + this.tipo + " Precio: " + this.precio + " Vendedor: " + this.vendedor;
+        return "Nombre: " + this.nombre + "Tipo: " + this.tipo + " Precio: " + this.precio;
     }
     
 }

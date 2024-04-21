@@ -263,7 +263,7 @@ public class Resource{
 			pm.close();
 		}
 		}
-		@POST
+	@POST
 	@Path("/vaciarCesta")
 	public Response vaciarCesta(Cesta cesta){
 		try{
@@ -383,14 +383,16 @@ public class Resource{
 		}
 			 
 	}
-	@POST
+	@GET
 	@Path("/listProductsAdmin")
-	public Response listProductsAdmin(Admin admin){
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Producto> listaProductosAdministrador(@QueryParam("admin") String admin) {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
 		List<Producto> productos = new ArrayList<Producto>();
 		try {	
-			tx.begin();
-			logger.info("Obteniendo productos");
-			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo where vendedor =' " + admin.getUsuario())) {
+            tx.begin();
+            logger.info("Obteniendo productos");
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo WHERE VENDEDOR = '" + admin + "'")) {
 				q.setClass(ProductoJDO.class);
 				List<ProductoJDO> results = q.executeList();
 				System.out.println("Productos: " + results);
@@ -410,10 +412,10 @@ public class Resource{
 			}
 			tx.commit();
 			if (productos.size() != 0) {	
-				return Response.ok(productos).build();
+        		return productos;
 			}else{
 				System.out.println("Producto Vacio");
-				return Response.status(Status.NOT_FOUND).build();
+				return productos;
 			}
 		}
 		finally {
@@ -422,8 +424,8 @@ public class Resource{
 			}
 			pm.close();
 		}
-	}
-
+		}
+	
 	
 }	
 

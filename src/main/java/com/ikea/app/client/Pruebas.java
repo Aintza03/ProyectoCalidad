@@ -45,13 +45,13 @@ public static void guardarDatosEjemplo() {
 
             List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
 
-            productos.add(new ProductoJDO(1,"Product 1","Tipo 1", 10, "Alfredo"));
-            productos.add(new ProductoJDO(2,"Product 2","Tipo 1", 19, "Alfredo"));
-            productos.add(new ProductoJDO(3,"Product 3","Tipo 1", 5, "Rocio"));
-            productos.add(new ProductoJDO(4,"Product 4","Tipo 2", 15, "Rocio"));
-            productos.add(new ProductoJDO(5,"Product 5","Tipo 2", 20, "Alfredo"));
-            productos.add(new ProductoJDO(6,"Product 6","Tipo 3", 25, "Rocio"));
-            productos.add(new ProductoJDO(7,"Product 7","Tipo 3", 30, "Rocio"));
+            productos.add(new ProductoJDO(1,"Product 1","Tipo 1", 10));
+            productos.add(new ProductoJDO(2,"Product 2","Tipo 1", 19));
+            productos.add(new ProductoJDO(3,"Product 3","Tipo 1", 5));
+            productos.add(new ProductoJDO(4,"Product 4","Tipo 2", 15));
+            productos.add(new ProductoJDO(5,"Product 5","Tipo 2", 20));
+            productos.add(new ProductoJDO(6,"Product 6","Tipo 3", 25));
+            productos.add(new ProductoJDO(7,"Product 7","Tipo 3", 30));
             
             AdminJDO admin = new AdminJDO("Alfredo", "1234");
             admin.anadirLista(productos.get(0));
