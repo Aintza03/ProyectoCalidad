@@ -50,7 +50,7 @@ public class ClientMain{
 
 		String hostname = args[0];
 		String port = args[1];
-		//Pruebas.guardarDatosEjemplo();
+		Pruebas.guardarDatosEjemplo();
 		ClientMain clientMain = new ClientMain(hostname, port);
 		MenuPrincipalWindow window_menu = new MenuPrincipalWindow(clientMain.webTarget);
 	}

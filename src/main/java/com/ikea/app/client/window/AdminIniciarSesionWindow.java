@@ -53,8 +53,6 @@ public class AdminIniciarSesionWindow extends JFrame{
 				}  
                 Boolean result = controller.loginAdmin(webTargets,usuario.getText(),stringC); 
 				if (result == true){
-					JFrame jFrame = new JFrame();
-					JOptionPane.showMessageDialog(jFrame, "Inicio de sesion correcto");
 					ProductListAdmin window2 = new ProductListAdmin(webTargets,usuario.getText());
 				}
             }
