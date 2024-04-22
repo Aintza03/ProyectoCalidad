@@ -89,5 +89,4 @@ public void addProducto(Producto producto){
     labelPrecioTotal.setText(precioTotal + "€");
 
 }
-   
 }

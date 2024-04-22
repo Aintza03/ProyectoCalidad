@@ -13,7 +13,6 @@ import com.ikea.app.pojo.Admin;
 import com.ikea.app.server.jdo.CestaJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
-
 import javax.ws.rs.QueryParam;
 import java.util.ArrayList;
 
@@ -109,7 +108,7 @@ public class Resource{
 			if (clienteJDO != null) {
 				if(clienteJDO.getContrasena().equals(cliente.getContrasena())) {
 					System.out.println("Contraseña correcta");
-					return Response.ok("Dentro").build();
+					return Response.ok(clienteJDO.getNombre()).build();
 				} else{
 					System.out.println("Contraseña incorrecta");
 					return Response.status(Status.UNAUTHORIZED).build();
@@ -220,7 +219,8 @@ public class Resource{
 			}
 			pm.close();
 		}
-		}
+	}
+	
 	@POST
 	@Path("/modifyCesta")
 	public Response modifyCesta(Cesta cesta){
@@ -234,7 +234,7 @@ public class Resource{
 				q.setClass(CestaJDO.class);
 				List<CestaJDO> results = q.executeList();
 				cestajdo = results.get(0);
-				for(Producto producto: cesta.getCesta()){
+				for(Producto producto : cesta.getCesta()){
 					ProductoJDO productojdo = null;
 					try(Query<ProductoJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo WHERE ID = '"+producto.getId() +"'")){
 						q2.setClass(ProductoJDO.class);
@@ -262,7 +262,12 @@ public class Resource{
 			}
 			pm.close();
 		}
+#ARREGLAR JAVIER
+	}
+	
+#RAMA MAIN
 		}
+#FIN RAMA MAIN
 	@POST
 	@Path("/vaciarCesta")
 	public Response vaciarCesta(Cesta cesta){
@@ -293,7 +298,8 @@ public class Resource{
 			}
 			pm.close();
 		}
-		}
+	}
+
 	@POST
 	@Path("/borrarProductoDeCesta")
 	public Response borrarProductoDeCesta(Cesta cesta){
@@ -344,6 +350,34 @@ public class Resource{
 			pm.close();
 		}
 	}
+ #ARREGLAR JAVIER
+
+	@POST
+	@Path("/modifyClient")
+	public Response modifyClient(Cliente cliente){
+		try{
+			logger.info("Modificando el cliente: " + cliente.getEmail());
+			tx.begin();
+			ClienteJDO clienteJDO;
+			try (Query<ClienteJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM clientejdo WHERE email = '" + cliente.getEmail() + "'")) {
+				q.setClass(ClienteJDO.class);
+				List<ClienteJDO> results = q.executeList();
+				clienteJDO = results.get(0);
+				clienteJDO.setNombre(cliente.getNombre());
+				clienteJDO.setContrasena(cliente.getContrasena());
+				pm.makePersistent(clienteJDO);
+				logger.info("Cliente modificado: {}", clienteJDO);
+			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
+				logger.info("Exception1 launched: {}", ex1.getMessage());
+			}	
+			tx.commit();
+			return Response.ok().build();
+		}catch (Exception ex1) {
+			logger.info("Exception launched: {}", ex1.getMessage());
+			ex1.printStackTrace();
+			return Response.status(Status.NOT_FOUND).build();
+		}finally {
+#RAMA MAIN
 	
 	@POST
 	@Path("/loginAdmin")
@@ -376,11 +410,47 @@ public class Resource{
 			}
 		}
 		finally {
+#FIN RAMA MAIN
 			if (tx.isActive()) {
 				tx.rollback();
 			}
 			pm.close();
 		}
+#ARREGLAR JAVIER
+	}
+
+	@POST
+	@Path("/borrarCliente")
+	public Response borrarCliente(Cliente cliente){
+		try{
+			tx.begin();
+			logger.info("Modificando cesta del cliente: " + cliente.getNombre());
+			Extent<CestaJDO> ext = pm.getExtent(CestaJDO.class,true);
+            try (Query<CestaJDO> q = pm.newQuery(ext, "cliente.email == '" + cliente.getEmail() + "'")) {
+                q.deletePersistentAll();
+                logger.info("Cesta del cliente " + cliente.getNombre() +" borrada");
+
+                tx.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+			tx.begin();
+			Extent<ClienteJDO> ext2 = pm.getExtent(ClienteJDO.class,true);
+            try (Query<ClienteJDO> q2 = pm.newQuery(ext2, "email == '" + cliente.getEmail() + "'")) {
+                long numberInstancesDeleted = q2.deletePersistentAll();
+                logger.info("Cliente " + cliente.getNombre() + " borrado");
+
+                tx.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+			return Response.ok().build();
+		}catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+				return Response.status(Status.NOT_FOUND).build();
+		}finally {
+#RAMA MAIN
 			 
 	}
 	@GET
@@ -419,13 +489,18 @@ public class Resource{
 			}
 		}
 		finally {
+  #FIN MAIN
 			if (tx.isActive()) {
 				tx.rollback();
 			}
 			pm.close();
 		}
+#ARREGLAR JAVIER
+	}
+#RAMA MAIN
 		}
 	
 	
+#FIN RAMA MAIN
 }	
 
