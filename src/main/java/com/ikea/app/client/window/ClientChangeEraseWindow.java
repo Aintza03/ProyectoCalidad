@@ -13,8 +13,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.ClientMain;
-import com.ikea.app.server.jdo.ClienteJDO;
-
+import com.ikea.app.client.controller.ModificarUsuarioController;
 public class ClientChangeEraseWindow extends JFrame{
 	protected JLabel labelNombre = new JLabel("Nombre: ");
     protected JTextField nombre;
@@ -27,8 +26,8 @@ public class ClientChangeEraseWindow extends JFrame{
     protected JButton cambiar = new JButton("Cambiar");
     protected JButton eliminar = new JButton("Eliminar Usuario");
     protected ClientChangeEraseWindow window3;
-
-    protected ClienteJDO clienteJDO;
+    protected ModificarUsuarioController controller = new ModificarUsuarioController();
+    protected Cliente cliente;
 
 	public ClientChangeEraseWindow(WebTarget webTargets,String mail, String contra, String nom) {
         nombre = new JTextField(nom);
@@ -74,12 +73,12 @@ public class ClientChangeEraseWindow extends JFrame{
 					passRep = passRep + c;
 				}  
                 if (pass.equals(passRep)) {
-                    modificarUsuario(webTargets, mail, pass, nombre.getText());
+                    cliente = controller.modificarUsuario(webTargets, mail, pass, nombre.getText());
+                    dispose();
+                    ClientChangeEraseWindow window4 = new ClientChangeEraseWindow(webTargets, mail,pass, nombre.getText());
                 } else {
                     ClientMain.getLogger().error("Las contraseñas no coinciden");
                 }
-                dispose();
-                ClientChangeEraseWindow window4 = new ClientChangeEraseWindow(webTargets, mail,pass, nombre.getText());
             }
         });	
 
@@ -90,17 +89,5 @@ public class ClientChangeEraseWindow extends JFrame{
                 ConfirmacionEliminarWindow cew = new ConfirmacionEliminarWindow(webTargets, mail, contra, nom); 
             }
         });
-    }
-
-    public void modificarUsuario(WebTarget webTarget, String gmail, String password, String name) {
-        WebTarget WebTargetLogin = webTarget.path("modifyClient");
-        Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
-        this.clienteJDO = new ClienteJDO(gmail, password, name);
-        Response response = invocationBuilder.post(Entity.entity(this.clienteJDO, MediaType.APPLICATION_JSON));
-        if (response.getStatus() != Status.OK.getStatusCode()) {
-            ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
-        } else {	
-            ClientMain.getLogger().info("Cliente modificada correctamente");
-        }
     }
 }
