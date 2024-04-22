@@ -257,7 +257,6 @@ public class ProductList extends JFrame{
 			this.modeloTablaProductos.addRow( new Object[] {a.getId(),a.getNombre(), a.getTipo(), a.getPrecio(), new JButton("->")} );
 		}		
 	}
-
-    }
+}
     
 

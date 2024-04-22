@@ -16,7 +16,8 @@ import com.ikea.app.client.window.AdminIniciarSesionWindow;
 import com.ikea.app.client.window.CestaWindow;
 import com.ikea.app.client.window.ClientLogin;
 import com.ikea.app.client.window.ProductList;
-import main.java.com.ikea.app.client.window.MenuPrincipalWindow;
+import com.ikea.app.client.window.ClientChangeEraseWindow;
+import com.ikea.app.client.window.MenuPrincipalWindow;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.ikea.app.pojo.Cesta;
@@ -50,7 +51,7 @@ public class ClientMain{
 
 		String hostname = args[0];
 		String port = args[1];
-		Pruebas.guardarDatosEjemplo();
+		//Pruebas.guardarDatosEjemplo();
 		ClientMain clientMain = new ClientMain(hostname, port);
 		MenuPrincipalWindow window_menu = new MenuPrincipalWindow(clientMain.webTarget);
 	}

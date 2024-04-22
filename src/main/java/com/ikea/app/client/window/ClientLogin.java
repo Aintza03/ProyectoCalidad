@@ -21,6 +21,7 @@ public class ClientLogin extends JFrame{
     protected JPasswordField contrasena = new JPasswordField();
     protected JButton login = new JButton("Iniciar sesion");
 	protected ProductList window2;
+	protected ClientChangeEraseWindow window3;
 	protected ClientLoginController controller = new ClientLoginController();
 	public ClientLogin(WebTarget webTargets){
     Container cp = this.getContentPane();
@@ -49,9 +50,10 @@ public class ClientLogin extends JFrame{
 				for (char c : contrasenas) {
 					stringC = stringC + c;
 				}  
-                Boolean result = controller.loginCliente(webTargets,email.getText(),stringC); 
-				if (result == true){
+        	String result = controller.loginCliente(webTargets,email.getText(),stringC); 
+				if (result != ""){
 					window2 = new ProductList(webTargets, email.getText());
+          			window3 = new ClientChangeEraseWindow(webTargets, email.getText(), stringC, result);
 				}
             }
         });	
