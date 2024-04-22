@@ -11,7 +11,6 @@ import com.ikea.app.pojo.Cliente;
 import com.ikea.app.server.jdo.CestaJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
-
 import javax.ws.rs.QueryParam;
 import java.util.ArrayList;
 
@@ -29,7 +28,6 @@ import com.ikea.app.pojo.Cesta;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import java.util.List;
-
 @Path("/resource")
 @Produces(MediaType.APPLICATION_JSON)
 public class Resource{
@@ -383,48 +381,27 @@ public class Resource{
 	@Path("/borrarCliente")
 	public Response borrarCliente(Cliente cliente){
 		try{
-			logger.info("Modificando cesta del cliente: " + cliente.getNombre());
 			tx.begin();
-			ClienteJDO clienteJDO = null;
-			CestaJDO cestaJDO = null;
-			Cesta cesta = cliente.getCesta();
-			try (Query<ClienteJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM clienteJDO WHERE email = '" + cliente.getEmail() + "'")) {
-				q.setClass(ClienteJDO.class);
-				List<ClienteJDO> resultsCliente = q.executeList();
-				clienteJDO = resultsCliente.get(0);
-				try(Query<CestaJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '" + clienteJDO.getEmail() +"'")){
-					q2.setClass(CestaJDO.class);
-					List<CestaJDO> results = q2.executeList();
-					cestaJDO = results.get(0);
-					logger.info("Se ha obtenido cesta: " + cestaJDO);
-					for(ProductoJDO productoJDO: cestaJDO.getCesta()){
-						cestaJDO.AnadirCesta(productoJDO);
-					}
-					boolean result = false;
-					for(ProductoJDO productojdo: cestaJDO.getCesta()){
-						result = false;
-						for(Producto producto: cesta.getCesta()){
-							if(productojdo.getId() == producto.getId()){
-								result = true;
-								break;
-							}
-						}
-						if(result == false){
-							cestaJDO.borrarProductoDeCesta(productojdo);
-						}
-					}
-					pm.deletePersistent(cestaJDO);
-					pm.deletePersistent(clienteJDO);
-				}catch(javax.jdo.JDOObjectNotFoundException ex1){
-					logger.info("Exception1 launched: {}", ex1.getMessage());
-				}	
-				/*pm.makePersistent(cestajdo);*/
-			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
-				logger.info("Exception1 launched: {}", ex1.getMessage());
-			}
-			logger.info("Ha pasado por aqui: " + cliente);	
-			tx.commit();
-			logger.info("Ha pasado por aqui: " + cliente);
+			logger.info("Modificando cesta del cliente: " + cliente.getNombre());
+			Extent<CestaJDO> ext = pm.getExtent(CestaJDO.class,true);
+            try (Query<CestaJDO> q = pm.newQuery(ext, "cliente.email == '" + cliente.getEmail() + "'")) {
+                q.deletePersistentAll();
+                logger.info("Cesta del cliente " + cliente.getNombre() +" borrada");
+
+                tx.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+			tx.begin();
+			Extent<ClienteJDO> ext2 = pm.getExtent(ClienteJDO.class,true);
+            try (Query<ClienteJDO> q2 = pm.newQuery(ext2, "email == '" + cliente.getEmail() + "'")) {
+                long numberInstancesDeleted = q2.deletePersistentAll();
+                logger.info("Cliente " + cliente.getNombre() + " borrado");
+
+                tx.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 			return Response.ok().build();
 		}catch (Exception ex1) {
 				logger.info("Exception launched: {}", ex1.getMessage());
