@@ -7,7 +7,9 @@ import javax.jdo.Transaction;
 import javax.jdo.Extent;
 
 import com.ikea.app.server.jdo.ClienteJDO;
+import com.ikea.app.server.jdo.AdminJDO;
 import com.ikea.app.pojo.Cliente;
+import com.ikea.app.pojo.Admin;
 import com.ikea.app.server.jdo.CestaJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
@@ -260,8 +262,12 @@ public class Resource{
 			}
 			pm.close();
 		}
+#ARREGLAR JAVIER
 	}
 	
+#RAMA MAIN
+		}
+#FIN RAMA MAIN
 	@POST
 	@Path("/vaciarCesta")
 	public Response vaciarCesta(Cesta cesta){
@@ -344,6 +350,7 @@ public class Resource{
 			pm.close();
 		}
 	}
+ #ARREGLAR JAVIER
 
 	@POST
 	@Path("/modifyClient")
@@ -370,11 +377,46 @@ public class Resource{
 			ex1.printStackTrace();
 			return Response.status(Status.NOT_FOUND).build();
 		}finally {
+#RAMA MAIN
+	
+	@POST
+	@Path("/loginAdmin")
+	public Response loginAdmin(Admin admin){
+		AdminJDO adminJDO = null;
+		try {	
+            tx.begin();
+            logger.info("Comprobando que el admin exista: '{}'", admin.getUsuario());
+			logger.info("Comprobando si la contraseña es correcta: '{}", admin.getContrasena());
+			try (Query<AdminJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM adminjdo WHERE usuario = '" + admin.getUsuario() + "' AND contrasena = '" + admin.getContrasena() + "'")) {
+				q.setClass(AdminJDO.class);
+				List<AdminJDO> results = q.executeList();
+				adminJDO = results.get(0);
+				logger.info("Client retrieved: {}", adminJDO);
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+			}
+			tx.commit();
+			if (adminJDO != null) {
+				if(adminJDO.getContrasena().equals(admin.getContrasena())) {
+					System.out.println("Contraseña correcta");
+					return Response.ok("Dentro").build();
+				} else{
+					System.out.println("Contraseña incorrecta");
+					return Response.status(Status.UNAUTHORIZED).build();
+				}
+			}else{
+				System.out.println("Admin Vacio");
+				return Response.status(Status.NOT_FOUND).build();
+			}
+		}
+		finally {
+#FIN RAMA MAIN
 			if (tx.isActive()) {
 				tx.rollback();
 			}
 			pm.close();
 		}
+#ARREGLAR JAVIER
 	}
 
 	@POST
@@ -408,11 +450,57 @@ public class Resource{
 				ex1.printStackTrace();
 				return Response.status(Status.NOT_FOUND).build();
 		}finally {
+#RAMA MAIN
+			 
+	}
+	@GET
+	@Path("/listProductsAdmin")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Producto> listaProductosAdministrador(@QueryParam("admin") String admin) {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
+		List<Producto> productos = new ArrayList<Producto>();
+		try {	
+            tx.begin();
+            logger.info("Obteniendo productos");
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo WHERE VENDEDOR = '" + admin + "'")) {
+				q.setClass(ProductoJDO.class);
+				List<ProductoJDO> results = q.executeList();
+				System.out.println("Productos: " + results);
+				for (ProductoJDO productoJDO : results) {
+					Producto producto = new Producto();
+					producto.setNombre(productoJDO.getNombre());
+					producto.setPrecio(productoJDO.getPrecio());
+					producto.setTipo(productoJDO.getTipo());
+					producto.setId(productoJDO.getId());
+					productos.add(producto);
+					logger.info("Product retrieved: {}", productoJDO);
+				}
+				
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
+			tx.commit();
+			if (productos.size() != 0) {	
+        		return productos;
+			}else{
+				System.out.println("Producto Vacio");
+				return productos;
+			}
+		}
+		finally {
+  #FIN MAIN
 			if (tx.isActive()) {
 				tx.rollback();
 			}
 			pm.close();
 		}
+#ARREGLAR JAVIER
 	}
+#RAMA MAIN
+		}
+	
+	
+#FIN RAMA MAIN
 }	
 

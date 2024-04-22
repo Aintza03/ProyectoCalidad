@@ -10,11 +10,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.ikea.app.pojo.Cliente;
+
 import com.ikea.app.client.window.ClientRegistration;
+import com.ikea.app.client.window.AdminIniciarSesionWindow;
 import com.ikea.app.client.window.CestaWindow;
 import com.ikea.app.client.window.ClientLogin;
 import com.ikea.app.client.window.ProductList;
 import com.ikea.app.client.window.ClientChangeEraseWindow;
+import com.ikea.app.client.window.MenuPrincipalWindow;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.ikea.app.pojo.Cesta;
@@ -48,9 +51,8 @@ public class ClientMain{
 
 		String hostname = args[0];
 		String port = args[1];
-		//Pruebas.guardarDatosEjemplo();
+		Pruebas.guardarDatosEjemplo();
 		ClientMain clientMain = new ClientMain(hostname, port);
-		ClientRegistration window = new ClientRegistration(clientMain.webTarget);
-		ClientLogin window_login = new ClientLogin(clientMain.webTarget);
+		MenuPrincipalWindow window_menu = new MenuPrincipalWindow(clientMain.webTarget);
 	}
 }

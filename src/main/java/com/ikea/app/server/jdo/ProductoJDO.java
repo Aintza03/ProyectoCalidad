@@ -49,6 +49,7 @@ public class ProductoJDO {
     public void setPrecio(double precio){
         this.precio = precio;
     }
+    
     public String toString(){
         return "Nombre: " + this.nombre + "Tipo: " + this.tipo + " Precio: " + this.precio;
     }

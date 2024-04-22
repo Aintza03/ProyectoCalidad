@@ -28,6 +28,7 @@ import com.ikea.app.pojo.Producto;
 import com.ikea.app.pojo.Cesta;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.client.window.CestaWindow;
+import com.ikea.app.client.controller.ProductListController;
 public class ProductList extends JFrame{
 
     protected List<Producto> productoList = new ArrayList<Producto>();
@@ -38,25 +39,53 @@ public class ProductList extends JFrame{
 	protected int mouseCol = -1;
 	protected WebTarget webTargets;
 	protected CestaWindow cestaWindow;
+	protected JLabel imagenProducto;
+	protected ProductListController controller = new ProductListController();
+	protected JLabel idProducto = new JLabel();
+	protected JLabel nombre = new JLabel();
+	protected JLabel tipo = new JLabel();
+	protected JLabel precio = new JLabel();
     public ProductList(WebTarget webTargets, String email){
         Container cp = this.getContentPane();
-        cp.setLayout(new GridLayout(1,1));
-		cesta = getCesta(webTargets,email);
+        cp.setLayout(new GridBagLayout());
+		JPanel container = new JPanel();
+		container.setLayout(new GridLayout(4,1));
+		container.add(idProducto);
+		container.add(nombre);
+		container.add(tipo);
+		container.add(precio);
+		GridBagConstraints constraints = new GridBagConstraints();
+		cesta = controller.getCesta(webTargets,email);
 		this.cestaWindow = new CestaWindow(webTargets,cesta);
         this.webTargets = webTargets;
 		this.initTable();
         this.loadProducto(webTargets);
         JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
         scrollPaneProductos.setBorder(new TitledBorder("Productos"));
-        cp.add(scrollPaneProductos);
-
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.gridheight = 1;
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.anchor = GridBagConstraints.PAGE_START;
+		cp.add(scrollPaneProductos, constraints);
+		imagenProducto = new JLabel("");
+		constraints.gridy = 1;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.ipady = 0;
+		JPanel total = new JPanel();
+		total.setLayout(new GridLayout(1,2));
+		total.add(imagenProducto);
+		total.add(container);
+		cp.add(total, constraints);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
-        this.setSize(300,150);
+        this.setSize(400,200);
         this.setTitle("Lista de Productos");
         this.setLocationRelativeTo(null);
-
-
     }
 
     private void initTable() {
@@ -145,20 +174,37 @@ public class ProductList extends JFrame{
             public void mouseClicked(MouseEvent e) {
 				int row = tablaProductos.rowAtPoint(e.getPoint());
 				int col = tablaProductos.columnAtPoint(e.getPoint());
-				
+				int d = 0; 
+				d = Integer.parseInt(modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());		
 				if(col == 4) {
 					try {
-						int d = 0; 
-						d = Integer.parseInt(modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());
 						for (Producto producto : productoList) {
 							if(producto.getId() == d) {
-							modificarCesta(webTargets,producto);
+							cesta.anadirCesta(producto);
+							cestaWindow.addProducto(producto);
+							controller.modificarCesta(webTargets, cesta);
 							modeloTablaProductos.removeRow(row);
 							}
 							}
+							imagenProducto.setIcon(null);
+							idProducto.setText("");
+							nombre.setText("");
+							tipo.setText("");
+							precio.setText("");
+							setSize(400,200);
 					} catch (Exception e2) {
 						System.err.println("No se ha escogido animal");
 					}	
+				} else{
+					idProducto.setText("ID: " + d);
+					nombre.setText("Nombre: " + modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 1).toString());
+					tipo.setText("Tipo: " + modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 2).toString());
+					precio.setText("Precio: " + modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 3).toString());nombre.setText("Nombre: " + modeloTablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());//nombre
+					Image image = new ImageIcon("src/main/resources/MuebleFotos/"+ d + ".jpg").getImage();
+					ImageIcon image2 = new ImageIcon(image.getScaledInstance(78,124,Image.SCALE_SMOOTH));
+					imagenProducto.setIcon(image2);
+					setSize(400 + imagenProducto.getIcon().getIconWidth(),200+imagenProducto.getIcon().getIconHeight()); 
+				
 				}
 			}
 			
@@ -202,7 +248,7 @@ public class ProductList extends JFrame{
 		for (Producto a: this.cesta.getCesta()){
 			idProductos.add(a.getId());
 		}
-		for(Producto a : datosDeProductos(webTarget)){
+		for(Producto a : controller.datosDeProductos(webTarget)){
 			if(!(idProductos.contains(a.getId()))) {
 				this.productoList.add(a);
 			}
@@ -210,65 +256,6 @@ public class ProductList extends JFrame{
 		for (Producto a : this.productoList) {
 			this.modeloTablaProductos.addRow( new Object[] {a.getId(),a.getNombre(), a.getTipo(), a.getPrecio(), new JButton("->")} );
 		}		
-	}
-
-    public List<Producto> datosDeProductos(WebTarget webTarget) {
-        // issuing a GET request to the users endpoint with some query parameters
-        try {
-            Response response = webTarget.path("listProducts")
-                .request(MediaType.APPLICATION_JSON)
-                .get();
-
-            // check that the response was HTTP OK
-            if (response.getStatusInfo().toEnum() == Status.OK) {
-                // the response is a generic type (a List<User>)
-                GenericType<List<Producto>> listType = new GenericType<List<Producto>>(){};
-                List<Producto> product = response.readEntity(listType);
-                //System.out.println(product);
-				return product;
-            } else {
-				System.out.format("Error obtaining product list. %s%n", response);
-				return new ArrayList<Producto>();
-            }
-        } catch (ProcessingException e) {
-            System.out.format("Error obtaining product list. %s%n", e.getMessage());
-			return new ArrayList<Producto>();
-        }
-
-	}
-	public Cesta getCesta(WebTarget webTarget,String email){
-		try {
-            Response response = webTarget.path("cesta")
-                .queryParam("email", email)
-				.request(MediaType.APPLICATION_JSON)
-				.get();
-
-            // check that the response was HTTP OK
-            if (response.getStatusInfo().toEnum() == Status.OK) {
-                Cesta cesta = response.readEntity(Cesta.class);
-				System.out.println(cesta);
-				return cesta;		
-            } else {
-				System.out.format("Error obtaining cesta. %s%n", response);
-				return null;
-            }
-        } catch (ProcessingException e) {
-            System.out.format("Error obtaining cesta. %s%n", e.getMessage());
-			return null;
-        }	
-	}
-	
-	public void modificarCesta(WebTarget webTarget,Producto producto) {
-		WebTarget WebTargetLogin = webTarget.path("modifyCesta");
-		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
-		this.cesta.anadirCesta(producto);
-		this.cestaWindow.addProducto(producto);
-		Response response = invocationBuilder.post(Entity.entity(this.cesta, MediaType.APPLICATION_JSON));
-		if (response.getStatus() != Status.OK.getStatusCode()) {
-			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
-		} else {	
-			ClientMain.getLogger().info("Cesta modificada correctamente");
-		}
 	}
 }
     
