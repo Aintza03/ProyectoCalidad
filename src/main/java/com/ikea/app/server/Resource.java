@@ -263,7 +263,7 @@ public class Resource{
 			pm.close();
 		}
 		}
-		@POST
+	@POST
 	@Path("/vaciarCesta")
 	public Response vaciarCesta(Cesta cesta){
 		try{
@@ -383,7 +383,49 @@ public class Resource{
 		}
 			 
 	}
-
+	@GET
+	@Path("/listProductsAdmin")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Producto> listaProductosAdministrador(@QueryParam("admin") String admin) {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
+		List<Producto> productos = new ArrayList<Producto>();
+		try {	
+            tx.begin();
+            logger.info("Obteniendo productos");
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo WHERE VENDEDOR = '" + admin + "'")) {
+				q.setClass(ProductoJDO.class);
+				List<ProductoJDO> results = q.executeList();
+				System.out.println("Productos: " + results);
+				for (ProductoJDO productoJDO : results) {
+					Producto producto = new Producto();
+					producto.setNombre(productoJDO.getNombre());
+					producto.setPrecio(productoJDO.getPrecio());
+					producto.setTipo(productoJDO.getTipo());
+					producto.setId(productoJDO.getId());
+					productos.add(producto);
+					logger.info("Product retrieved: {}", productoJDO);
+				}
+				
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
+			tx.commit();
+			if (productos.size() != 0) {	
+        		return productos;
+			}else{
+				System.out.println("Producto Vacio");
+				return productos;
+			}
+		}
+		finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+		}
+	
 	
 }	
 
