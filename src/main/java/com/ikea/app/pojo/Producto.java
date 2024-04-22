@@ -6,7 +6,7 @@ public class Producto {
     private String nombre;
     private String tipo;
     private double precio;
-
+    
     public Producto(){
         this.id = idGeneral + 1;
     }
