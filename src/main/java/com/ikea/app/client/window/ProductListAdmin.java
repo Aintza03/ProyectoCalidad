@@ -49,6 +49,19 @@ public class ProductListAdmin extends JFrame{
         JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
         scrollPaneProductos.setBorder(new TitledBorder("Productos"));
         cp.add(scrollPaneProductos);
+		JButton anadirProducto=new JButton("Añadir producto");
+    	cp.add(anadirProducto);
+    	anadirProducto.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource()==anadirProducto) {
+				
+				new AnadirProducto(webTargets, usuario, ProductListAdmin.this);
+				
+				
+			}
+                
+                }
+            });
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
         this.setSize(400,200);
@@ -58,7 +71,7 @@ public class ProductListAdmin extends JFrame{
 
     private void initTable() {
 		//Cabecera del modelo de datos
-		Vector<String> cabeceraProducto = new Vector<String>(Arrays.asList( "ID","Nombre", "Tipo", "Precio","Anadir"));				
+		Vector<String> cabeceraProducto = new Vector<String>(Arrays.asList( "ID","Nombre", "Tipo", "Precio"));				
 		//Se crea el modelo de datos para la tabla de comics sÃ³lo con la cabecera	
 		
 		this.modeloTablaProductos = new DefaultTableModel(new Vector<Vector<Object>>(), cabeceraProducto) {
@@ -178,11 +191,11 @@ public class ProductListAdmin extends JFrame{
 		
 	}
     
-    private void loadProducto(WebTarget webTarget, String usuario) {
+    protected void loadProducto(WebTarget webTarget, String usuario) {
 		this.modeloTablaProductos.setRowCount(0);
 		this.productoList = controller.datosDeProductos(webTarget,usuario);
 		for (Producto a : this.productoList) {
-			this.modeloTablaProductos.addRow( new Object[] {a.getId(),a.getNombre(), a.getTipo(), a.getPrecio(), new JButton("->")} );
+			this.modeloTablaProductos.addRow( new Object[] {a.getId(),a.getNombre(), a.getTipo(), a.getPrecio()} );
 		}		
 	}
     }

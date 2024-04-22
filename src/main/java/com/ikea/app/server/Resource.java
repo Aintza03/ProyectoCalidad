@@ -402,6 +402,7 @@ public class Resource{
 					producto.setPrecio(productoJDO.getPrecio());
 					producto.setTipo(productoJDO.getTipo());
 					producto.setId(productoJDO.getId());
+					Producto.setIdGeneral(producto.getId());
 					productos.add(producto);
 					logger.info("Product retrieved: {}", productoJDO);
 				}
@@ -426,6 +427,52 @@ public class Resource{
 		}
 		}
 	
+		@POST
+		@Path("/anadir")
+		public Response anadirProducto(Producto producto) {
+			try
+			{	
+				tx.begin();
+				logger.info("Comprobando que el producto no exista: '{}'", producto.getNombre());
+				ProductoJDO productoJDO = null;
+				try {
+					productoJDO = pm.getObjectById(ProductoJDO.class, producto.getId());
+				} catch (javax.jdo.JDOObjectNotFoundException ex1) {
+					logger.info("Exception launched: {}", ex1.getMessage());
+				}
+				logger.info("Producto: {}", productoJDO);
+				if (productoJDO != null) {
+					logger.info("Añadiendo nombre: {}", productoJDO);
+					productoJDO.setNombre(producto.getNombre());
+					logger.info("Nombre añadido: {}", productoJDO);
+					logger.info("Añadiendo tipo: {}", productoJDO);
+					productoJDO.setTipo(producto.getNombre());
+					logger.info("Tipo Añadido: {}", productoJDO);
+					logger.info("Añadiendo precio: {}", productoJDO);
+					productoJDO.setPrecio(producto.getPrecio());
+					logger.info("Precio Añadido: {}", productoJDO);
+					logger.info("Vendedor precio: {}", productoJDO);
+					productoJDO.setVendedor((producto.getVendedor()));
+					logger.info("Vendedor añadido: {}", productoJDO);
+					
+				} else {
+					logger.info("Creando producto: {}", productoJDO);
+					productoJDO = new ProductoJDO(producto.getId(),producto.getNombre(), producto.getTipo(), producto.getPrecio(), producto.getVendedor());
+					pm.makePersistent(productoJDO);					 
+					logger.info("Producto creado: {}", productoJDO);
+				}
+				tx.commit();
+				return Response.ok().build();
+			}
+			finally
+			{
+				if (tx.isActive())
+				{
+					tx.rollback();
+				}
+				pm.close();
+			}
+		}
 	
 }	
 

@@ -1,4 +1,4 @@
-package main.java.com.ikea.app.client.window;
+package com.ikea.app.client.window;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;

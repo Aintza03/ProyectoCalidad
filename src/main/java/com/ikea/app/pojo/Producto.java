@@ -1,12 +1,12 @@
 package com.ikea.app.pojo;
 
 public class Producto {
-    public static int idGeneral = 0;
+    public static int idGeneral = 1;
     private int id;
     private String nombre;
     private String tipo;
     private double precio;
-    
+    private String vendedor;
     public Producto(){
         this.id = idGeneral + 1;
     }
@@ -14,7 +14,7 @@ public class Producto {
         return this.id;
     }
     public static void setIdGeneral(int idGeneral){
-        Producto.idGeneral = idGeneral;
+        Producto.idGeneral = idGeneral++;
     }
     public void setId(int id){
         this.id = id;
@@ -36,6 +36,12 @@ public class Producto {
     }
     public void setPrecio(double precio){
         this.precio = precio;
+    }
+    public String getVendedor(){
+        return this.vendedor;
+    }
+    public void setVendedor(String vendedor){
+        this.vendedor = vendedor;
     }
     public String toString(){
         return "-" + this.id + ": " + this.nombre + " (" + this.tipo + " , " + this.precio + "€ )";
