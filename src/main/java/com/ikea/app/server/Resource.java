@@ -262,12 +262,8 @@ public class Resource{
 			}
 			pm.close();
 		}
-#ARREGLAR JAVIER
 	}
 	
-#RAMA MAIN
-		}
-#FIN RAMA MAIN
 	@POST
 	@Path("/vaciarCesta")
 	public Response vaciarCesta(Cesta cesta){
@@ -350,8 +346,7 @@ public class Resource{
 			pm.close();
 		}
 	}
- #ARREGLAR JAVIER
-
+ 
 	@POST
 	@Path("/modifyClient")
 	public Response modifyClient(Cliente cliente){
@@ -377,8 +372,13 @@ public class Resource{
 			ex1.printStackTrace();
 			return Response.status(Status.NOT_FOUND).build();
 		}finally {
-#RAMA MAIN
-	
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+
 	@POST
 	@Path("/loginAdmin")
 	public Response loginAdmin(Admin admin){
@@ -410,13 +410,11 @@ public class Resource{
 			}
 		}
 		finally {
-#FIN RAMA MAIN
 			if (tx.isActive()) {
 				tx.rollback();
 			}
 			pm.close();
 		}
-#ARREGLAR JAVIER
 	}
 
 	@POST
@@ -450,8 +448,11 @@ public class Resource{
 				ex1.printStackTrace();
 				return Response.status(Status.NOT_FOUND).build();
 		}finally {
-#RAMA MAIN
-			 
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
 	@GET
 	@Path("/listProductsAdmin")
@@ -489,18 +490,11 @@ public class Resource{
 			}
 		}
 		finally {
-  #FIN MAIN
 			if (tx.isActive()) {
 				tx.rollback();
 			}
 			pm.close();
 		}
-#ARREGLAR JAVIER
 	}
-#RAMA MAIN
-		}
-	
-	
-#FIN RAMA MAIN
 }	
 

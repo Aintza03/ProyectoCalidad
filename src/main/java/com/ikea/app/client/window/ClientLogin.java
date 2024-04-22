@@ -50,10 +50,10 @@ public class ClientLogin extends JFrame{
 				for (char c : contrasenas) {
 					stringC = stringC + c;
 				}  
-        Boolean result = controller.loginCliente(webTargets,email.getText(),stringC); 
-				if (result == true){
+        	String result = controller.loginCliente(webTargets,email.getText(),stringC); 
+				if (result != ""){
 					window2 = new ProductList(webTargets, email.getText());
-          window3 = new ClientChangeEraseWindow(webTargets, email.getText(), stringC, result);
+          			window3 = new ClientChangeEraseWindow(webTargets, email.getText(), stringC, result);
 				}
             }
         });	
