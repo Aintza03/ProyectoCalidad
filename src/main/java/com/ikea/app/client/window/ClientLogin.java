@@ -22,6 +22,7 @@ public class ClientLogin extends JFrame{
     protected JButton login = new JButton("Iniciar sesion");
 	protected ProductList window2;
 	protected ClientChangeEraseWindow window3;
+	protected ClientChangeEraseWindow window4;
 	public ClientLogin(WebTarget webTargets){
     Container cp = this.getContentPane();
 	cp.setLayout(new GridLayout(2, 1));
@@ -52,7 +53,6 @@ public class ClientLogin extends JFrame{
                 String result = loginCliente(webTargets,email.getText(),stringC);
 				if(result != null){
 					window3 = new ClientChangeEraseWindow(webTargets, email.getText(), stringC, result);
-			
 				}			
             }
         });	
@@ -69,10 +69,11 @@ public class ClientLogin extends JFrame{
 		Response response = invocationBuilder.post(Entity.entity(cliente, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+			return null;
 		} else {	
 			window2 = new ProductList(webTarget, email);
 			ClientMain.getLogger().info("Cliente registrado correctamente");
+			return response.readEntity(String.class);	
 		}
-		return response.readEntity(String.class);
 	}
 }

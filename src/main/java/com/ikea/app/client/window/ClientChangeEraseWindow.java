@@ -26,6 +26,7 @@ public class ClientChangeEraseWindow extends JFrame{
     protected JPasswordField contrasenaRep;
     protected JButton cambiar = new JButton("Cambiar");
     protected JButton eliminar = new JButton("Eliminar Usuario");
+    protected ClientChangeEraseWindow window3;
 
     protected ClienteJDO clienteJDO;
 
@@ -78,7 +79,7 @@ public class ClientChangeEraseWindow extends JFrame{
                     ClientMain.getLogger().error("Las contraseñas no coinciden");
                 }
                 dispose();
-                ClientChangeEraseWindow window3 = new ClientChangeEraseWindow(webTargets, mail,pass, nombre.getText());
+                ClientChangeEraseWindow window4 = new ClientChangeEraseWindow(webTargets, mail,pass, nombre.getText());
             }
         });	
 
@@ -86,7 +87,7 @@ public class ClientChangeEraseWindow extends JFrame{
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                ConfirmacionEliminarWindow cew = new ConfirmacionEliminarWindow(webTargets, mail, contra, nom);  
+                ConfirmacionEliminarWindow cew = new ConfirmacionEliminarWindow(webTargets, mail, contra, nom); 
             }
         });
     }
