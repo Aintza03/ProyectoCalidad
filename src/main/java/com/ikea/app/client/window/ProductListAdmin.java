@@ -29,7 +29,7 @@ import com.ikea.app.pojo.Cesta;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.client.window.CestaWindow;
 import com.ikea.app.client.controller.ProductListAdminController;
-
+import com.ikea.app.pojo.Admin;
 public class ProductListAdmin extends JFrame{
 
     protected List<Producto> productoList = new ArrayList<Producto>();
@@ -40,12 +40,12 @@ public class ProductListAdmin extends JFrame{
 	protected WebTarget webTargets;
 	protected ProductListAdminController controller = new ProductListAdminController();
 
-    public ProductListAdmin(WebTarget webTargets, String usuario){
+    public ProductListAdmin(WebTarget webTargets, Admin usuario){
         Container cp = this.getContentPane();
         cp.setLayout(new GridLayout(1,1));
 		this.webTargets = webTargets;
 		this.initTable();
-        this.loadProducto(webTargets,usuario);
+        this.loadProducto(webTargets,usuario.getUsuario());
         JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
         scrollPaneProductos.setBorder(new TitledBorder("Productos"));
         cp.add(scrollPaneProductos);
@@ -53,11 +53,8 @@ public class ProductListAdmin extends JFrame{
     	cp.add(anadirProducto);
     	anadirProducto.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource()==anadirProducto) {
-				
+            if (e.getSource()==anadirProducto) {	
 				new AnadirProducto(webTargets, usuario, ProductListAdmin.this);
-				
-				
 			}
                 
                 }

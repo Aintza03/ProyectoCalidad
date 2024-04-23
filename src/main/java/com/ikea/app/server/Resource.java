@@ -31,6 +31,7 @@ import com.ikea.app.pojo.Cesta;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import java.util.List;
+import java.util.HashSet;
 @Path("/resource")
 @Produces(MediaType.APPLICATION_JSON)
 public class Resource{
@@ -171,6 +172,35 @@ public class Resource{
 		}
 		}
 	@GET
+	@Path("/cantidadProductos")
+	@Produces(MediaType.APPLICATION_JSON)
+	public int cantidadProductos() {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
+		int result = 0;
+		try {	
+            tx.begin();
+            logger.info("Obteniendo productos");
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo")) {
+				q.setClass(ProductoJDO.class);
+				List<ProductoJDO> results = q.executeList();
+				System.out.println("Productos: " + results);
+				result = results.size();
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
+			tx.commit();
+			return result;
+		}
+		finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+		}
+	
+	@GET
 	@Path("/cesta")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Cesta getCesta(@QueryParam("email") String email) {
@@ -262,7 +292,7 @@ public class Resource{
 			}
 			pm.close();
 		}
-		}
+	}
 	@POST
 	@Path("/vaciarCesta")
 	public Response vaciarCesta(Cesta cesta){
@@ -365,7 +395,18 @@ public class Resource{
 			if (adminJDO != null) {
 				if(adminJDO.getContrasena().equals(admin.getContrasena())) {
 					System.out.println("Contraseña correcta");
-					return Response.ok("Dentro").build();
+					admin.setContrasena(adminJDO.getContrasena());
+					admin.setLista(new HashSet<Producto>());
+					for(ProductoJDO productoJDO: adminJDO.getLista()){
+						Producto producto = new Producto();
+						producto.setId(productoJDO.getId());
+						producto.setNombre(productoJDO.getNombre());
+						producto.setTipo(productoJDO.getTipo());
+						producto.setPrecio(productoJDO.getPrecio());
+						admin.anadirLista(producto);
+					}
+					admin.setUsuario(adminJDO.getUsuario());
+					return Response.ok(admin).build();
 				} else{
 					System.out.println("Contraseña incorrecta");
 					return Response.status(Status.UNAUTHORIZED).build();
@@ -428,51 +469,54 @@ public class Resource{
 		}
 	
 		@POST
-		@Path("/anadir")
-		public Response anadirProducto(Producto producto) {
-			try
-			{	
-				tx.begin();
-				logger.info("Comprobando que el producto no exista: '{}'", producto.getNombre());
-				ProductoJDO productoJDO = null;
-				try {
-					productoJDO = pm.getObjectById(ProductoJDO.class, producto.getId());
-				} catch (javax.jdo.JDOObjectNotFoundException ex1) {
-					logger.info("Exception launched: {}", ex1.getMessage());
+		@Path("/anadirProductoAdmin")
+		public Response anadirProductoAdmin(Admin admin) {
+		try{
+			logger.info("Modificando productos del admin: " + admin.getUsuario());
+			tx.begin();
+				AdminJDO adminjdo = null;
+				try (Query<AdminJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM adminjdo where usuario = '"+admin.getUsuario() +"'")) {
+				q.setClass(AdminJDO.class);
+				List<AdminJDO> results = q.executeList();
+				adminjdo = results.get(0);
+				try(Query<ProductoJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo")){
+					q2.setClass(ProductoJDO.class);
+					List<ProductoJDO> number = q2.executeList();
+					if (number != null) {
+						cont = number.size();
+					}else{
+						cont = 0;
+					}
+				}catch(javax.jdo.JDOObjectNotFoundException ex1){
+					logger.info("Exception1 launched: {}", ex1.getMessage());
 				}
-				logger.info("Producto: {}", productoJDO);
-				if (productoJDO != null) {
-					logger.info("Añadiendo nombre: {}", productoJDO);
-					productoJDO.setNombre(producto.getNombre());
-					logger.info("Nombre añadido: {}", productoJDO);
-					logger.info("Añadiendo tipo: {}", productoJDO);
-					productoJDO.setTipo(producto.getNombre());
-					logger.info("Tipo Añadido: {}", productoJDO);
-					logger.info("Añadiendo precio: {}", productoJDO);
-					productoJDO.setPrecio(producto.getPrecio());
-					logger.info("Precio Añadido: {}", productoJDO);
-					logger.info("Vendedor precio: {}", productoJDO);
-					productoJDO.setVendedor((producto.getVendedor()));
-					logger.info("Vendedor añadido: {}", productoJDO);
-					
-				} else {
-					logger.info("Creando producto: {}", productoJDO);
-					productoJDO = new ProductoJDO(producto.getId(),producto.getNombre(), producto.getTipo(), producto.getPrecio(), producto.getVendedor());
-					pm.makePersistent(productoJDO);					 
-					logger.info("Producto creado: {}", productoJDO);
+				Producto producto = null;//new ArrayList<>(admin.getLista()).get(admin.getLista().size()-1);
+				
+				for(Producto productos: admin.getLista()){
+					if(productos.getId() == cont+1){
+						producto = productos;
+						
+					}
 				}
-				tx.commit();
-				return Response.ok().build();
+				ProductoJDO productojdo = new ProductoJDO(producto.getId(), producto.getNombre(), producto.getTipo(), producto.getPrecio());
+				adminjdo.anadirLista(productojdo);
+				pm.makePersistent(productojdo);
+				pm.makePersistent(adminjdo);
+				logger.info("Producto guardado: {}", productojdo);
+			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
+				logger.info("Exception1 launched: {}", ex1.getMessage());
+			}	
+			tx.commit();
+			return Response.ok().build();
+		}catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+				return Response.status(Status.NOT_FOUND).build();
+		}finally {
+			if (tx.isActive()) {
+				tx.rollback();
 			}
-			finally
-			{
-				if (tx.isActive())
-				{
-					tx.rollback();
-				}
-				pm.close();
-			}
-		}
-	
-}	
-
+			pm.close();
+		}	
+	}	
+}

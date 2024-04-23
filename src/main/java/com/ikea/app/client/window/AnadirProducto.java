@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.ikea.app.pojo.Admin;
 import com.ikea.app.client.controller.AnadirProductoController;
 
 public class AnadirProducto extends JFrame{
@@ -23,7 +24,7 @@ public class AnadirProducto extends JFrame{
     protected JTextField precio = new JTextField();
     protected JButton anadir = new JButton("Añadir producto");
     protected AnadirProductoController controller = new AnadirProductoController();
-	public AnadirProducto(WebTarget webTargets, String usuario, ProductListAdmin productListAdmin){
+	public AnadirProducto(WebTarget webTargets, Admin usuario, ProductListAdmin productListAdmin){
     Container cp = this.getContentPane();
 	cp.setLayout(new GridLayout(2,1));
     JPanel panel = new JPanel();
@@ -50,7 +51,7 @@ public class AnadirProducto extends JFrame{
 				try {
                    double num = Double.parseDouble(precio.getText());
                     controller.anadirProducto(webTargets,nombre.getText(),tipo.getText(),num, usuario);
-                    productListAdmin.loadProducto(webTargets, usuario);
+                    productListAdmin.loadProducto(webTargets, usuario.getUsuario());
                     dispose();
                 } catch (Exception f) {
                     // TODO: handle exception
