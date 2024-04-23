@@ -15,15 +15,21 @@ import com.ikea.app.client.window.ProductList;
 import com.ikea.app.pojo.Admin;
 import com.ikea.app.client.controller.AdminLoginController;
 import com.ikea.app.client.window.ProductListAdmin;
+import com.ikea.app.client.window.MenuAdminWindow;
 
 public class AdminIniciarSesionWindow extends JFrame{
 	protected JLabel labelUsuario = new JLabel("Usuario: ");
     protected JLabel labelContrasena = new JLabel("Contrasena: ");
     protected JTextField usuario = new JTextField();
     protected JPasswordField contrasena = new JPasswordField();
+
     protected JButton login = new JButton("Iniciar sesion");
+
 	protected ProductList window2;
+	protected ProductListAdmin window3;
+	protected MenuAdminWindow window4;
 	protected AdminLoginController controller = new AdminLoginController();
+
 	public AdminIniciarSesionWindow(WebTarget webTargets){
     Container cp = this.getContentPane();
 	cp.setLayout(new GridLayout(2, 1));
@@ -54,6 +60,7 @@ public class AdminIniciarSesionWindow extends JFrame{
                 Admin result = controller.loginAdmin(webTargets,usuario.getText(),stringC); 
 				if (result != null){
 					ProductListAdmin window2 = new ProductListAdmin(webTargets, result);
+					MenuAdminWindow window3 = new MenuAdminWindow(webTargets);
 				}
             }
         });	

@@ -19,7 +19,7 @@ public class ClientChangeEraseWindow extends JFrame{
     protected JTextField nombre;
     protected JLabel labelEmail = new JLabel("Email: ");
     protected JLabel labelEmailAnt;
-    protected JLabel labelContrasena = new JLabel("Contrasena: ");
+    protected JLabel labelContrasena = new JLabel("Contraseña: ");
     protected JPasswordField contrasena;
     protected JLabel labelContrasenaRep = new JLabel("Contraseña Repetida: ");
     protected JPasswordField contrasenaRep;
