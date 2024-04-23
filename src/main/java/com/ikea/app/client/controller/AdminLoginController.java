@@ -16,7 +16,7 @@ public class AdminLoginController{
     
     }
 
-    public boolean loginAdmin(WebTarget webTarget,String usuario, String contrasena) {
+    public Admin loginAdmin(WebTarget webTarget,String usuario, String contrasena) {
 		WebTarget WebTargetLogin = webTarget.path("loginAdmin");
 		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
 
@@ -26,10 +26,10 @@ public class AdminLoginController{
 		Response response = invocationBuilder.post(Entity.entity(admin, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
-            return false;
+            return null;
 		} else {	
 			ClientMain.getLogger().info("Admin iniciado correctamente");
-            return true;
+            return response.readEntity(Admin.class);
 		}
 	}
 }

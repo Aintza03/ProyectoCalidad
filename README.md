@@ -1,6 +1,9 @@
 
 Maven-Client-ProjectCalidad
 ========================================================================================================================================
+Para ejecutar los test hace falta que se ejecute:  
+
+      mvn test
 
 Si es la primera vez que se ejecuta el programa en este ordenador primero hay que abrir el workbench de MySQL y desde el root ejecutar todas las sentencias MySQL del fichero "create-ikea.sql". El fichero se encuentra dentro del proyecto en la carpeta "sql".
 
@@ -14,15 +17,19 @@ En cualquier caso, sea la primera vez que se ejecuta en este ordenador o no habr
 
       mvn compile
 
-2-Crea la base de datos ikeadb con sus entidades que se crean en base a los JDO.
+3-Para crear la base de datos primero hay que hacer enhance.  
+
+      mvn datanucleus:enhance
+
+4-Despues, el siguiente comando termina de crear la base de datos ikeadb con sus entidades que se crean en base a los JDO.
 
       mvn datanucleus:schema-create
 
-3-Pone en marcha el servidor (Puedes saltarle los pasos anteriores si ya tienes el codigo compilado y no has hecho ningun cambio en el codigo de antes)
+5-Pone en marcha el servidor (Puedes saltarle los pasos anteriores si ya tienes el codigo compilado y no has hecho ningun cambio en el codigo de antes)
 
       mvn jetty:run
 
-4-Ejecuta el cliente en un nuevo cmd (Se puede ejecutar más de un cliente a la vez pero siempre que se quiera ejecutar un cliente hay que esperar a que el servidor este completamente operativo)
+6-Ejecuta el cliente en un nuevo cmd (Se puede ejecutar más de un cliente a la vez pero siempre que se quiera ejecutar un cliente hay que esperar a que el servidor este completamente operativo)
 
       mvn exec:java -Pclient
 
