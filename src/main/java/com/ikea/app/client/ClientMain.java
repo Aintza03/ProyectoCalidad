@@ -16,6 +16,7 @@ import com.ikea.app.client.window.AdminIniciarSesionWindow;
 import com.ikea.app.client.window.CestaWindow;
 import com.ikea.app.client.window.ClientLogin;
 import com.ikea.app.client.window.ProductList;
+import com.ikea.app.client.window.ClientChangeEraseWindow;
 import com.ikea.app.client.window.MenuPrincipalWindow;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

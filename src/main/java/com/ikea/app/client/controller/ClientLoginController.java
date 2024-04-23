@@ -16,7 +16,7 @@ public class ClientLoginController{
     
     }
 
-    public boolean loginCliente(WebTarget webTarget,String email, String contrasena) {
+    public String loginCliente(WebTarget webTarget,String email, String contrasena) {
 		WebTarget WebTargetLogin = webTarget.path("login");
 		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
 
@@ -27,10 +27,10 @@ public class ClientLoginController{
 		Response response = invocationBuilder.post(Entity.entity(cliente, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
-            return false;
+            return "";
 		} else {	
 			ClientMain.getLogger().info("Cliente registrado correctamente");
-            return true;
+            return response.readEntity(String.class);
 		}
 	}
 }
