@@ -29,7 +29,7 @@ import com.ikea.app.pojo.Cesta;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.client.window.CestaWindow;
 import com.ikea.app.client.controller.ProductListAdminController;
-
+import com.ikea.app.pojo.Admin;
 public class ProductListAdmin extends JFrame{
 
     protected List<Producto> productoList = new ArrayList<Producto>();
@@ -40,15 +40,25 @@ public class ProductListAdmin extends JFrame{
 	protected WebTarget webTargets;
 	protected ProductListAdminController controller = new ProductListAdminController();
 
-    public ProductListAdmin(WebTarget webTargets, String usuario){
+    public ProductListAdmin(WebTarget webTargets, Admin usuario){
         Container cp = this.getContentPane();
         cp.setLayout(new GridLayout(1,1));
 		this.webTargets = webTargets;
 		this.initTable();
-        this.loadProducto(webTargets,usuario);
+        this.loadProducto(webTargets,usuario.getUsuario());
         JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
         scrollPaneProductos.setBorder(new TitledBorder("Productos"));
         cp.add(scrollPaneProductos);
+		JButton anadirProducto=new JButton("Añadir producto");
+    	cp.add(anadirProducto);
+    	anadirProducto.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource()==anadirProducto) {	
+				new AnadirProducto(webTargets, usuario, ProductListAdmin.this);
+			}
+                
+                }
+            });
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
         this.setSize(400,200);
@@ -58,7 +68,7 @@ public class ProductListAdmin extends JFrame{
 
     private void initTable() {
 		//Cabecera del modelo de datos
-		Vector<String> cabeceraProducto = new Vector<String>(Arrays.asList( "ID","Nombre", "Tipo", "Precio","Anadir"));				
+		Vector<String> cabeceraProducto = new Vector<String>(Arrays.asList( "ID","Nombre", "Tipo", "Precio"));				
 		//Se crea el modelo de datos para la tabla de comics sÃ³lo con la cabecera	
 		
 		this.modeloTablaProductos = new DefaultTableModel(new Vector<Vector<Object>>(), cabeceraProducto) {
@@ -178,11 +188,11 @@ public class ProductListAdmin extends JFrame{
 		
 	}
     
-    private void loadProducto(WebTarget webTarget, String usuario) {
+    protected void loadProducto(WebTarget webTarget, String usuario) {
 		this.modeloTablaProductos.setRowCount(0);
 		this.productoList = controller.datosDeProductos(webTarget,usuario);
 		for (Producto a : this.productoList) {
-			this.modeloTablaProductos.addRow( new Object[] {a.getId(),a.getNombre(), a.getTipo(), a.getPrecio(), new JButton("->")} );
+			this.modeloTablaProductos.addRow( new Object[] {a.getId(),a.getNombre(), a.getTipo(), a.getPrecio()} );
 		}		
 	}
     }
