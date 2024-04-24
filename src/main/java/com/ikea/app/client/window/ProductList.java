@@ -86,6 +86,7 @@ public class ProductList extends JFrame{
         this.setSize(400,200);
         this.setTitle("Lista de Productos");
         this.setLocationRelativeTo(null);
+		this.setLocation(250,250);
     }
 
     private void initTable() {
