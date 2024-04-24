@@ -6,7 +6,6 @@ public class Cliente{
     private String email;
     private String contrasena;
     private String nombre;
-    private List<Producto> cesta = new ArrayList<Producto>();
     public Cliente(){
 
     }
@@ -27,18 +26,6 @@ public class Cliente{
     }
     public void setNombre(String nombre){
         this.nombre = nombre;
-    }
-    public List<Producto> getCesta(){
-        return this.cesta;
-    }
-    public void setCesta(List<Producto> cesta){
-        this.cesta = cesta;
-    }
-    public void anadirCesta(Producto producto){
-        this.cesta.add(producto);
-    }
-    public void borrarProductoCesta(Producto producto){
-        this.cesta.remove(producto);
     }
     public String toString(){
         return "Nombre: " + this.nombre + " Email: " + this.email;
