@@ -12,25 +12,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import com.ikea.app.client.window.ProductList;
-import com.ikea.app.client.window.ClientChangeEraseWindow;
-import com.ikea.app.client.window.MenuClienteWindow;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.controller.ClientLoginController;
 public class ClientLogin extends JFrame{
-
 	protected JLabel labelEmail = new JLabel("Email: ");
     protected JLabel labelContrasena = new JLabel("Contrasena: ");
     protected JTextField email = new JTextField();
     protected JPasswordField contrasena = new JPasswordField();
-
     protected JButton login = new JButton("Iniciar sesion");
-	
-	protected ClientLoginController controller = new ClientLoginController();
-
 	protected ProductList window2;
 	protected ClientChangeEraseWindow window3;
-	//protected MenuClienteWindow window4;
-
+	protected ClientLoginController controller = new ClientLoginController();
 	public ClientLogin(WebTarget webTargets){
     Container cp = this.getContentPane();
 	cp.setLayout(new GridLayout(2, 1));
@@ -62,7 +54,6 @@ public class ClientLogin extends JFrame{
 				if (result != ""){
 					window2 = new ProductList(webTargets, email.getText());
           			window3 = new ClientChangeEraseWindow(webTargets, email.getText(), stringC, result);
-					//window4 = new MenuClienteWindow(webTargets);
 				}
             }
         });	
