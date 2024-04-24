@@ -38,6 +38,8 @@ public class ClientLogin extends JFrame{
 	this.setSize(300,150);
 	this.setTitle("Iniciar Sesion Cliente");
 	this.setLocationRelativeTo(null);
+	this.setLocation(750,400);
+
 
     login.addActionListener(new ActionListener() {
 			
