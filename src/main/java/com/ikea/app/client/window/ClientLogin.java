@@ -11,7 +11,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import com.ikea.app.client.window.ProductList;
+import com.ikea.app.client.window.MenuClienteWindow;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.controller.ClientLoginController;
 public class ClientLogin extends JFrame{
@@ -20,8 +20,7 @@ public class ClientLogin extends JFrame{
     protected JTextField email = new JTextField();
     protected JPasswordField contrasena = new JPasswordField();
     protected JButton login = new JButton("Iniciar sesion");
-	protected ProductList window2;
-	protected ClientChangeEraseWindow window3;
+	protected MenuClienteWindow window;
 	protected ClientLoginController controller = new ClientLoginController();
 	public ClientLogin(WebTarget webTargets){
     Container cp = this.getContentPane();
@@ -39,6 +38,8 @@ public class ClientLogin extends JFrame{
 	this.setSize(300,150);
 	this.setTitle("Iniciar Sesion Cliente");
 	this.setLocationRelativeTo(null);
+	this.setLocation(750,400);
+
 
     login.addActionListener(new ActionListener() {
 			
@@ -52,8 +53,7 @@ public class ClientLogin extends JFrame{
 				}  
         	String result = controller.loginCliente(webTargets,email.getText(),stringC); 
 				if (result != ""){
-					window2 = new ProductList(webTargets, email.getText());
-          			window3 = new ClientChangeEraseWindow(webTargets, email.getText(), stringC, result);
+					window = new MenuClienteWindow(webTargets, email.getText(), stringC, result);
 				}
             }
         });	
