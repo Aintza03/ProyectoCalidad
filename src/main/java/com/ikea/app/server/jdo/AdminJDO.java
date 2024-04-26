@@ -8,7 +8,6 @@ import java.util.HashSet;
 @PersistenceCapable
 public class AdminJDO {
     @PrimaryKey
-
     String usuario = null;
     String contrasena = null;
     @Column(name = "vendedor")

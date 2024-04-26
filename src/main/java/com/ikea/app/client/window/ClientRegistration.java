@@ -41,6 +41,7 @@ public class ClientRegistration extends JFrame{
 	this.setSize(300,150);
 	this.setTitle("Registrar Cliente");
 	this.setLocationRelativeTo(null);
+    this.setLocation(450,400);
 
     registrar.addActionListener(new ActionListener() {
 			
