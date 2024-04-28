@@ -34,7 +34,6 @@ import com.ikea.app.server.jdo.ClienteJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
 import javax.jdo.Query;
 import javax.ws.rs.core.Response.Status;
-import org.junit.After;
 @Category(IntegrationTest.class)
 public class ServerIntegrationTest {
 
@@ -43,7 +42,7 @@ public class ServerIntegrationTest {
     private static HttpServer server;
     private WebTarget target;
 
-    /*@BeforeClass
+    @BeforeClass
     public static void prepareTests() throws Exception {
         // start the server
         server = Main.startServer();
@@ -81,97 +80,16 @@ public class ServerIntegrationTest {
             }
             pm.close();
         }
-    }*/
+    }
 
     @Before
     public void setUp() {
         // create the client
         Client c = ClientBuilder.newClient();
         target = c.target(Main.BASE_URI).path("resource");
-        server = Main.startServer();
-
-        PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx = pm.currentTransaction();
-        try {
-            tx.begin();
-            ClienteJDO clienteJDO = new ClienteJDO("EMAIL", "1234", "john");
-            ClienteJDO clienteJDO2 = new ClienteJDO("EMAILS","johnny","1234457");
-            ClienteJDO clienteJDO3 = new ClienteJDO("EMAIL2","1234","john2");
-            ProductoJDO productoJDO = new ProductoJDO(1,"ProductoTest","TipoTest",15);
-            ProductoJDO productoJDO2 = new ProductoJDO(2,"ProductoTest2","TipoTest2",20);
-            CestaJDO cestaJDO = new CestaJDO(clienteJDO);
-            CestaJDO cestaJDO2 = new CestaJDO(clienteJDO2);
-            CestaJDO cestaJDO3 = new CestaJDO(clienteJDO3);
-            AdminJDO adminJDO = new AdminJDO("ADMINS","1212");
-            AdminJDO adminJDO2 = new AdminJDO("ADMINS2","12121");
-            cestaJDO.AnadirCesta(productoJDO2);
-            adminJDO2.anadirLista(productoJDO2);
-            pm.makePersistent(productoJDO);
-            pm.makePersistent(productoJDO2);
-            pm.makePersistent(clienteJDO);
-            pm.makePersistent(clienteJDO2);
-            pm.makePersistent(clienteJDO3);
-            pm.makePersistent(cestaJDO);
-            pm.makePersistent(cestaJDO2);
-            pm.makePersistent(cestaJDO3);
-            pm.makePersistent(adminJDO);
-            pm.makePersistent(adminJDO2);
-            tx.commit();
-        } finally {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            pm.close();
-        }
-    }
-    @After 
-    public void tearDown() {
-        server.shutdown();
-
-        PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx = pm.currentTransaction();
-        try {
-            tx.begin();
-            try (Query<ProductoJDO> q1 = pm.newQuery(ProductoJDO.class)) {
-                long numberInstancesDeleted1 = q1.deletePersistentAll();
-
-                tx.commit();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            tx.begin();
-            try (Query<CestaJDO> q = pm.newQuery(CestaJDO.class)) {
-                long numberInstancesDeleted = q.deletePersistentAll();
-
-                tx.commit();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            tx.begin();
-            try (Query<ClienteJDO> q = pm.newQuery(ClienteJDO.class)) {
-                long numberInstancesDeleted = q.deletePersistentAll();
-
-                tx.commit();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            tx.begin();
-            try (Query<AdminJDO> q = pm.newQuery(AdminJDO.class)) {
-                long numberInstancesDeleted = q.deletePersistentAll();
-
-                tx.commit();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } finally {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            pm.close();
-        }
     }
 
-    /*@AfterClass
+    @AfterClass
     public static void tearDownServer() throws Exception {
         server.shutdown();
 
@@ -216,7 +134,7 @@ public class ServerIntegrationTest {
             }
             pm.close();
         }
-    }*/
+    }
     @Test
     public void testRegistrarCliente() {
         Cliente cliente = new Cliente();
