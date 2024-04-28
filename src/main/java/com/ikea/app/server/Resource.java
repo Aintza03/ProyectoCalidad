@@ -12,7 +12,6 @@ import com.ikea.app.pojo.Cliente;
 import com.ikea.app.pojo.Admin;
 import com.ikea.app.server.jdo.CestaJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 import javax.ws.rs.QueryParam;
 import java.util.ArrayList;
 
@@ -31,6 +30,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import java.util.List;
 import java.util.HashSet;
+import javax.jdo.JDOObjectNotFoundException;
 @Path("/resource")
 @Produces(MediaType.APPLICATION_JSON)
 public class Resource{
@@ -49,15 +49,14 @@ public class Resource{
     @POST
 	@Path("/register")
 	public Response registrarCliente(Cliente cliente) {
-		try
-        {	
+		try {	
             tx.begin();
             logger.info("Comprobando que el usuario no exista: '{}'", cliente.getEmail());
 			ClienteJDO clienteJDO = null;
 			try {
 				clienteJDO = pm.getObjectById(ClienteJDO.class, cliente.getEmail());
-			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
-				logger.info("Exception launched: {}", ex1.getMessage());
+			} catch (JDOObjectNotFoundException ex1) {
+				logger.error("Exception launched: {}", ex1.getMessage());
 			}
 			logger.info("Cliente: {}", clienteJDO);
 			if (clienteJDO != null) {
@@ -79,13 +78,12 @@ public class Resource{
 			tx.commit();
 			return Response.ok().build();
         }
-        finally
-        {
+        finally {
             if (tx.isActive())
             {
                 tx.rollback();
             }
-			pm.close();
+			//pm.close();
 		}
 	}
 
@@ -538,9 +536,9 @@ public class Resource{
 		}
 		}
 	
-		@POST
-		@Path("/anadirProductoAdmin")
-		public Response anadirProductoAdmin(Admin admin) {
+	@POST
+	@Path("/anadirProductoAdmin")
+	public Response anadirProductoAdmin(Admin admin) {
 		try{
 			logger.info("Modificando productos del admin: " + admin.getUsuario());
 			tx.begin();
@@ -561,8 +559,8 @@ public class Resource{
 					logger.info("Exception1 launched: {}", ex1.getMessage());
 				}
 				Producto producto = null;//new ArrayList<>(admin.getLista()).get(admin.getLista().size()-1);
-				
 				for(Producto productos: admin.getLista()){
+					logger.info("Producto: " + productos.getId());
 					if(productos.getId() == cont+1){
 						producto = productos;
 						
