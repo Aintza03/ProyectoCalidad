@@ -17,7 +17,7 @@ public class ClientRegistrationController{
     
     }
 
-    public void registrarCliente(WebTarget webTarget,String email, String contrasena, String nombre) {
+    public boolean registrarCliente(WebTarget webTarget,String email, String contrasena, String nombre) {
 		WebTarget WebTargetRegistrarUsuario = webTarget.path("register");
 		Invocation.Builder invocationBuilder = WebTargetRegistrarUsuario.request(MediaType.APPLICATION_JSON);
 		
@@ -28,8 +28,10 @@ public class ClientRegistrationController{
 		Response response = invocationBuilder.post(Entity.entity(cliente, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+			return false;
 		} else {
 			ClientMain.getLogger().info("Cliente registrado correctamente");
+			return true;
 		}
 	}
 }
