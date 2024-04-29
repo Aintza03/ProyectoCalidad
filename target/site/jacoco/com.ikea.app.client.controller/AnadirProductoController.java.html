@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AnadirProductoController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProyectoCalidad</a> &gt; <a href="index.source.html" class="el_package">com.ikea.app.client.controller</a> &gt; <span class="el_source">AnadirProductoController.java</span></div><h1>AnadirProductoController.java</h1><pre class="source lang-java linenums">package com.ikea.app.client.controller;
+ 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.ProcessingException;
+import com.ikea.app.pojo.Producto;
+import com.ikea.app.client.ClientMain;
+import com.ikea.app.pojo.Admin;
+public class AnadirProductoController{
+    
+<span class="nc" id="L17">	public AnadirProductoController(){</span>
+    
+<span class="nc" id="L19">    }</span>
+
+    public void anadirProducto(WebTarget webTarget,String nombre, String tipo, double precio, Admin admin) {
+<span class="nc" id="L22">		int cantidad = 0;</span>
+		try {
+<span class="nc" id="L24">            Response response = webTarget.path(&quot;cantidadProductos&quot;)</span>
+<span class="nc" id="L25">                .request(MediaType.APPLICATION_JSON)</span>
+<span class="nc" id="L26">                .get();</span>
+
+            // check that the response was HTTP OK
+<span class="nc bnc" id="L29" title="All 2 branches missed.">            if (response.getStatusInfo().toEnum() == Status.OK) {</span>
+                // the response is a generic type (a List&lt;User&gt;)
+<span class="nc" id="L31">                cantidad = response.readEntity(int.class);</span>
+            } else {
+<span class="nc" id="L33">				System.out.format(&quot;Error obtaining product amount. %s%n&quot;, response);</span>
+            }
+<span class="nc" id="L35">        } catch (ProcessingException e) {</span>
+<span class="nc" id="L36">            System.out.format(&quot;Error obtaining product list. %s%n&quot;, e.getMessage());</span>
+<span class="nc" id="L37">        }</span>
+<span class="nc" id="L38">		WebTarget WebTargetAnadirProducto = webTarget.path(&quot;anadirProductoAdmin&quot;);</span>
+<span class="nc" id="L39">		Invocation.Builder invocationBuilderAnadirProducto = WebTargetAnadirProducto.request(MediaType.APPLICATION_JSON);</span>
+		
+<span class="nc" id="L41">		Producto producto = new Producto();</span>
+<span class="nc" id="L42">		producto.setId(cantidad+1);</span>
+<span class="nc" id="L43">		producto.setNombre(nombre);</span>
+<span class="nc" id="L44">		producto.setTipo(tipo);</span>
+<span class="nc" id="L45">        producto.setPrecio(precio);</span>
+<span class="nc" id="L46">		admin.getLista().add(producto);</span>
+<span class="nc" id="L47">		Response responseAnadirProducto = invocationBuilderAnadirProducto.post(Entity.entity(admin, MediaType.APPLICATION_JSON));</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">		if (responseAnadirProducto.getStatus() != Status.OK.getStatusCode()) {</span>
+<span class="nc" id="L49">			ClientMain.getLogger().error(&quot;Error connecting with the server. Code: {}&quot;, responseAnadirProducto.getStatus());</span>
+		} else {
+<span class="nc" id="L51">			ClientMain.getLogger().info(&quot;Producto añadido correctamente&quot;);</span>
+		} 
+<span class="nc" id="L53">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

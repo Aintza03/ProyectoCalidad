@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Resource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProyectoCalidad</a> &gt; <a href="index.source.html" class="el_package">com.ikea.app.server</a> &gt; <span class="el_source">Resource.java</span></div><h1>Resource.java</h1><pre class="source lang-java linenums">package com.ikea.app.server;
+import javax.jdo.PersistenceManager;
+import javax.jdo.PersistenceManagerFactory;
+import javax.jdo.Query;
+import javax.jdo.JDOHelper;
+import javax.jdo.Transaction;
+import javax.jdo.Extent;
+
+import com.ikea.app.server.jdo.ClienteJDO;
+import com.ikea.app.server.jdo.AdminJDO;
+import com.ikea.app.pojo.Cliente;
+import com.ikea.app.pojo.Admin;
+import com.ikea.app.server.jdo.CestaJDO;
+import com.ikea.app.server.jdo.ProductoJDO;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
+import javax.ws.rs.QueryParam;
+import java.util.ArrayList;
+
+import com.ikea.app.pojo.Producto;
+import java.util.stream.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import com.ikea.app.pojo.Cesta;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import java.util.List;
+import java.util.HashSet;
+@Path(&quot;/resource&quot;)
+@Produces(MediaType.APPLICATION_JSON)
+public class Resource{
+<span class="nc" id="L37">    protected static final Logger logger = LogManager.getLogger();</span>
+
+<span class="nc" id="L39">	private int cont = 0;</span>
+<span class="nc" id="L40">	private PersistenceManager pm=null;</span>
+<span class="nc" id="L41">	private Transaction tx=null;</span>
+
+<span class="nc" id="L43">    public Resource(){</span>
+<span class="nc" id="L44">        PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory(&quot;datanucleus.properties&quot;);</span>
+<span class="nc" id="L45">		this.pm = pmf.getPersistenceManager();</span>
+<span class="nc" id="L46">		this.tx = pm.currentTransaction();</span>
+<span class="nc" id="L47">    }</span>
+
+    @POST
+	@Path(&quot;/register&quot;)
+	public Response registrarCliente(Cliente cliente) {
+		try
+        {	
+<span class="nc" id="L54">            tx.begin();</span>
+<span class="nc" id="L55">            logger.info(&quot;Comprobando que el usuario no exista: '{}'&quot;, cliente.getEmail());</span>
+<span class="nc" id="L56">			ClienteJDO clienteJDO = null;</span>
+			try {
+<span class="nc" id="L58">				clienteJDO = pm.getObjectById(ClienteJDO.class, cliente.getEmail());</span>
+<span class="nc" id="L59">			} catch (javax.jdo.JDOObjectNotFoundException ex1) {</span>
+<span class="nc" id="L60">				logger.info(&quot;Exception launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L61">			}</span>
+<span class="nc" id="L62">			logger.info(&quot;Cliente: {}&quot;, clienteJDO);</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">			if (clienteJDO != null) {</span>
+<span class="nc" id="L64">				logger.info(&quot;Añadiendo contraseña: {}&quot;, clienteJDO);</span>
+<span class="nc" id="L65">				clienteJDO.setContrasena(cliente.getContrasena());</span>
+<span class="nc" id="L66">				logger.info(&quot;Contraseña añadida: {}&quot;, clienteJDO);</span>
+<span class="nc" id="L67">                logger.info(&quot;Añadiendo nombre: {}&quot;, clienteJDO);</span>
+<span class="nc" id="L68">				clienteJDO.setNombre(cliente.getNombre());</span>
+<span class="nc" id="L69">				logger.info(&quot;Nombre Añadido: {}&quot;, clienteJDO);</span>
+                
+			} else {
+<span class="nc" id="L72">				logger.info(&quot;Creando usuario: {}&quot;, clienteJDO);</span>
+<span class="nc" id="L73">				clienteJDO = new ClienteJDO(cliente.getEmail(), cliente.getContrasena(), cliente.getNombre());</span>
+<span class="nc" id="L74">				CestaJDO cestaJDO = new CestaJDO(clienteJDO);</span>
+<span class="nc" id="L75">				pm.makePersistent(clienteJDO);</span>
+<span class="nc" id="L76">				pm.makePersistent(cestaJDO);					 </span>
+<span class="nc" id="L77">				logger.info(&quot;Usuario creado: {}&quot;, clienteJDO);</span>
+			}
+<span class="nc" id="L79">			tx.commit();</span>
+<span class="nc" id="L80">			return Response.ok().build();</span>
+        }
+        finally
+        {
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            if (tx.isActive())</span>
+            {
+<span class="nc" id="L86">                tx.rollback();</span>
+            }
+<span class="nc" id="L88">			pm.close();</span>
+		}
+	}
+
+	@POST
+	@Path(&quot;/login&quot;)
+	public Response loginCliente(Cliente cliente){
+<span class="nc" id="L95">		ClienteJDO clienteJDO = null;</span>
+		try {	
+<span class="nc" id="L97">            tx.begin();</span>
+<span class="nc" id="L98">            logger.info(&quot;Comprobando que el usuario exista: '{}'&quot;, cliente.getEmail());</span>
+<span class="nc" id="L99">			logger.info(&quot;Comprobando si la contraseña es correcta: '{}&quot;, cliente.getContrasena());</span>
+<span class="nc" id="L100">			try (Query&lt;ClienteJDO&gt; q = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;SELECT * FROM clientejdo WHERE email = '&quot; + cliente.getEmail() + &quot;' AND contrasena = '&quot; + cliente.getContrasena() + &quot;'&quot;)) {</span>
+<span class="nc" id="L101">				q.setClass(ClienteJDO.class);</span>
+<span class="nc" id="L102">				List&lt;ClienteJDO&gt; results = q.executeList();</span>
+<span class="nc" id="L103">				clienteJDO = results.get(0);</span>
+<span class="nc" id="L104">				logger.info(&quot;Client retrieved: {}&quot;, clienteJDO);</span>
+<span class="nc" id="L105">			} catch (Exception ex1) {</span>
+<span class="nc" id="L106">				logger.info(&quot;Exception launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L107">			}</span>
+<span class="nc" id="L108">			tx.commit();</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">			if (clienteJDO != null) {</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">				if(clienteJDO.getContrasena().equals(cliente.getContrasena())) {</span>
+<span class="nc" id="L111">					System.out.println(&quot;Contraseña correcta&quot;);</span>
+<span class="nc" id="L112">					return Response.ok(clienteJDO.getNombre()).build();</span>
+				} else{
+<span class="nc" id="L114">					System.out.println(&quot;Contraseña incorrecta&quot;);</span>
+<span class="nc" id="L115">					return Response.status(Status.UNAUTHORIZED).build();</span>
+				}
+			}else{
+<span class="nc" id="L118">				System.out.println(&quot;Cliente Vacio&quot;);</span>
+<span class="nc" id="L119">				return Response.status(Status.NOT_FOUND).build();</span>
+			}
+		}
+		finally {
+<span class="nc bnc" id="L123" title="All 2 branches missed.">			if (tx.isActive()) {</span>
+<span class="nc" id="L124">				tx.rollback();</span>
+			}
+<span class="nc" id="L126">			pm.close();</span>
+		}
+			 
+	}
+
+	@GET
+	@Path(&quot;/listProducts&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List&lt;Producto&gt; listaProductos() {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
+<span class="nc" id="L136">		List&lt;Producto&gt; productos = new ArrayList&lt;Producto&gt;();</span>
+		try {	
+<span class="nc" id="L138">            tx.begin();</span>
+<span class="nc" id="L139">            logger.info(&quot;Obteniendo productos&quot;);</span>
+<span class="nc" id="L140">			try (Query&lt;ProductoJDO&gt; q = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;SELECT * FROM productojdo&quot;)) {</span>
+<span class="nc" id="L141">				q.setClass(ProductoJDO.class);</span>
+<span class="nc" id="L142">				List&lt;ProductoJDO&gt; results = q.executeList();</span>
+<span class="nc" id="L143">				System.out.println(&quot;Productos: &quot; + results);</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">				for (ProductoJDO productoJDO : results) {</span>
+<span class="nc" id="L145">					Producto producto = new Producto();</span>
+<span class="nc" id="L146">					producto.setNombre(productoJDO.getNombre());</span>
+<span class="nc" id="L147">					producto.setPrecio(productoJDO.getPrecio());</span>
+<span class="nc" id="L148">					producto.setTipo(productoJDO.getTipo());</span>
+<span class="nc" id="L149">					producto.setId(productoJDO.getId());</span>
+<span class="nc" id="L150">					productos.add(producto);</span>
+<span class="nc" id="L151">					logger.info(&quot;Product retrieved: {}&quot;, productoJDO);</span>
+<span class="nc" id="L152">				}</span>
+				
+<span class="nc" id="L154">			} catch (Exception ex1) {</span>
+<span class="nc" id="L155">				logger.info(&quot;Exception launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L156">				ex1.printStackTrace();</span>
+<span class="nc" id="L157">			}</span>
+<span class="nc" id="L158">			tx.commit();</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">			if (productos.size() != 0) {	</span>
+<span class="nc" id="L160">        		return productos;</span>
+			}else{
+<span class="nc" id="L162">				System.out.println(&quot;Producto Vacio&quot;);</span>
+<span class="nc" id="L163">				return productos;</span>
+			}
+		}
+		finally {
+<span class="nc bnc" id="L167" title="All 2 branches missed.">			if (tx.isActive()) {</span>
+<span class="nc" id="L168">				tx.rollback();</span>
+			}
+<span class="nc" id="L170">			pm.close();</span>
+		}
+		}
+	@GET
+	@Path(&quot;/cantidadProductos&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public int cantidadProductos() {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
+<span class="nc" id="L178">		int result = 0;</span>
+		try {	
+<span class="nc" id="L180">            tx.begin();</span>
+<span class="nc" id="L181">            logger.info(&quot;Obteniendo productos&quot;);</span>
+<span class="nc" id="L182">			try (Query&lt;ProductoJDO&gt; q = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;SELECT * FROM productojdo&quot;)) {</span>
+<span class="nc" id="L183">				q.setClass(ProductoJDO.class);</span>
+<span class="nc" id="L184">				List&lt;ProductoJDO&gt; results = q.executeList();</span>
+<span class="nc" id="L185">				System.out.println(&quot;Productos: &quot; + results);</span>
+<span class="nc" id="L186">				result = results.size();</span>
+<span class="nc" id="L187">			} catch (Exception ex1) {</span>
+<span class="nc" id="L188">				logger.info(&quot;Exception launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L189">				ex1.printStackTrace();</span>
+<span class="nc" id="L190">			}</span>
+<span class="nc" id="L191">			tx.commit();</span>
+<span class="nc" id="L192">			return result;</span>
+		}
+		finally {
+<span class="nc bnc" id="L195" title="All 2 branches missed.">			if (tx.isActive()) {</span>
+<span class="nc" id="L196">				tx.rollback();</span>
+			}
+<span class="nc" id="L198">			pm.close();</span>
+		}
+		}
+	
+	@GET
+	@Path(&quot;/cesta&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Cesta getCesta(@QueryParam(&quot;email&quot;) String email) {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
+<span class="nc" id="L207">		Cesta cesta = new Cesta();</span>
+<span class="nc" id="L208">		Cliente cliente = new Cliente();</span>
+		Producto producto;
+		try{
+<span class="nc" id="L211">			tx.begin();</span>
+<span class="nc" id="L212">			logger.info(&quot;Obteniendo cesta del cliente: &quot; + email);</span>
+<span class="nc" id="L213">			CestaJDO cestajdo = null;</span>
+<span class="nc" id="L214">			try (Query&lt;CestaJDO&gt; q = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '&quot; + email +&quot;'&quot;)) {</span>
+<span class="nc" id="L215">				q.setClass(CestaJDO.class);</span>
+<span class="nc" id="L216">				List&lt;CestaJDO&gt; results = q.executeList();</span>
+<span class="nc" id="L217">				cestajdo = results.get(0);</span>
+<span class="nc" id="L218">				logger.info(&quot;Se ha obtenido cesta: &quot; + cestajdo);</span>
+<span class="nc" id="L219">				cliente.setEmail(cestajdo.getCliente().getEmail());</span>
+<span class="nc" id="L220">				cliente.setContrasena(cestajdo.getCliente().getContrasena());</span>
+<span class="nc" id="L221">				cliente.setNombre(cestajdo.getCliente().getNombre());</span>
+<span class="nc" id="L222">				cesta.setCliente(cliente);</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">				for(ProductoJDO productoJDO: cestajdo.getCesta()){</span>
+<span class="nc" id="L224">					producto = new Producto();</span>
+<span class="nc" id="L225">					producto.setId(productoJDO.getId());</span>
+<span class="nc" id="L226">					producto.setNombre(productoJDO.getNombre());</span>
+<span class="nc" id="L227">					producto.setTipo(productoJDO.getTipo());</span>
+<span class="nc" id="L228">					producto.setPrecio(productoJDO.getPrecio());</span>
+<span class="nc" id="L229">					cesta.anadirCesta(producto);</span>
+<span class="nc" id="L230">				}</span>
+<span class="nc" id="L231">			} catch (javax.jdo.JDOObjectNotFoundException ex1) {</span>
+<span class="nc" id="L232">				logger.info(&quot;Exception1 launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L233">			}</span>
+<span class="nc" id="L234">			tx.commit();</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">			if(cestajdo != null){</span>
+<span class="nc" id="L236">				logger.info(&quot;Cesta encontrada&quot;);</span>
+<span class="nc" id="L237">				return cesta;</span>
+			}else{
+<span class="nc" id="L239">				logger.info(&quot;No hay cesta&quot;);</span>
+<span class="nc" id="L240">				return null;</span>
+			}
+<span class="nc" id="L242">		}catch (Exception ex1) {</span>
+<span class="nc" id="L243">				logger.info(&quot;Exception launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L244">				ex1.printStackTrace();</span>
+<span class="nc" id="L245">				return null;</span>
+		}finally {
+<span class="nc bnc" id="L247" title="All 2 branches missed.">			if (tx.isActive()) {</span>
+<span class="nc" id="L248">				tx.rollback();</span>
+			}
+<span class="nc" id="L250">			pm.close();</span>
+		}
+	}
+	
+	@POST
+	@Path(&quot;/modifyCesta&quot;)
+	public Response modifyCesta(Cesta cesta){
+		try{
+<span class="nc" id="L258">			logger.info(&quot;Modificando cesta del cliente: &quot; + cesta.getCliente());</span>
+<span class="nc" id="L259">			tx.begin();</span>
+			
+<span class="nc" id="L261">				CestaJDO cestajdo = null;</span>
+<span class="nc" id="L262">				try (Query&lt;CestaJDO&gt; q = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '&quot;+cesta.getCliente().getEmail() +&quot;'&quot;)) {</span>
+				//try (Query&lt;CestaJDO&gt; q = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;UPDATE productojdo SET PRODUCTOS = '&quot;+ cestajdo.getCliente() +&quot;' WHERE ID = '&quot;+productojdo.getId() +&quot;'&quot;)) {
+<span class="nc" id="L264">				q.setClass(CestaJDO.class);</span>
+<span class="nc" id="L265">				List&lt;CestaJDO&gt; results = q.executeList();</span>
+<span class="nc" id="L266">				cestajdo = results.get(0);</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">				for(Producto producto : cesta.getCesta()){</span>
+<span class="nc" id="L268">					ProductoJDO productojdo = null;</span>
+<span class="nc" id="L269">					try(Query&lt;ProductoJDO&gt; q2 = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;SELECT * FROM productojdo WHERE ID = '&quot;+producto.getId() +&quot;'&quot;)){</span>
+<span class="nc" id="L270">						q2.setClass(ProductoJDO.class);</span>
+<span class="nc" id="L271">						List&lt;ProductoJDO&gt; resultsP = q2.executeList();</span>
+<span class="nc" id="L272">						productojdo = resultsP.get(0);</span>
+<span class="nc" id="L273">						cestajdo.AnadirCesta(productojdo);</span>
+<span class="nc" id="L274">					}catch(javax.jdo.JDOObjectNotFoundException ex1){</span>
+<span class="nc" id="L275">						logger.info(&quot;Exception1 launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L276">					}	</span>
+<span class="nc" id="L277">				}</span>
+<span class="nc" id="L278">				pm.makePersistent(cestajdo);</span>
+<span class="nc" id="L279">				logger.info(&quot;Cesta guardada: {}&quot;, cesta);</span>
+<span class="nc" id="L280">			} catch (javax.jdo.JDOObjectNotFoundException ex1) {</span>
+<span class="nc" id="L281">				logger.info(&quot;Exception1 launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L282">			}	</span>
+<span class="nc" id="L283">			tx.commit();</span>
+<span class="nc" id="L284">			return Response.ok().build();</span>
+<span class="nc" id="L285">		}catch (Exception ex1) {</span>
+<span class="nc" id="L286">				logger.info(&quot;Exception launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L287">				ex1.printStackTrace();</span>
+<span class="nc" id="L288">				return Response.status(Status.NOT_FOUND).build();</span>
+		}finally {
+<span class="nc bnc" id="L290" title="All 2 branches missed.">			if (tx.isActive()) {</span>
+<span class="nc" id="L291">				tx.rollback();</span>
+			}
+<span class="nc" id="L293">			pm.close();</span>
+		}
+	}
+	@POST
+	@Path(&quot;/vaciarCesta&quot;)
+	public Response vaciarCesta(Cesta cesta){
+		try{
+<span class="nc" id="L300">			logger.info(&quot;Modificando cesta del cliente: &quot; + cesta.getCliente());</span>
+<span class="nc" id="L301">			tx.begin();</span>
+			
+<span class="nc" id="L303">				CestaJDO cestajdo = null;</span>
+<span class="nc" id="L304">				try (Query&lt;CestaJDO&gt; q = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '&quot;+cesta.getCliente().getEmail() +&quot;'&quot;)) {</span>
+<span class="nc" id="L305">				q.setClass(CestaJDO.class);</span>
+<span class="nc" id="L306">				List&lt;CestaJDO&gt; results = q.executeList();</span>
+<span class="nc" id="L307">				cestajdo = results.get(0);</span>
+<span class="nc" id="L308">				cestajdo.getCesta().clear();</span>
+<span class="nc" id="L309">				pm.makePersistent(cestajdo);</span>
+<span class="nc" id="L310">				logger.info(&quot;Cesta guardada: {}&quot;, cesta);</span>
+<span class="nc" id="L311">			} catch (javax.jdo.JDOObjectNotFoundException ex1) {</span>
+<span class="nc" id="L312">				logger.info(&quot;Exception1 launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L313">			}	</span>
+<span class="nc" id="L314">			tx.commit();</span>
+<span class="nc" id="L315">			return Response.ok().build();</span>
+<span class="nc" id="L316">		}catch (Exception ex1) {</span>
+<span class="nc" id="L317">				logger.info(&quot;Exception launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L318">				ex1.printStackTrace();</span>
+<span class="nc" id="L319">				return Response.status(Status.NOT_FOUND).build();</span>
+		}finally {
+<span class="nc bnc" id="L321" title="All 2 branches missed.">			if (tx.isActive()) {</span>
+<span class="nc" id="L322">				tx.rollback();</span>
+			}
+<span class="nc" id="L324">			pm.close();</span>
+		}
+	}
+
+	@POST
+	@Path(&quot;/borrarProductoDeCesta&quot;)
+	public Response borrarProductoDeCesta(Cesta cesta){
+		try{
+<span class="nc" id="L332">			logger.info(&quot;Modificando cesta del cliente: &quot; + cesta.getCliente());</span>
+<span class="nc" id="L333">			tx.begin();</span>
+			
+<span class="nc" id="L335">				CestaJDO cestajdo = null;</span>
+<span class="nc" id="L336">				try (Query&lt;CestaJDO&gt; q = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '&quot; + cesta.getCliente().getEmail() + &quot;'&quot;)) {</span>
+<span class="nc" id="L337">				q.setClass(CestaJDO.class);</span>
+<span class="nc" id="L338">				List&lt;CestaJDO&gt; results = q.executeList();</span>
+<span class="nc" id="L339">				cestajdo = results.get(0);</span>
+<span class="nc" id="L340">					try(Query&lt;ProductoJDO&gt; q2 = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;SELECT * FROM productojdo WHERE PRODUCTOS = '&quot; + cesta.getCliente().getEmail() + &quot;'&quot;)){</span>
+<span class="nc" id="L341">						q2.setClass(ProductoJDO.class);</span>
+<span class="nc" id="L342">						List&lt;ProductoJDO&gt; resultsP = q2.executeList();</span>
+<span class="nc" id="L343">						boolean result = false;</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">						for(ProductoJDO productojdo: resultsP){</span>
+<span class="nc" id="L345">							result = false;</span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">							for(Producto producto: cesta.getCesta()){</span>
+<span class="nc bnc" id="L347" title="All 2 branches missed.">								if(productojdo.getId() == producto.getId()){</span>
+<span class="nc" id="L348">									result = true;</span>
+<span class="nc" id="L349">									break;</span>
+								}
+<span class="nc" id="L351">							}</span>
+<span class="nc bnc" id="L352" title="All 2 branches missed.">							if(result == false){</span>
+<span class="nc" id="L353">								cestajdo.borrarProductoDeCesta(productojdo);</span>
+							}
+<span class="nc" id="L355">						}</span>
+<span class="nc" id="L356">					}catch(javax.jdo.JDOObjectNotFoundException ex1){</span>
+<span class="nc" id="L357">						logger.info(&quot;Exception1 launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L358">					}	</span>
+
+<span class="nc" id="L360">				pm.makePersistent(cestajdo);</span>
+<span class="nc" id="L361">				logger.info(&quot;Cesta guardada: {}&quot;, cesta);</span>
+<span class="nc" id="L362">			} catch (javax.jdo.JDOObjectNotFoundException ex1) {</span>
+<span class="nc" id="L363">				logger.info(&quot;Exception1 launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L364">			}	</span>
+<span class="nc" id="L365">			tx.commit();</span>
+<span class="nc" id="L366">			return Response.ok().build();</span>
+<span class="nc" id="L367">		}catch (Exception ex1) {</span>
+<span class="nc" id="L368">				logger.info(&quot;Exception launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L369">				ex1.printStackTrace();</span>
+<span class="nc" id="L370">				return Response.status(Status.NOT_FOUND).build();</span>
+		}finally {
+<span class="nc bnc" id="L372" title="All 2 branches missed.">			if (tx.isActive()) {</span>
+<span class="nc" id="L373">				tx.rollback();</span>
+			}
+<span class="nc" id="L375">			pm.close();</span>
+		}
+	}
+ 
+	@POST
+	@Path(&quot;/modifyClient&quot;)
+	public Response modifyClient(Cliente cliente){
+		try{
+<span class="nc" id="L383">			logger.info(&quot;Modificando el cliente: &quot; + cliente.getEmail());</span>
+<span class="nc" id="L384">			tx.begin();</span>
+			ClienteJDO clienteJDO;
+<span class="nc" id="L386">			try (Query&lt;ClienteJDO&gt; q = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;SELECT * FROM clientejdo WHERE email = '&quot; + cliente.getEmail() + &quot;'&quot;)) {</span>
+<span class="nc" id="L387">				q.setClass(ClienteJDO.class);</span>
+<span class="nc" id="L388">				List&lt;ClienteJDO&gt; results = q.executeList();</span>
+<span class="nc" id="L389">				clienteJDO = results.get(0);</span>
+<span class="nc" id="L390">				clienteJDO.setNombre(cliente.getNombre());</span>
+<span class="nc" id="L391">				clienteJDO.setContrasena(cliente.getContrasena());</span>
+<span class="nc" id="L392">				pm.makePersistent(clienteJDO);</span>
+<span class="nc" id="L393">				logger.info(&quot;Cliente modificado: {}&quot;, clienteJDO);</span>
+<span class="nc" id="L394">			} catch (javax.jdo.JDOObjectNotFoundException ex1) {</span>
+<span class="nc" id="L395">				logger.info(&quot;Exception1 launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L396">			}	</span>
+<span class="nc" id="L397">			tx.commit();</span>
+<span class="nc" id="L398">			return Response.ok().build();</span>
+<span class="nc" id="L399">		}catch (Exception ex1) {</span>
+<span class="nc" id="L400">			logger.info(&quot;Exception launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L401">			ex1.printStackTrace();</span>
+<span class="nc" id="L402">			return Response.status(Status.NOT_FOUND).build();</span>
+		}finally {
+<span class="nc bnc" id="L404" title="All 2 branches missed.">			if (tx.isActive()) {</span>
+<span class="nc" id="L405">				tx.rollback();</span>
+			}
+<span class="nc" id="L407">			pm.close();</span>
+		}
+	}
+
+	@POST
+	@Path(&quot;/loginAdmin&quot;)
+	public Response loginAdmin(Admin admin){
+<span class="nc" id="L414">		AdminJDO adminJDO = null;</span>
+		try {	
+<span class="nc" id="L416">            tx.begin();</span>
+<span class="nc" id="L417">            logger.info(&quot;Comprobando que el admin exista: '{}'&quot;, admin.getUsuario());</span>
+<span class="nc" id="L418">			logger.info(&quot;Comprobando si la contraseña es correcta: '{}&quot;, admin.getContrasena());</span>
+<span class="nc" id="L419">			try (Query&lt;AdminJDO&gt; q = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;SELECT * FROM adminjdo WHERE usuario = '&quot; + admin.getUsuario() + &quot;' AND contrasena = '&quot; + admin.getContrasena() + &quot;'&quot;)) {</span>
+<span class="nc" id="L420">				q.setClass(AdminJDO.class);</span>
+<span class="nc" id="L421">				List&lt;AdminJDO&gt; results = q.executeList();</span>
+<span class="nc" id="L422">				adminJDO = results.get(0);</span>
+<span class="nc" id="L423">				logger.info(&quot;Client retrieved: {}&quot;, adminJDO);</span>
+<span class="nc" id="L424">			} catch (Exception ex1) {</span>
+<span class="nc" id="L425">				logger.info(&quot;Exception launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L426">			}</span>
+<span class="nc" id="L427">			tx.commit();</span>
+<span class="nc bnc" id="L428" title="All 2 branches missed.">			if (adminJDO != null) {</span>
+<span class="nc bnc" id="L429" title="All 2 branches missed.">				if(adminJDO.getContrasena().equals(admin.getContrasena())) {</span>
+<span class="nc" id="L430">					System.out.println(&quot;Contraseña correcta&quot;);</span>
+<span class="nc" id="L431">					admin.setContrasena(adminJDO.getContrasena());</span>
+<span class="nc" id="L432">					admin.setLista(new HashSet&lt;Producto&gt;());</span>
+<span class="nc bnc" id="L433" title="All 2 branches missed.">					for(ProductoJDO productoJDO: adminJDO.getLista()){</span>
+<span class="nc" id="L434">						Producto producto = new Producto();</span>
+<span class="nc" id="L435">						producto.setId(productoJDO.getId());</span>
+<span class="nc" id="L436">						producto.setNombre(productoJDO.getNombre());</span>
+<span class="nc" id="L437">						producto.setTipo(productoJDO.getTipo());</span>
+<span class="nc" id="L438">						producto.setPrecio(productoJDO.getPrecio());</span>
+<span class="nc" id="L439">						admin.anadirLista(producto);</span>
+<span class="nc" id="L440">					}</span>
+<span class="nc" id="L441">					admin.setUsuario(adminJDO.getUsuario());</span>
+<span class="nc" id="L442">					return Response.ok(admin).build();</span>
+				} else{
+<span class="nc" id="L444">					System.out.println(&quot;Contraseña incorrecta&quot;);</span>
+<span class="nc" id="L445">					return Response.status(Status.UNAUTHORIZED).build();</span>
+				}
+			}else{
+<span class="nc" id="L448">				System.out.println(&quot;Admin Vacio&quot;);</span>
+<span class="nc" id="L449">				return Response.status(Status.NOT_FOUND).build();</span>
+			}
+		}
+		finally {
+<span class="nc bnc" id="L453" title="All 2 branches missed.">			if (tx.isActive()) {</span>
+<span class="nc" id="L454">				tx.rollback();</span>
+			}
+<span class="nc" id="L456">			pm.close();</span>
+		}
+	}
+
+	@POST
+	@Path(&quot;/borrarCliente&quot;)
+	public Response borrarCliente(Cliente cliente){
+		try{
+<span class="nc" id="L464">			tx.begin();</span>
+<span class="nc" id="L465">			logger.info(&quot;Modificando cesta del cliente: &quot; + cliente.getNombre());</span>
+<span class="nc" id="L466">			Extent&lt;CestaJDO&gt; ext = pm.getExtent(CestaJDO.class,true);</span>
+<span class="nc" id="L467">            try (Query&lt;CestaJDO&gt; q = pm.newQuery(ext, &quot;cliente.email == '&quot; + cliente.getEmail() + &quot;'&quot;)) {</span>
+<span class="nc" id="L468">                q.deletePersistentAll();</span>
+<span class="nc" id="L469">                logger.info(&quot;Cesta del cliente &quot; + cliente.getNombre() +&quot; borrada&quot;);</span>
+
+<span class="nc" id="L471">                tx.commit();</span>
+<span class="nc" id="L472">            } catch (Exception e) {</span>
+<span class="nc" id="L473">                e.printStackTrace();</span>
+<span class="nc" id="L474">            }</span>
+<span class="nc" id="L475">			tx.begin();</span>
+<span class="nc" id="L476">			Extent&lt;ClienteJDO&gt; ext2 = pm.getExtent(ClienteJDO.class,true);</span>
+<span class="nc" id="L477">            try (Query&lt;ClienteJDO&gt; q2 = pm.newQuery(ext2, &quot;email == '&quot; + cliente.getEmail() + &quot;'&quot;)) {</span>
+<span class="nc" id="L478">                long numberInstancesDeleted = q2.deletePersistentAll();</span>
+<span class="nc" id="L479">                logger.info(&quot;Cliente &quot; + cliente.getNombre() + &quot; borrado&quot;);</span>
+
+<span class="nc" id="L481">                tx.commit();</span>
+<span class="nc" id="L482">            } catch (Exception e) {</span>
+<span class="nc" id="L483">                e.printStackTrace();</span>
+<span class="nc" id="L484">            }</span>
+<span class="nc" id="L485">			return Response.ok().build();</span>
+<span class="nc" id="L486">		}catch (Exception ex1) {</span>
+<span class="nc" id="L487">				logger.info(&quot;Exception launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L488">				ex1.printStackTrace();</span>
+<span class="nc" id="L489">				return Response.status(Status.NOT_FOUND).build();</span>
+		}finally {
+<span class="nc bnc" id="L491" title="All 2 branches missed.">			if (tx.isActive()) {</span>
+<span class="nc" id="L492">				tx.rollback();</span>
+			}
+<span class="nc" id="L494">			pm.close();</span>
+		}
+	}
+	@GET
+	@Path(&quot;/listProductsAdmin&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List&lt;Producto&gt; listaProductosAdministrador(@QueryParam(&quot;admin&quot;) String admin) {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
+<span class="nc" id="L502">		List&lt;Producto&gt; productos = new ArrayList&lt;Producto&gt;();</span>
+		try {	
+<span class="nc" id="L504">            tx.begin();</span>
+<span class="nc" id="L505">            logger.info(&quot;Obteniendo productos&quot;);</span>
+<span class="nc" id="L506">			try (Query&lt;ProductoJDO&gt; q = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;SELECT * FROM productojdo WHERE VENDEDOR = '&quot; + admin + &quot;'&quot;)) {</span>
+<span class="nc" id="L507">				q.setClass(ProductoJDO.class);</span>
+<span class="nc" id="L508">				List&lt;ProductoJDO&gt; results = q.executeList();</span>
+<span class="nc" id="L509">				System.out.println(&quot;Productos: &quot; + results);</span>
+<span class="nc bnc" id="L510" title="All 2 branches missed.">				for (ProductoJDO productoJDO : results) {</span>
+<span class="nc" id="L511">					Producto producto = new Producto();</span>
+<span class="nc" id="L512">					producto.setNombre(productoJDO.getNombre());</span>
+<span class="nc" id="L513">					producto.setPrecio(productoJDO.getPrecio());</span>
+<span class="nc" id="L514">					producto.setTipo(productoJDO.getTipo());</span>
+<span class="nc" id="L515">					producto.setId(productoJDO.getId());</span>
+<span class="nc" id="L516">					Producto.setIdGeneral(producto.getId());</span>
+<span class="nc" id="L517">					productos.add(producto);</span>
+<span class="nc" id="L518">					logger.info(&quot;Product retrieved: {}&quot;, productoJDO);</span>
+<span class="nc" id="L519">				}</span>
+				
+<span class="nc" id="L521">			} catch (Exception ex1) {</span>
+<span class="nc" id="L522">				logger.info(&quot;Exception launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L523">				ex1.printStackTrace();</span>
+<span class="nc" id="L524">			}</span>
+<span class="nc" id="L525">			tx.commit();</span>
+<span class="nc bnc" id="L526" title="All 2 branches missed.">			if (productos.size() != 0) {	</span>
+<span class="nc" id="L527">        		return productos;</span>
+			}else{
+<span class="nc" id="L529">				System.out.println(&quot;Producto Vacio&quot;);</span>
+<span class="nc" id="L530">				return productos;</span>
+			}
+		}
+		finally {
+<span class="nc bnc" id="L534" title="All 2 branches missed.">			if (tx.isActive()) {</span>
+<span class="nc" id="L535">				tx.rollback();</span>
+			}
+<span class="nc" id="L537">			pm.close();</span>
+		}
+		}
+	
+		@POST
+		@Path(&quot;/anadirProductoAdmin&quot;)
+		public Response anadirProductoAdmin(Admin admin) {
+		try{
+<span class="nc" id="L545">			logger.info(&quot;Modificando productos del admin: &quot; + admin.getUsuario());</span>
+<span class="nc" id="L546">			tx.begin();</span>
+<span class="nc" id="L547">				AdminJDO adminjdo = null;</span>
+<span class="nc" id="L548">				try (Query&lt;AdminJDO&gt; q = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;SELECT * FROM adminjdo where usuario = '&quot;+admin.getUsuario() +&quot;'&quot;)) {</span>
+<span class="nc" id="L549">				q.setClass(AdminJDO.class);</span>
+<span class="nc" id="L550">				List&lt;AdminJDO&gt; results = q.executeList();</span>
+<span class="nc" id="L551">				adminjdo = results.get(0);</span>
+<span class="nc" id="L552">				try(Query&lt;ProductoJDO&gt; q2 = pm.newQuery( &quot;javax.jdo.query.SQL&quot;,&quot;SELECT * FROM productojdo&quot;)){</span>
+<span class="nc" id="L553">					q2.setClass(ProductoJDO.class);</span>
+<span class="nc" id="L554">					List&lt;ProductoJDO&gt; number = q2.executeList();</span>
+<span class="nc bnc" id="L555" title="All 2 branches missed.">					if (number != null) {</span>
+<span class="nc" id="L556">						cont = number.size();</span>
+					}else{
+<span class="nc" id="L558">						cont = 0;</span>
+					}
+<span class="nc" id="L560">				}catch(javax.jdo.JDOObjectNotFoundException ex1){</span>
+<span class="nc" id="L561">					logger.info(&quot;Exception1 launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L562">				}</span>
+<span class="nc" id="L563">				Producto producto = null;//new ArrayList&lt;&gt;(admin.getLista()).get(admin.getLista().size()-1);</span>
+				
+<span class="nc bnc" id="L565" title="All 2 branches missed.">				for(Producto productos: admin.getLista()){</span>
+<span class="nc bnc" id="L566" title="All 2 branches missed.">					if(productos.getId() == cont+1){</span>
+<span class="nc" id="L567">						producto = productos;</span>
+						
+					}
+<span class="nc" id="L570">				}</span>
+<span class="nc" id="L571">				ProductoJDO productojdo = new ProductoJDO(producto.getId(), producto.getNombre(), producto.getTipo(), producto.getPrecio());</span>
+<span class="nc" id="L572">				adminjdo.anadirLista(productojdo);</span>
+<span class="nc" id="L573">				pm.makePersistent(productojdo);</span>
+<span class="nc" id="L574">				pm.makePersistent(adminjdo);</span>
+<span class="nc" id="L575">				logger.info(&quot;Producto guardado: {}&quot;, productojdo);</span>
+<span class="nc" id="L576">			} catch (javax.jdo.JDOObjectNotFoundException ex1) {</span>
+<span class="nc" id="L577">				logger.info(&quot;Exception1 launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L578">			}	</span>
+<span class="nc" id="L579">			tx.commit();</span>
+<span class="nc" id="L580">			return Response.ok().build();</span>
+<span class="nc" id="L581">		}catch (Exception ex1) {</span>
+<span class="nc" id="L582">				logger.info(&quot;Exception launched: {}&quot;, ex1.getMessage());</span>
+<span class="nc" id="L583">				ex1.printStackTrace();</span>
+<span class="nc" id="L584">				return Response.status(Status.NOT_FOUND).build();</span>
+		}finally {
+<span class="nc bnc" id="L586" title="All 2 branches missed.">			if (tx.isActive()) {</span>
+<span class="nc" id="L587">				tx.rollback();</span>
+			}
+<span class="nc" id="L589">			pm.close();</span>
+		}	
+	}	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
