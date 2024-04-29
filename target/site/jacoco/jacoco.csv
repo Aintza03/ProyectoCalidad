@@ -13,7 +13,7 @@ ProyectoCalidad,com.ikea.app.client.controller,ProductListAdminController,70,0,2
 ProyectoCalidad,com.ikea.app.client.controller,ClientLoginController,56,0,2,0,14,0,3,0,2,0
 ProyectoCalidad,com.ikea.app.client.controller,ProductListController.new GenericType() {...},6,0,0,0,1,0,1,0,1,0
 ProyectoCalidad,com.ikea.app.client.controller,AdminLoginController,8,45,1,1,2,11,1,2,0,2
-ProyectoCalidad,com.ikea.app.client.controller,CestaWindowController,16,61,2,2,4,14,2,3,0,3
+ProyectoCalidad,com.ikea.app.client.controller,CestaWindowController,0,77,0,4,0,18,0,5,0,3
 ProyectoCalidad,com.ikea.app.client,Pruebas,383,0,4,0,59,0,4,0,2,0
 ProyectoCalidad,com.ikea.app.client,ClientMain,53,5,2,0,12,2,3,2,2,2
 ProyectoCalidad,com.ikea.app.pojo,Admin,0,45,0,0,0,15,0,9,0,9

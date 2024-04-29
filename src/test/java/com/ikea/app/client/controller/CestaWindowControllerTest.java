@@ -1,5 +1,6 @@
 package com.ikea.app.client.controller;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import javax.ws.rs.client.Entity;
@@ -44,6 +45,9 @@ public class CestaWindowControllerTest{
         when(response.readEntity(Cesta.class)).thenReturn(cesta);
         //Se ejecuta la funcion de vaciarCesta pero nunca se accede a la base de datos, los when especifican que hay que devolver en cada llamada
         assertTrue(controllerTest.vaciarCesta(webTarget, cesta));
+
+        when(response.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
+        assertFalse(controllerTest.vaciarCesta(webTarget,cesta));
     }
 
     @Test
@@ -57,5 +61,8 @@ public class CestaWindowControllerTest{
         when(response.readEntity(Cesta.class)).thenReturn(cesta);
         //Se ejecuta la funcion de borrarProductoDeCesta pero nunca se accede a la base de datos, los when especifican que hay que devolver en cada llamada
         assertTrue(controllerTest.borrarProductoDeCesta(webTarget,cesta));
+
+        when(response.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
+        assertFalse(controllerTest.borrarProductoDeCesta(webTarget,cesta));
     }
 }
