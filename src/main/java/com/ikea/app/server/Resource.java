@@ -95,7 +95,7 @@ public class Resource{
             tx.begin();
             logger.info("Comprobando que el usuario exista: '{}'", cliente.getEmail());
 			logger.info("Comprobando si la contraseña es correcta: '{}", cliente.getContrasena());
-			try (Query<ClienteJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM clientejdo WHERE email = '" + cliente.getEmail() + "' AND contrasena = '" + cliente.getContrasena() + "'")) {
+			try (Query<ClienteJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM CLIENTEJDO WHERE email = '" + cliente.getEmail() + "' AND contrasena = '" + cliente.getContrasena() + "'")) {
 				q.setClass(ClienteJDO.class);
 				List<ClienteJDO> results = q.executeList();
 				clienteJDO = results.get(0);
@@ -135,7 +135,7 @@ public class Resource{
 		try {	
             tx.begin();
             logger.info("Obteniendo productos");
-			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo")) {
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO")) {
 				q.setClass(ProductoJDO.class);
 				List<ProductoJDO> results = q.executeList();
 				System.out.println("Productos: " + results);
@@ -177,7 +177,7 @@ public class Resource{
 		try {	
             tx.begin();
             logger.info("Obteniendo productos");
-			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo")) {
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO")) {
 				q.setClass(ProductoJDO.class);
 				List<ProductoJDO> results = q.executeList();
 				System.out.println("Productos: " + results);
@@ -209,7 +209,7 @@ public class Resource{
 			tx.begin();
 			logger.info("Obteniendo cesta del cliente: " + email);
 			CestaJDO cestajdo = null;
-			try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '" + email +"'")) {
+			try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM CESTAJDO WHERE CLIENTE_EMAIL_OID = '" + email +"'")) {
 				q.setClass(CestaJDO.class);
 				List<CestaJDO> results = q.executeList();
 				cestajdo = results.get(0);
@@ -257,14 +257,14 @@ public class Resource{
 			tx.begin();
 			
 				CestaJDO cestajdo = null;
-				try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '"+cesta.getCliente().getEmail() +"'")) {
+				try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM CESTAJDO WHERE CLIENTE_EMAIL_OID = '"+cesta.getCliente().getEmail() +"'")) {
 				//try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","UPDATE productojdo SET PRODUCTOS = '"+ cestajdo.getCliente() +"' WHERE ID = '"+productojdo.getId() +"'")) {
 				q.setClass(CestaJDO.class);
 				List<CestaJDO> results = q.executeList();
 				cestajdo = results.get(0);
 				for(Producto producto : cesta.getCesta()){
 					ProductoJDO productojdo = null;
-					try(Query<ProductoJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo WHERE ID = '"+producto.getId() +"'")){
+					try(Query<ProductoJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO WHERE ID = '"+producto.getId() +"'")){
 						q2.setClass(ProductoJDO.class);
 						List<ProductoJDO> resultsP = q2.executeList();
 						productojdo = resultsP.get(0);
@@ -299,7 +299,7 @@ public class Resource{
 			tx.begin();
 			
 				CestaJDO cestajdo = null;
-				try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '"+cesta.getCliente().getEmail() +"'")) {
+				try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM CESTAJDO WHERE CLIENTE_EMAIL_OID = '"+cesta.getCliente().getEmail() +"'")) {
 				q.setClass(CestaJDO.class);
 				List<CestaJDO> results = q.executeList();
 				cestajdo = results.get(0);
@@ -331,11 +331,11 @@ public class Resource{
 			tx.begin();
 			
 				CestaJDO cestajdo = null;
-				try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM cestajdo WHERE CLIENTE_EMAIL_OID = '" + cesta.getCliente().getEmail() + "'")) {
+				try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM CESTAJDO WHERE CLIENTE_EMAIL_OID = '" + cesta.getCliente().getEmail() + "'")) {
 				q.setClass(CestaJDO.class);
 				List<CestaJDO> results = q.executeList();
 				cestajdo = results.get(0);
-					try(Query<ProductoJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo WHERE PRODUCTOS = '" + cesta.getCliente().getEmail() + "'")){
+					try(Query<ProductoJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO WHERE PRODUCTOS = '" + cesta.getCliente().getEmail() + "'")){
 						q2.setClass(ProductoJDO.class);
 						List<ProductoJDO> resultsP = q2.executeList();
 						boolean result = false;
@@ -381,7 +381,7 @@ public class Resource{
 			logger.info("Modificando el cliente: " + cliente.getEmail());
 			tx.begin();
 			ClienteJDO clienteJDO;
-			try (Query<ClienteJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM clientejdo WHERE email = '" + cliente.getEmail() + "'")) {
+			try (Query<ClienteJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM CLIENTEJDO WHERE email = '" + cliente.getEmail() + "'")) {
 				q.setClass(ClienteJDO.class);
 				List<ClienteJDO> results = q.executeList();
 				clienteJDO = results.get(0);
@@ -414,7 +414,7 @@ public class Resource{
             tx.begin();
             logger.info("Comprobando que el admin exista: '{}'", admin.getUsuario());
 			logger.info("Comprobando si la contraseña es correcta: '{}", admin.getContrasena());
-			try (Query<AdminJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM adminjdo WHERE usuario = '" + admin.getUsuario() + "' AND contrasena = '" + admin.getContrasena() + "'")) {
+			try (Query<AdminJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM ADMINJDO WHERE usuario = '" + admin.getUsuario() + "' AND contrasena = '" + admin.getContrasena() + "'")) {
 				q.setClass(AdminJDO.class);
 				List<AdminJDO> results = q.executeList();
 				adminJDO = results.get(0);
@@ -501,7 +501,7 @@ public class Resource{
 		try {	
             tx.begin();
             logger.info("Obteniendo productos");
-			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo WHERE VENDEDOR = '" + admin + "'")) {
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO WHERE VENDEDOR = '" + admin + "'")) {
 				q.setClass(ProductoJDO.class);
 				List<ProductoJDO> results = q.executeList();
 				System.out.println("Productos: " + results);
@@ -543,11 +543,11 @@ public class Resource{
 			logger.info("Modificando productos del admin: " + admin.getUsuario());
 			tx.begin();
 				AdminJDO adminjdo = null;
-				try (Query<AdminJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM adminjdo where usuario = '"+admin.getUsuario() +"'")) {
+				try (Query<AdminJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM ADMINJDO where usuario = '"+admin.getUsuario() +"'")) {
 				q.setClass(AdminJDO.class);
 				List<AdminJDO> results = q.executeList();
 				adminjdo = results.get(0);
-				try(Query<ProductoJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM productojdo")){
+				try(Query<ProductoJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO")){
 					q2.setClass(ProductoJDO.class);
 					List<ProductoJDO> number = q2.executeList();
 					if (number != null) {
