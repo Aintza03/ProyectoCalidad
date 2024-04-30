@@ -18,7 +18,7 @@ public class AnadirProductoController{
     
     }
 
-    public void anadirProducto(WebTarget webTarget,String nombre, String tipo, double precio, Admin admin) {
+    public boolean anadirProducto(WebTarget webTarget,String nombre, String tipo, double precio, Admin admin) {
 		int cantidad = 0;
 		try {
             Response response = webTarget.path("cantidadProductos")
@@ -26,7 +26,7 @@ public class AnadirProductoController{
                 .get();
 
             // check that the response was HTTP OK
-            if (response.getStatusInfo().toEnum() == Status.OK) {
+            if (response.getStatus() == Status.OK.getStatusCode()) {
                 // the response is a generic type (a List<User>)
                 cantidad = response.readEntity(int.class);
             } else {
@@ -47,8 +47,10 @@ public class AnadirProductoController{
 		Response responseAnadirProducto = invocationBuilderAnadirProducto.post(Entity.entity(admin, MediaType.APPLICATION_JSON));
 		if (responseAnadirProducto.getStatus() != Status.OK.getStatusCode()) {
 			ClientMain.getLogger().error("Error connecting with the server. Code: {}", responseAnadirProducto.getStatus());
+			return false;
 		} else {
 			ClientMain.getLogger().info("Producto añadido correctamente");
+			return true;
 		} 
 	}
 }
