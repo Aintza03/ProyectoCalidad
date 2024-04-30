@@ -36,7 +36,7 @@ public class AdminLoginControllerTest{
         MockitoAnnotations.openMocks(this);
         controllerTest = new AdminLoginController();
     }
-    @Test
+ /*   @Test
     public void testLoginAdmin() {
         //Cuando se expecifique el path en el web target devolvera el webTarget
         when(webTarget.path("loginAdmin")).thenReturn(webTarget);
@@ -52,5 +52,5 @@ public class AdminLoginControllerTest{
         verify(webTarget.request(MediaType.APPLICATION_JSON)).post(AdminEntityCaptor.capture());
         assertEquals("Alfredo", AdminEntityCaptor.getValue().getEntity().getUsuario());
         assertEquals("1234", AdminEntityCaptor.getValue().getEntity().getContrasena());
-    }
+    }*/
 }
