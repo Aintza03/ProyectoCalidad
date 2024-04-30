@@ -17,25 +17,29 @@ public class CestaWindowController{
     
     }          
 
-    public void vaciarCesta(WebTarget webTarget, Cesta cesta) {
+    public boolean vaciarCesta(WebTarget webTarget, Cesta cesta) {
 		WebTarget WebTargetLogin = webTarget.path("vaciarCesta");
 		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.post(Entity.entity(cesta, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+            return false;
 		} else {	
 			ClientMain.getLogger().info("Cesta vaciada correctamente");
+            return true;
 		}
 	}
 
-    public void borrarProductoDeCesta( WebTarget webTarget, Cesta cesta) {
+    public boolean borrarProductoDeCesta( WebTarget webTarget, Cesta cesta) {
         WebTarget WebTargetLogin = webTarget.path("borrarProductoDeCesta");
         Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.post(Entity.entity(cesta, MediaType.APPLICATION_JSON));
         if (response.getStatus() != Status.OK.getStatusCode()) {
             ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+            return false;
         } else {	
             ClientMain.getLogger().info("Producto borrado correctamente");
+            return true;
         }
-}
+    }
 }

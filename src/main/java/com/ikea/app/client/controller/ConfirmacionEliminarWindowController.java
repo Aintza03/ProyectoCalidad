@@ -19,7 +19,8 @@ public class ConfirmacionEliminarWindowController{
         
     }
 
-    public void borrarCliente(WebTarget webTarget, Cliente cliente) {
+    public int borrarCliente(WebTarget webTarget, Cliente cliente) {
+        int i = 0;
         try {
             Response responseEncontrar = webTarget.path("cesta")
                 .queryParam("email", cliente.getEmail())
@@ -28,27 +29,32 @@ public class ConfirmacionEliminarWindowController{
             // check that the response was HTTP OK
             if (responseEncontrar.getStatusInfo().toEnum() == Status.OK) {
                 Cesta cesta = responseEncontrar.readEntity(Cesta.class);
-				WebTarget WebTargetCesta = webTarget.path("vaciarCesta");
+                WebTarget WebTargetCesta = webTarget.path("vaciarCesta");
                 Invocation.Builder invocationBuilderCesta = WebTargetCesta.request(MediaType.APPLICATION_JSON);
                 Response responseCesta = invocationBuilderCesta.post(Entity.entity(cesta, MediaType.APPLICATION_JSON));
                 if (responseCesta.getStatus() != Status.OK.getStatusCode()) {
                     ClientMain.getLogger().error("Error connecting with the server. Code: {}", responseCesta.getStatus());
                 } else {	
-                    ClientMain.getLogger().info("Producto borrado correctamente");
+                    ClientMain.getLogger().info("Cesta borrada correctamente");
                 }
                 WebTarget WebTargetLogin = webTarget.path("borrarCliente");
                 Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
                 Response response = invocationBuilder.post(Entity.entity(cliente, MediaType.APPLICATION_JSON));
                 if (response.getStatus() != Status.OK.getStatusCode()) {
                     ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+                    i = 2;
                 } else {	
-                    ClientMain.getLogger().info("Producto borrado correctamente");
+                    ClientMain.getLogger().info("Cliente borrado correctamente");
+                    i = 3;
                 }
             } else {
 				System.out.format("Error obtaining cesta. %s%n", responseEncontrar);
+                i = 4;
 			}
         } catch (ProcessingException e) {
             System.out.format("Error obtaining cesta. %s%n", e.getMessage());
-        }       
+            i = 5;
+        }
+        return i;       
     }
 }
