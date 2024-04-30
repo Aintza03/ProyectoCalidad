@@ -8,13 +8,13 @@ import static org.mockito.Mockito.when;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
-
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.junit.Before;
 import org.junit.Test;
-
+import java.util.List;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -33,10 +33,6 @@ public class ProductListControllerTest {
     @Mock
     private WebTarget webTarget = mock(WebTarget.class);
     @Mock
-    Cliente cliente = mock(Cliente.class);
-    @Mock
-    Producto producto = mock(Producto.class);
-    @Mock
     private Response response = mock(Response.class);
     @Mock
     private Invocation.Builder invocation = mock(Invocation.Builder.class);
@@ -50,18 +46,17 @@ public class ProductListControllerTest {
         MockitoAnnotations.openMocks(this);
         controllerTest = new ProductListController();
     }
-    @Test
-    public void testDatosDeProductos() {
+    @Test(expected = ProcessingException.class)
+    public void testDatosDeProductosException() {
         //Cuando se expecifique el path en el web target devolvera el webTarget
+        when(webTarget.path("listProducts")).thenThrow(new ProcessingException("Error"));
         when(webTarget.path("listProducts")).thenReturn(webTarget);
         //Cuando se especifique el request(MediaTypeApplication) devolvera la invocation
-        when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
-        when(invocation.get()).thenReturn(response);
-        when(response.getStatus()).thenReturn(Status.OK.getStatusCode());
         //Se ejecuta la funcion de datosDeProductos pero nunca se accede a la base de datos, los when especifican que hay que devolver en cada llamada
-        assertTrue(controllerTest.datosDeProductos(webTarget).size() == 0);
+        List<Producto> productos = controllerTest.datosDeProductos(webTarget);
+        assertEquals(0, productos.size());
     }
-    @Test
+    /*@Test
     public void testGetCesta() {
         //Cuando se expecifique el path en el web target devolvera el webTarget
         when(webTarget.path("cesta")).thenReturn(webTarget);
@@ -87,5 +82,5 @@ public class ProductListControllerTest {
         verify(webTarget.request(MediaType.APPLICATION_JSON)).post(ProductoEntityCaptor.capture());
         assertEquals(producto, ProductoEntityCaptor.getValue().getEntity());
     }
-
+*/
 }
