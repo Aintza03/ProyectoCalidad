@@ -52,6 +52,7 @@ public class ClientRegistrationControllerTest{
         
        
     }
+    @Test
     public void testRegistrarClienteFalse() {
         //Cuando se expecifique el path en el web target devolvera el webTarget
         when(webTarget.path("register")).thenReturn(webTarget);

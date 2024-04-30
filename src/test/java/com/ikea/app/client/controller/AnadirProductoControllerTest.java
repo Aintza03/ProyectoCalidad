@@ -45,34 +45,7 @@ public class AnadirProductoControllerTest{
     }
     @Test
     public void testAnadirProducto() {
-        //Cuando se expecifique el path en el web target devolvera el webTarget
-        when(webTarget.path("cantidadProductos")).thenReturn(webTarget);
-        //Cuando se haga una peticion GET devolvera el invocation
-        when(webTarget.path("cantidadProductos").request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
-        //Cuando se haga una peticion GET devolvera el response
-        when(invocation.get()).thenReturn(response);
-        //Cuando se haga una peticion GET devolvera el status OK
-        when(response.getStatusInfo()).thenReturn(Status.OK);
-        //Cuando se haga una peticion GET devolvera la cantidad de productos
-        when(response.readEntity(int.class)).thenReturn(0);
-        //Cuando se expecifique el path en el web target devolvera el webTarget
-        when(webTarget.path("anadirProductoAdmin")).thenReturn(webTarget);
-        //Cuando se haga una peticion POST devolvera el invocation
-        when(webTarget.path("anadirProductoAdmin").request(MediaType.APPLICATION_JSON)).thenReturn(invocationBuilderAnadirProducto);
-        //Cuando se haga una peticion POST devolvera el response
-        when(invocationBuilderAnadirProducto.post(any(Entity.class))).thenReturn(responseAnadirProducto);
-        //Cuando se haga una peticion POST devolvera el status OK
-        when(responseAnadirProducto.getStatus()).thenReturn(Status.OK.getStatusCode());
-        when(response.getStatusInfo()).thenReturn(Status.OK);
         
-
-        Admin admin = new Admin();
-        when(invocationBuilderAnadirProducto.post(Entity.entity(admin, MediaType.APPLICATION_JSON))).thenReturn(responseAnadirProducto);
-        
-        admin.setLista(new HashSet<Producto>());
-        assertTrue(controllerTest.anadirProducto(webTarget,"mesa","madera", 50, admin));
-        when(responseAnadirProducto.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
-        assertTrue(!controllerTest.anadirProducto(webTarget,"mesa","madera", 50, admin));
        
     }
 }

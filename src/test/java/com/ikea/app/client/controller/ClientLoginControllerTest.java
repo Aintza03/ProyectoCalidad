@@ -39,6 +39,8 @@ public class ClientLoginControllerTest{
         when(webTarget.path("login")).thenReturn(webTarget);
         //Cuando se especifique el request(MediaTypeApplication) devolvera la invocation
         when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        when(invocation.post(any(Entity.class))).thenReturn(response);
+        
         when(cliente.getEmail()).thenReturn("Alfredo@gmail.com");
         when(cliente.getContrasena()).thenReturn("1234");
         when(response.readEntity(String.class)).thenReturn("Alfredo");
@@ -48,23 +50,24 @@ public class ClientLoginControllerTest{
         String a = controllerTest.loginCliente(webTarget,"Alfredo@gmail.com","1234");
         String b = "Alfredo";
         assertTrue(a.equals(b));
-        when(invocation.post(any(Entity.class))).thenReturn(response);
         when(response.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
         assertTrue(controllerTest.loginCliente(webTarget,"Alfredo@gmail.com","1234").equals(""));
     }
-
+@Test
     public void testLoginClienteFalse() {
         //Cuando se expecifique el path en el web target devolvera el webTarget
         when(webTarget.path("login")).thenReturn(webTarget);
-        //Cuando se especifique el request(MediaTypeApplication) devolvera la invocation
         when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        //Cuando se especifique el request(MediaTypeApplication) devolvera la invocation
+        when(invocation.post(any(Entity.class))).thenReturn(response);
+        
         when(cliente.getEmail()).thenReturn("Alfredo@gmail.com");
         when(cliente.getContrasena()).thenReturn("1234");
         when(response.readEntity(String.class)).thenReturn("Alfredo");
         when(response.readEntity(Cliente.class)).thenReturn(cliente);
         //Se ejecuta la funcion de login pero nunca se accede a la base de datos, los when especifican que hay que devolver en cada llamada
         
-        when(invocation.post(any(Entity.class))).thenReturn(response);
+        
         when(response.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
         assertTrue(controllerTest.loginCliente(webTarget,"Alfredo@gmail.com","1234").equals(""));
     }
