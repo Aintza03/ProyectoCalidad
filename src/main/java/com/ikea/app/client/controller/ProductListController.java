@@ -70,14 +70,16 @@ public class ProductListController{
         }	
 	}
 	
-    public void modificarCesta(WebTarget webTarget,Cesta cesta) {
+    public boolean modificarCesta(WebTarget webTarget,Cesta cesta) {
 		WebTarget WebTargetLogin = webTarget.path("modifyCesta");
 		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.post(Entity.entity(cesta, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+            return false;
 		} else {	
 			ClientMain.getLogger().info("Cesta modificada correctamente");
+            return true;
 		}
 	}
 }
