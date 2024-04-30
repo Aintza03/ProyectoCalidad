@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.SyncInvoker;
@@ -29,11 +30,15 @@ public class AnadirProductoControllerTest{
     @Mock
     private WebTarget webTarget = mock(WebTarget.class);
     @Mock
+    private WebTarget webTarget2 = mock(WebTarget.class);
+    @Mock
     private Response response = mock(Response.class);
     @Mock
     private Response responseAnadirProducto = mock(Response.class);
     @Mock
     private Invocation.Builder invocation = mock(Invocation.Builder.class);
+    @Mock
+    private ProcessingException e = mock(ProcessingException.class);
     
     @Mock
     private Invocation.Builder invocationBuilderAnadirProducto = mock(Invocation.Builder.class);
@@ -44,8 +49,81 @@ public class AnadirProductoControllerTest{
         controllerTest = new AnadirProductoController();
     }
     @Test
-    public void testAnadirProducto() {
+    public void testAnadirProductoThrow() {
+        //Cuando se expecifique el path en el web target devolvera el webTarget
+        when(webTarget.path("cantidadProductos")).thenThrow(e);
+        //Cuando se expecifique el path en el web target devolvera el webTarget
+        when(webTarget.path("anadirProductoAdmin")).thenReturn(webTarget);
+        //Cuando se haga una peticion POST devolvera el invocation
+        when(webTarget.path("anadirProductoAdmin").request(MediaType.APPLICATION_JSON)).thenReturn(invocationBuilderAnadirProducto);
+        //Cuando se haga una peticion POST devolvera el response
+        when(invocationBuilderAnadirProducto.post(any(Entity.class))).thenReturn(responseAnadirProducto);
+        //Cuando se haga una peticion POST devolvera el status OK
+        when(responseAnadirProducto.getStatus()).thenReturn(Status.OK.getStatusCode());
+        when(response.getStatusInfo()).thenReturn(Status.OK);
         
+
+        Admin admin = new Admin();
+        when(invocationBuilderAnadirProducto.post(Entity.entity(admin, MediaType.APPLICATION_JSON))).thenReturn(responseAnadirProducto);
+        
+        admin.setLista(new HashSet<Producto>());
+        assertTrue(controllerTest.anadirProducto(webTarget,"mesa","madera", 50, admin));
+       
+    }
+    @Test
+    public void testAnadirProductoTryTrue() {
+        //Cuando se expecifique el path en el web target devolvera el webTarget
+        when(webTarget.path("cantidadProductos")).thenReturn(webTarget2);
+        //Cuando se haga una peticion GET devolvera el invocation
+        when(webTarget2.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        //Cuando se haga una peticion GET devolvera el response
+        when(invocation.get()).thenReturn(response);
+        //Cuando se haga una peticion GET devolvera el status OK
+        when(response.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
+        
+        //Cuando se expecifique el path en el web target devolvera el webTarget
+        when(webTarget.path("anadirProductoAdmin")).thenReturn(webTarget);
+        //Cuando se haga una peticion POST devolvera el invocation
+        when(webTarget.path("anadirProductoAdmin").request(MediaType.APPLICATION_JSON)).thenReturn(invocationBuilderAnadirProducto);
+        //Cuando se haga una peticion POST devolvera el response
+        when(invocationBuilderAnadirProducto.post(any(Entity.class))).thenReturn(responseAnadirProducto);
+        //Cuando se haga una peticion POST devolvera el status OK
+        when(response.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
+        Admin admin = new Admin();
+        when(invocationBuilderAnadirProducto.post(Entity.entity(admin, MediaType.APPLICATION_JSON))).thenReturn(responseAnadirProducto);
+        
+        admin.setLista(new HashSet<Producto>());
+        when(responseAnadirProducto.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
+        assertTrue(!controllerTest.anadirProducto(webTarget,"mesa","madera", 50, admin));
+       
+    }
+    @Test
+    public void testAnadirProductoTryFalse() {
+        //Cuando se expecifique el path en el web target devolvera el webTarget
+        when(webTarget.path("cantidadProductos")).thenReturn(webTarget2);
+        //Cuando se haga una peticion GET devolvera el invocation
+        when(webTarget2.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        //Cuando se haga una peticion GET devolvera el response
+        when(invocation.get()).thenReturn(response);
+        
+        //Cuando se expecifique el path en el web target devolvera el webTarget
+        when(webTarget.path("anadirProductoAdmin")).thenReturn(webTarget);
+        //Cuando se haga una peticion POST devolvera el invocation
+        when(webTarget.path("anadirProductoAdmin").request(MediaType.APPLICATION_JSON)).thenReturn(invocationBuilderAnadirProducto);
+        //Cuando se haga una peticion POST devolvera el response
+        when(invocationBuilderAnadirProducto.post(any(Entity.class))).thenReturn(responseAnadirProducto);
+        //Cuando se haga una peticion POST devolvera el status OK
+        when(response.getStatus()).thenReturn(Status.OK.getStatusCode());
+        when(response.readEntity(int.class)).thenReturn(1);
+
+        
+
+        Admin admin = new Admin();
+        when(invocationBuilderAnadirProducto.post(Entity.entity(admin, MediaType.APPLICATION_JSON))).thenReturn(responseAnadirProducto);
+        
+        admin.setLista(new HashSet<Producto>());
+        when(responseAnadirProducto.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
+        assertTrue(!controllerTest.anadirProducto(webTarget,"mesa","madera", 50, admin));
        
     }
 }
