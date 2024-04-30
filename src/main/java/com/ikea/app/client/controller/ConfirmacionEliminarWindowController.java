@@ -36,7 +36,6 @@ public class ConfirmacionEliminarWindowController{
                     ClientMain.getLogger().error("Error connecting with the server. Code: {}", responseCesta.getStatus());
                 } else {	
                     ClientMain.getLogger().info("Cesta borrada correctamente");
-                    i = 1;
                 }
                 WebTarget WebTargetLogin = webTarget.path("borrarCliente");
                 Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
@@ -54,6 +53,7 @@ public class ConfirmacionEliminarWindowController{
 			}
         } catch (ProcessingException e) {
             System.out.format("Error obtaining cesta. %s%n", e.getMessage());
+            i = 5;
         }
         return i;       
     }

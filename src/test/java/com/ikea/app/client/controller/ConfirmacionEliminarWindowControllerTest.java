@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
@@ -71,19 +71,57 @@ public class ConfirmacionEliminarWindowControllerTest{
         when(webTarget.path("vaciarCesta").request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
         when(webTarget.path("borrarCliente")).thenReturn(webTarget);
         when(webTarget.path("borrarCliente").request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
-        assertEquals(1, controllerTest.borrarCliente(webTarget,cliente));
-
-        /*when(responseCesta.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
-        assertEquals(controllerTest.borrarCliente(webTarget,cliente), 0);
-        //Cuando se especifique el request(MediaTypeApplication) devolvera la invocation
-        when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocation3);
-        when(invocation3.post(any(Entity.class))).thenReturn(response);
-        when(response.getStatus()).thenReturn(Status.OK.getStatusCode());
-        when(response.readEntity(Cliente.class)).thenReturn(cliente);
-        //Se ejecuta la funcion de borrarProductoDeCesta pero nunca se accede a la base de datos, los when especifican que hay que devolver en cada llamada
-        assertEquals(controllerTest.borrarCliente(webTarget,cliente), 2);
-
-        when(response.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
-        assertEquals(controllerTest.borrarCliente(webTarget,cliente), 3);*/
+        when(invocation.post(any(Entity.class))).thenReturn(responseEncontrar);
+        assertEquals(3, controllerTest.borrarCliente(webTarget,cliente));
+    }
+    
+    @Test
+    public void borrarClienteTestError() {
+        Cliente cliente = new Cliente();
+        cliente.setEmail("Javier");
+        cliente.setNombre("Javier");
+        cliente.setContrasena("Javier");
+        when(webTarget.path("cesta")).thenReturn(webTarget);
+        when(webTarget.path("cesta").queryParam("email", "Javier")).thenReturn(webTarget);
+        when(webTarget.path("cesta").queryParam("email", "Javier").request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        when(invocation.get()).thenReturn(responseEncontrar);
+        when(responseEncontrar.readEntity(Cesta.class)).thenReturn(cesta);
+        when(responseEncontrar.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
+        when(responseEncontrar.getStatusInfo()).thenReturn(Status.BAD_REQUEST);
+        when(responseEncontrar.getStatusInfo().toEnum()).thenReturn(Status.BAD_REQUEST);
+        when(webTarget.path("vaciarCesta")).thenReturn(webTarget);
+        when(webTarget.path("vaciarCesta").request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        when(webTarget.path("borrarCliente")).thenReturn(webTarget);
+        when(webTarget.path("borrarCliente").request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        when(invocation.post(any(Entity.class))).thenReturn(responseEncontrar);
+        assertEquals(4, controllerTest.borrarCliente(webTarget,cliente));
+    }
+    @Test
+    public void borrarClienteTestError2() {
+        Cliente cliente = new Cliente();
+        cliente.setEmail("Javier");
+        cliente.setNombre("Javier");
+        cliente.setContrasena("Javier");
+        when(webTarget.path("cesta")).thenReturn(webTarget);
+        when(webTarget.path("cesta").queryParam("email", "Javier")).thenReturn(webTarget);
+        when(webTarget.path("cesta").queryParam("email", "Javier").request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        when(invocation.get()).thenReturn(responseEncontrar);
+        when(responseEncontrar.readEntity(Cesta.class)).thenReturn(cesta);
+        when(responseEncontrar.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
+        when(responseEncontrar.getStatusInfo()).thenReturn(Status.OK);
+        when(responseEncontrar.getStatusInfo().toEnum()).thenReturn(Status.OK);
+        when(webTarget.path("vaciarCesta")).thenReturn(webTarget);
+        when(webTarget.path("vaciarCesta").request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        when(webTarget.path("borrarCliente")).thenReturn(webTarget);
+        when(webTarget.path("borrarCliente").request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        when(invocation.post(any(Entity.class))).thenReturn(responseEncontrar);
+        assertEquals(2, controllerTest.borrarCliente(webTarget,cliente));
+    }
+    @Test
+    public void borrarClienteException(){
+        when(webTarget.path("cesta")).thenThrow(new ProcessingException("Error"));
+        when(webTarget.path("vaciarCesta")).thenThrow(new ProcessingException("Error"));
+        when(webTarget.path("borrarCliente")).thenThrow(new ProcessingException("Error"));
+        assertEquals(5, controllerTest.borrarCliente(webTarget,cliente));
     }
 }
