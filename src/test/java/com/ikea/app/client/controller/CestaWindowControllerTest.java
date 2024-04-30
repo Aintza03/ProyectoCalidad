@@ -45,8 +45,17 @@ public class CestaWindowControllerTest{
         when(response.readEntity(Cesta.class)).thenReturn(cesta);
         //Se ejecuta la funcion de vaciarCesta pero nunca se accede a la base de datos, los when especifican que hay que devolver en cada llamada
         assertTrue(controllerTest.vaciarCesta(webTarget, cesta));
+    }
 
+    @Test
+    public void vaciarCestaTest2() {
+        //Cuando se expecifique el path en el web target devolvera el webTarget
+        when(webTarget.path("vaciarCesta")).thenReturn(webTarget);
+        //Cuando se especifique el request(MediaTypeApplication) devolvera la invocation
+        when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        when(invocation.post(any(Entity.class))).thenReturn(response);
         when(response.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
+        when(response.readEntity(Cesta.class)).thenReturn(cesta);
         assertFalse(controllerTest.vaciarCesta(webTarget,cesta));
     }
 
@@ -61,8 +70,17 @@ public class CestaWindowControllerTest{
         when(response.readEntity(Cesta.class)).thenReturn(cesta);
         //Se ejecuta la funcion de borrarProductoDeCesta pero nunca se accede a la base de datos, los when especifican que hay que devolver en cada llamada
         assertTrue(controllerTest.borrarProductoDeCesta(webTarget,cesta));
+    }
 
+    @Test
+    public void borrarProductoDeCestaTest2() {
+        //Cuando se expecifique el path en el web target devolvera el webTarget
+        when(webTarget.path("borrarProductoDeCesta")).thenReturn(webTarget);
+        //Cuando se especifique el request(MediaTypeApplication) devolvera la invocation
+        when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        when(invocation.post(any(Entity.class))).thenReturn(response);
         when(response.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
+        when(response.readEntity(Cesta.class)).thenReturn(cesta);
         assertFalse(controllerTest.borrarProductoDeCesta(webTarget,cesta));
     }
 }
