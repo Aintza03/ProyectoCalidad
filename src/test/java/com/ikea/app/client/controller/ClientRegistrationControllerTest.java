@@ -34,7 +34,7 @@ public class ClientRegistrationControllerTest{
         controllerTest = new ClientRegistrationController();
     }
     @Test
-    public void testRegistrarCliente() {
+    public void testRegistrarClienteTrue() {
         //Cuando se expecifique el path en el web target devolvera el webTarget
         when(webTarget.path("register")).thenReturn(webTarget);
         //Cuando se especifique el request(MediaTypeApplication) devolvera la invocation
@@ -50,6 +50,21 @@ public class ClientRegistrationControllerTest{
 		assertTrue(controllerTest.registrarCliente(webTarget,"Alfredo@gmail.com","1234", "Alfredo"));
 		
         
+       
+    }
+    public void testRegistrarClienteFalse() {
+        //Cuando se expecifique el path en el web target devolvera el webTarget
+        when(webTarget.path("register")).thenReturn(webTarget);
+        //Cuando se especifique el request(MediaTypeApplication) devolvera la invocation
+        when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        when(cliente.getEmail()).thenReturn("Alfredo@gmail.com");
+        when(cliente.getContrasena()).thenReturn("1234");
+        when(invocation.post(any(Entity.class))).thenReturn(response);
+        when(response.readEntity(String.class)).thenReturn("Alfredo");
+        when(response.readEntity(Cliente.class)).thenReturn(cliente);
+        //Se ejecuta la funcion de login pero nunca se accede a la base de datos, los when especifican que hay que devolver en cada llamada
+         
+		
         when(response.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
        assertTrue(!(controllerTest.registrarCliente(webTarget,"Alfredo@gmail.com","1234","Alfredo")));
        
