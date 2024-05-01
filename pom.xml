@@ -194,6 +194,7 @@
 				<excludes>
 				<exclude>**/Main.class</exclude>
 				<exclude>**/window/**</exclude>
+				<exclude>**/ClientMain.class</exclude>
 				</excludes>
 				</configuration>
 				<executions>

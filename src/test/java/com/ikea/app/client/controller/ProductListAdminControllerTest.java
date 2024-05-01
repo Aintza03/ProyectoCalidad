@@ -30,12 +30,12 @@ import com.ikea.app.pojo.Cesta;
 import javax.ws.rs.core.Response.Status;
 import static org.mockito.Mockito.*;
 
-import com.ikea.app.client.controller.ProductListController;
+import com.ikea.app.client.controller.ProductListAdminController;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 
 public class ProductListAdminControllerTest {
-    /*private ProductListController controllerTest;
+    private ProductListAdminController controllerTest;
     @Mock
     private WebTarget webTarget = mock(WebTarget.class);
     @Mock
@@ -45,7 +45,7 @@ public class ProductListAdminControllerTest {
     @Captor
     private ArgumentCaptor<Entity<Producto>> ProductoEntityCaptor;
     @Captor
-    private ArgumentCaptor<Entity<Cesta>> CestaEntityCaptor;
+    private ArgumentCaptor<Entity<Admin>> AdminEntityCaptor;
     @Before
     public void setUp() {
         //Obligatorio con Mockito
@@ -56,13 +56,20 @@ public class ProductListAdminControllerTest {
     @Test
     public void testDatosDeProductos(){
 
-        ArrayList<Producto> lista = new ArrayList<Producto>();
+        List<Producto> lista = new ArrayList<Producto>();
+
+        Admin admin = new Admin();
+        admin.setUsuario("Federico");
+        admin.setContrasena("1234");
+       
+
         Producto producto = new Producto();
         producto.setId(1);
         producto.setNombre("Mesa");
         producto.setPrecio(10);
         producto.setTipo("10");
         lista.add(producto);
+
         Producto producto2 = new Producto();
         producto2.setId(2);
         producto2.setNombre("Silla");
@@ -79,20 +86,26 @@ public class ProductListAdminControllerTest {
         when(response.getStatusInfo().toEnum()).thenReturn(Status.OK);
         GenericType<List<Producto>> listType = new GenericType<List<Producto>>(){};
         when(response.readEntity(listType)).thenReturn(lista);
-        List<Producto> listaP = controllerTest.datosDeProductos(webTarget);
+        List<Producto> listaP = controllerTest.datosDeProductos(webTarget, "Federico");
         assertEquals(listaP.size(), 2);
 
     }
 
     @Test
     public void testDatosDeProductosError() {
-        ArrayList<Producto> lista = new ArrayList<Producto>();
+        List<Producto> lista = new ArrayList<Producto>();
+
+        Admin admin = new Admin();
+        admin.setUsuario("Federico");
+        admin.setContrasena("1234");
+
         Producto producto = new Producto();
         producto.setId(1);
         producto.setNombre("Mesa");
         producto.setPrecio(10);
         producto.setTipo("10");
         lista.add(producto);
+
         Producto producto2 = new Producto();
         producto2.setId(2);
         producto2.setNombre("Silla");
@@ -100,7 +113,6 @@ public class ProductListAdminControllerTest {
         producto2.setTipo("5");
         lista.add(producto2);
 
-        //Cuando se expecifique el path en el web target devolvera el webTarget
         when(webTarget.path("listProductsAdmin")).thenReturn(webTarget);
         when(webTarget.queryParam("admin", "Federico")).thenReturn(webTarget);
         when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
@@ -110,8 +122,19 @@ public class ProductListAdminControllerTest {
         when(response.getStatusInfo().toEnum()).thenReturn(Status.BAD_REQUEST);
         GenericType<List<Producto>> listType = new GenericType<List<Producto>>(){};
         when(response.readEntity(listType)).thenReturn(lista);
-        List<Producto> listaP = controllerTest.datosDeProductos(webTarget);
+        List<Producto> listaP = controllerTest.datosDeProductos(webTarget, "Federico");
         assertEquals(listaP.size(), 0);
     }
-*/
+
+    @Test
+    public void testDatosDeProductosException() {
+    
+        when(webTarget.path("listProductsAdmin")).thenThrow(new ProcessingException("Error"));
+        when(webTarget.queryParam("admin", "Federico")).thenReturn(webTarget);
+        when(webTarget.request(MediaType.APPLICATION_JSON)).thenThrow(new ProcessingException("2"));
+        List<Producto> productos = controllerTest.datosDeProductos(webTarget, "Federico");
+        assertEquals(0, productos.size());
+
+    }
+
 }
