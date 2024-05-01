@@ -1,9 +1,14 @@
 
 Maven-Client-ProjectCalidad
 ========================================================================================================================================
+### Ejecutar Test
+
 Para ejecutar los test hace falta que se ejecute:  
 
       mvn test
+Nota: Para que funcione bien primero habría que ejecutar ***mvn clean***, sino como las classes habran pasado por ***mvn datanucleus:enhance***, mockito mostraria codigo que ha insertado datanucleus en nuestra clase como **NO TESTADO**. Para ver la cobertura de los test hay que hacer click en * *index.html* * que se encuentra en * *target>site>jacoco* *
+
+### Ejecutar Programa
 
 Si es la primera vez que se ejecuta el programa en este ordenador primero hay que abrir el workbench de MySQL y desde el root ejecutar todas las sentencias MySQL del fichero "create-ikea.sql". El fichero se encuentra dentro del proyecto en la carpeta "sql".
 
@@ -34,4 +39,37 @@ En cualquier caso, sea la primera vez que se ejecuta en este ordenador o no habr
       mvn exec:java -Pclient
 
 Nota: Para detener el servidor o el cliente hay que pulsar **Ctrl+C** y introducir una **S**. No obstante, el cliente tambien se puede detener cerrando todas las ventanas.
+
+### Ejecutar Test de Integración
+Al contrario que en los test unitarios en estos si que hay que hacer ***datanucleus enhance*** antes de probarlos.
+Los primeros pasos son:
+
+      mvn compile
+      mvn datanucleus:enhance
+      mvn datanucleus:schema-create
+
+Estos pasos preparan el programa para ejecutar los test de integración. Por ultimo, hay que ejecutar el siguiente comando relacionado a un perfil que se encarga de ejecutar los test de integración.
+
+      mvn verify -Pintegration-tests
+
+
+### Ejecutar Test de Rendimiento
+Se ejecutan de manera muy parecida a los test de integración.
+Los primeros pasos son:
+
+      mvn compile
+      mvn datanucleus:enhance
+      mvn datanucleus:schema-create
+
+Por ultimo, hay que ejecutar el siguiente comando relacionado a un perfil que se encarga de ejecutar los test de rendimiento.
+
+      mvn verify -Pperformance-tests
+      
+Nota: Para ver las graficas de los performance test hay que hacer click en * *report.html* * que esta en * *target>junitperf* *
+
+
+
+
+
+
 
