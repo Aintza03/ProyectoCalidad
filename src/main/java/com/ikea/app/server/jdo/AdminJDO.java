@@ -18,6 +18,9 @@ public class AdminJDO {
         this.contrasena = contrasena;
         this.lista = new HashSet<ProductoJDO>();
     }
+    public AdminJDO() {
+        this.lista = new HashSet<ProductoJDO>();
+    }
 
     public String getUsuario() {
         return this.usuario;

@@ -21,7 +21,9 @@ public class ClienteJDO{
 		this.contrasena = contrasena;
         this.nombre = nombre;
 	}
-
+	public ClienteJDO() {
+		
+	}
     public String getEmail() {
 		return this.email;
 	}
