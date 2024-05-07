@@ -1066,4 +1066,40 @@ public class ServerTest {
         Response response = resourceTest.anadirProductoAdmin(admin);
         assertEquals(Response.Status.OK, response.getStatusInfo());
     }   
+    @Test
+    public void testEliminarProducto() {
+        Producto producto = new Producto();
+        producto.setId(10);
+        
+        @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
+        when(persistenceManager.newQuery("javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO where id = '"+producto.getId() +"'")).thenReturn(query);
+        List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
+        productos.add(new ProductoJDO(10,"nombre", "descripcion", 10.0));
+        when(query.executeList()).thenReturn(productos);
+
+        when(transaction.isActive()).thenReturn(false);
+        Response response = resourceTest.eliminarProducto(producto);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testEliminarProductoex1() {
+        Producto producto = new Producto();
+        producto.setId(10);
+        @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
+        when(persistenceManager.newQuery("javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO where id = '"+producto.getId() +"'")).thenThrow(new JDOObjectNotFoundException(""));
+        when(transaction.isActive()).thenReturn(false);
+        Response response = resourceTest.eliminarProducto(producto);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testEliminarProductoEx2() {
+        Producto producto = new Producto();
+        producto.setId(10);
+        doThrow(new RuntimeException("Test exception")).when(transaction).commit();
+
+        when(transaction.isActive()).thenReturn(true);
+        Response response = resourceTest.eliminarProducto(producto);
+        assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo());
+    } 
+
 }
