@@ -56,6 +56,7 @@ public class ServerIntegrationTest {
             ClienteJDO clienteJDO3 = new ClienteJDO("EMAIL2","1234","john2");
             ProductoJDO productoJDO = new ProductoJDO(1,"ProductoTest","TipoTest",15);
             ProductoJDO productoJDO2 = new ProductoJDO(2,"ProductoTest2","TipoTest2",20);
+            ProductoJDO productoJDO3 = new ProductoJDO(8,"ProductoTest8","TipoTest8",15);
             CestaJDO cestaJDO = new CestaJDO(clienteJDO);
             CestaJDO cestaJDO2 = new CestaJDO(clienteJDO2);
             CestaJDO cestaJDO3 = new CestaJDO(clienteJDO3);
@@ -65,6 +66,7 @@ public class ServerIntegrationTest {
             adminJDO2.anadirLista(productoJDO2);
             pm.makePersistent(productoJDO);
             pm.makePersistent(productoJDO2);
+            pm.makePersistent(productoJDO3);
             pm.makePersistent(clienteJDO);
             pm.makePersistent(clienteJDO2);
             pm.makePersistent(clienteJDO3);
@@ -301,4 +303,16 @@ public class ServerIntegrationTest {
 
         assertEquals(Status.OK.getStatusCode(), response.getStatus()); 
     }
+
+    @Test
+    public void testEliminarProductoAdmin(){
+        Producto producto = new Producto();
+        producto.setNombre("ProductoTest8");
+        producto.setTipo("TipoTest8");
+        producto.setId(8);
+        producto.setPrecio(15);
+        Response response = target.path("eliminarProducto").request(MediaType.APPLICATION_JSON).post(Entity.entity(producto, MediaType.APPLICATION_JSON));
+        assertEquals(Status.OK.getStatusCode(), response.getStatus()); 
+    }
+
 }
