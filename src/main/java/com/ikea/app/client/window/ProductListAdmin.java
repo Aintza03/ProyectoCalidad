@@ -50,6 +50,22 @@ public class ProductListAdmin extends JFrame{
         scrollPaneProductos.setBorder(new TitledBorder("Productos"));
         cp.add(scrollPaneProductos);
 		JButton anadirProducto=new JButton("Añadir producto");
+		
+		JButton eliminarProducto=new JButton("Eliminar producto");
+		eliminarProducto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource()==eliminarProducto) {
+					int row = tablaProductos.getSelectedRow();
+					if (row != -1) {
+						Producto producto= productoList.get(row);
+						controller.eliminarProducto(webTargets, producto);
+						loadProducto(webTargets, usuario.getUsuario());
+					}
+				}
+			}
+		});
+		cp.add(eliminarProducto);
+
     	cp.add(anadirProducto);
     	anadirProducto.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
