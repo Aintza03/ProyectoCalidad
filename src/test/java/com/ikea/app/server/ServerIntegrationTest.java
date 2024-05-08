@@ -282,7 +282,6 @@ public class ServerIntegrationTest {
         List<Producto> product = response.readEntity(listType); 
         assertTrue(product.size() == 1);    
     }
-    
     @Test
     public void anadirProductoAdmin(){
         Producto producto = new Producto();
@@ -300,5 +299,7 @@ public class ServerIntegrationTest {
             .post(Entity.entity(admin, MediaType.APPLICATION_JSON));
 
         assertEquals(Status.OK.getStatusCode(), response.getStatus()); 
+        Response response2 = target.path("eliminarProducto").request(MediaType.APPLICATION_JSON).post(Entity.entity(producto, MediaType.APPLICATION_JSON));
+        assertEquals(Status.OK.getStatusCode(), response2.getStatus());
     }
 }
