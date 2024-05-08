@@ -50,4 +50,24 @@ public class ProductListAdminController {
             return new ArrayList<Producto>();
         }
     }
+
+    public boolean eliminarProducto(WebTarget webTargets, Producto producto) {
+        // TODO Auto-generated method stub
+        try {
+            WebTarget WebTargetLogin = webTargets.path("eliminarProducto");
+            Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.post(Entity.entity(producto, MediaType.APPLICATION_JSON));
+            if (response.getStatus() != Status.OK.getStatusCode()) {
+                ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+                return false;
+            } else {	
+                ClientMain.getLogger().info("Producto eliminado correctamente");
+                return true;
+            }
+        } catch (ProcessingException e) {
+            System.out.format("Error obtaining product list. %s%n", e.getMessage());
+            return false;
+        }
+
+    }
 }

@@ -42,7 +42,7 @@ public class ProductListAdmin extends JFrame{
 
     public ProductListAdmin(WebTarget webTargets, Admin usuario){
         Container cp = this.getContentPane();
-        cp.setLayout(new GridLayout(1,1));
+        cp.setLayout(new GridLayout(1,2));
 		this.webTargets = webTargets;
 		this.initTable();
         this.loadProducto(webTargets,usuario.getUsuario());
@@ -50,7 +50,26 @@ public class ProductListAdmin extends JFrame{
         scrollPaneProductos.setBorder(new TitledBorder("Productos"));
         cp.add(scrollPaneProductos);
 		JButton anadirProducto=new JButton("Añadir producto");
-    	cp.add(anadirProducto);
+		
+		JButton eliminarProducto=new JButton("Eliminar producto");
+		eliminarProducto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource()==eliminarProducto) {
+					int row = tablaProductos.getSelectedRow();
+					if (row != -1) {
+						Producto producto= productoList.get(row);
+						controller.eliminarProducto(webTargets, producto);
+						loadProducto(webTargets, usuario.getUsuario());
+					}
+				}
+			}
+		});
+		JPanel jpanel = new JPanel();
+		jpanel.setLayout(new GridLayout(2,1));
+		cp.add(jpanel);
+		jpanel.add(eliminarProducto);
+
+    	jpanel.add(anadirProducto);
     	anadirProducto.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource()==anadirProducto) {	

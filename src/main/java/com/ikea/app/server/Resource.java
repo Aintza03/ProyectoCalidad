@@ -587,4 +587,33 @@ public class Resource{
 			pm.close();
 		}	
 	}	
+	@POST
+	@Path("/eliminarProducto")
+	public Response eliminarProducto(Producto producto){
+		try{
+			logger.info("Modificando productos del admin: " + producto.getNombre());
+			tx.begin();
+				ProductoJDO productojdo = null;
+				try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO where id = '"+producto.getId() +"'")) {
+				q.setClass(ProductoJDO.class);
+				List<ProductoJDO> results = q.executeList();
+				productojdo = results.get(0);
+				pm.deletePersistent(productojdo);
+				logger.info("Producto eliminado: {}", productojdo);
+			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
+				logger.info("Exception1 launched: {}", ex1.getMessage());
+			}	
+			tx.commit();
+			return Response.ok().build();
+		}catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+				return Response.status(Status.NOT_FOUND).build();
+		}finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
 }

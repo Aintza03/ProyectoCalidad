@@ -137,4 +137,45 @@ public class ProductListAdminControllerTest {
 
     }
 
+    @Test
+    public void testEliminarProducto() {
+        Producto producto = new Producto();
+        producto.setId(1);
+        producto.setNombre("Mesa");
+        producto.setPrecio(10);
+        producto.setTipo("10");
+
+        when(webTarget.path("eliminarProducto")).thenReturn(webTarget);
+        when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        when(invocation.post(any(Entity.class))).thenReturn(response);
+        when(response.getStatus()).thenReturn(Status.OK.getStatusCode());
+        assertTrue(controllerTest.eliminarProducto(webTarget, producto));
+    }
+    @Test
+    public void testEliminarProductoError() {
+        Producto producto = new Producto();
+        producto.setId(1);
+        producto.setNombre("Mesa");
+        producto.setPrecio(10);
+        producto.setTipo("10");
+
+        when(webTarget.path("eliminarProducto")).thenReturn(webTarget);
+        when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        when(invocation.post(any(Entity.class))).thenReturn(response);
+        when(response.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
+        assertTrue(!controllerTest.eliminarProducto(webTarget, producto));
+    }
+    @Test
+    public void testEliminarProductoException() {
+        Producto producto = new Producto();
+        producto.setId(1);
+        producto.setNombre("Mesa");
+        producto.setPrecio(10);
+        producto.setTipo("10");
+
+        when(webTarget.path("eliminarProducto")).thenReturn(webTarget);
+        when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        when(invocation.post(any(Entity.class))).thenThrow(new ProcessingException("Error"));
+        assertTrue(!controllerTest.eliminarProducto(webTarget, producto));
+    }
 }
