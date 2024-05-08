@@ -4,7 +4,6 @@ public class Historial{
     public Cliente cliente;
     public Set<Producto> productos;
     public Historial(){
-        this.cliente = cliente;
         this.productos = new HashSet<Producto>();
     }
     public void addProducto(Producto producto){

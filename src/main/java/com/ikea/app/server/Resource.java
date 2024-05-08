@@ -475,9 +475,19 @@ public class Resource{
                 e.printStackTrace();
             }
 			tx.begin();
-			Extent<ClienteJDO> ext2 = pm.getExtent(ClienteJDO.class,true);
-            try (Query<ClienteJDO> q2 = pm.newQuery(ext2, "email == '" + cliente.getEmail() + "'")) {
-                long numberInstancesDeleted = q2.deletePersistentAll();
+			Extent<HistorialJDO> ext2 = pm.getExtent(HistorialJDO.class,true);
+			try (Query<HistorialJDO> q2 = pm.newQuery(ext2, "cliente.email == '" + cliente.getEmail() + "'")) {
+                q2.deletePersistentAll();
+                logger.info("Historial del cliente " + cliente.getNombre() +" borrada");
+                tx.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+			
+			tx.begin();
+			Extent<ClienteJDO> ext3 = pm.getExtent(ClienteJDO.class,true);
+            try (Query<ClienteJDO> q3 = pm.newQuery(ext3, "email == '" + cliente.getEmail() + "'")) {
+                long numberInstancesDeleted = q3.deletePersistentAll();
                 logger.info("Cliente " + cliente.getNombre() + " borrado");
 
                 tx.commit();
