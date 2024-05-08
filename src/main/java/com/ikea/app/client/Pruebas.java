@@ -35,7 +35,7 @@ public class Pruebas{
     public Pruebas() {
 			}
 
-public static void guardarDatosEjemplo() {
+public static void main( String[] args ) {
         PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();

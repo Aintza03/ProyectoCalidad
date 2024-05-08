@@ -42,7 +42,7 @@ public class ProductListAdmin extends JFrame{
 
     public ProductListAdmin(WebTarget webTargets, Admin usuario){
         Container cp = this.getContentPane();
-        cp.setLayout(new GridLayout(1,1));
+        cp.setLayout(new GridLayout(1,2));
 		this.webTargets = webTargets;
 		this.initTable();
         this.loadProducto(webTargets,usuario.getUsuario());
@@ -64,9 +64,12 @@ public class ProductListAdmin extends JFrame{
 				}
 			}
 		});
-		cp.add(eliminarProducto);
+		JPanel jpanel = new JPanel();
+		jpanel.setLayout(new GridLayout(2,1));
+		cp.add(jpanel);
+		jpanel.add(eliminarProducto);
 
-    	cp.add(anadirProducto);
+    	jpanel.add(anadirProducto);
     	anadirProducto.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource()==anadirProducto) {	

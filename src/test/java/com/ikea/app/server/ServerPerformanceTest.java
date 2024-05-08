@@ -308,11 +308,10 @@ public class ServerPerformanceTest {
     @JUnitPerfTest(threads = 1, durationMs = 2000)
     //devido al ID no puede hacerse en multi-thread
     public void anadirProductoAdmin(){
-        id++;
         Producto producto = new Producto();
         producto.setNombre("ProductoTest3");
         producto.setTipo("TipoTest3");
-        producto.setId(id);
+        producto.setId(id+1);
         producto.setPrecio(15);
 
         Admin admin = new Admin();
@@ -324,5 +323,8 @@ public class ServerPerformanceTest {
             .post(Entity.entity(admin, MediaType.APPLICATION_JSON));
 
         assertEquals(Status.OK.getStatusCode(), response.getStatus()); 
+        assertEquals(Status.OK.getStatusCode(), response.getStatus()); 
+        Response response2 = target.path("eliminarProducto").request(MediaType.APPLICATION_JSON).post(Entity.entity(producto, MediaType.APPLICATION_JSON));
+        assertEquals(Status.OK.getStatusCode(), response2.getStatus());
     }
     }
