@@ -64,6 +64,15 @@ public class ProductListAdmin extends JFrame{
 				}
 			}
 		});
+		
+		JButton verListaPedidos = new JButton("Ver pedidos");
+		verListaPedidos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource()==eliminarProducto) {
+					new ListaPedidosAdminWindow(webTargets, usuario);
+				}
+			}
+		});
 		JPanel jpanel = new JPanel();
 		jpanel.setLayout(new GridLayout(2,1));
 		cp.add(jpanel);
