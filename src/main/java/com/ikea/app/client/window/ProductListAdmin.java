@@ -68,7 +68,7 @@ public class ProductListAdmin extends JFrame{
 		JButton verListaPedidos = new JButton("Ver pedidos");
 		verListaPedidos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource()==eliminarProducto) {
+				if (e.getSource()==verListaPedidos) {
 					new ListaPedidosAdminWindow(webTargets, usuario);
 				}
 			}
@@ -77,7 +77,7 @@ public class ProductListAdmin extends JFrame{
 		jpanel.setLayout(new GridLayout(2,1));
 		cp.add(jpanel);
 		jpanel.add(eliminarProducto);
-
+		jpanel.add(verListaPedidos);
     	jpanel.add(anadirProducto);
     	anadirProducto.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -89,7 +89,7 @@ public class ProductListAdmin extends JFrame{
             });
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
-        this.setSize(400,200);
+        this.setSize(800,400);
         this.setTitle("Lista de Productos de Administrador");
         this.setLocationRelativeTo(null);
     }
