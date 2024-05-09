@@ -249,6 +249,7 @@ public class ProductList extends JFrame{
 		for (Producto a: this.cesta.getCesta()){
 			idProductos.add(a.getId());
 		}
+		
 		for(Producto a : controller.datosDeProductos(webTarget)){
 			if(!(idProductos.contains(a.getId()))) {
 				this.productoList.add(a);

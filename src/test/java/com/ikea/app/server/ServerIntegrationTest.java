@@ -34,6 +34,8 @@ import com.ikea.app.server.jdo.ClienteJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
 import javax.jdo.Query;
 import javax.ws.rs.core.Response.Status;
+import com.ikea.app.pojo.Historial;
+import com.ikea.app.server.jdo.HistorialJDO;
 @Category(IntegrationTest.class)
 public class ServerIntegrationTest {
 
@@ -59,6 +61,9 @@ public class ServerIntegrationTest {
             CestaJDO cestaJDO = new CestaJDO(clienteJDO);
             CestaJDO cestaJDO2 = new CestaJDO(clienteJDO2);
             CestaJDO cestaJDO3 = new CestaJDO(clienteJDO3);
+            HistorialJDO historialJDO = new HistorialJDO(clienteJDO);
+            HistorialJDO historialJDO2 = new HistorialJDO(clienteJDO2);
+            HistorialJDO historialJDO3 = new HistorialJDO(clienteJDO3);
             AdminJDO adminJDO = new AdminJDO("ADMINS","1212");
             AdminJDO adminJDO2 = new AdminJDO("ADMINS2","12121");
             cestaJDO.AnadirCesta(productoJDO2);
@@ -71,6 +76,9 @@ public class ServerIntegrationTest {
             pm.makePersistent(cestaJDO);
             pm.makePersistent(cestaJDO2);
             pm.makePersistent(cestaJDO3);
+            pm.makePersistent(historialJDO);
+            pm.makePersistent(historialJDO2);
+            pm.makePersistent(historialJDO3);
             pm.makePersistent(adminJDO);
             pm.makePersistent(adminJDO2);
             tx.commit();
@@ -106,6 +114,14 @@ public class ServerIntegrationTest {
             }
             tx.begin();
             try (Query<CestaJDO> q = pm.newQuery(CestaJDO.class)) {
+                long numberInstancesDeleted = q.deletePersistentAll();
+
+                tx.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            tx.begin();
+            try (Query<HistorialJDO> q = pm.newQuery(HistorialJDO.class)) {
                 long numberInstancesDeleted = q.deletePersistentAll();
 
                 tx.commit();
@@ -168,7 +184,7 @@ public class ServerIntegrationTest {
         Response response = target.path("listProducts").request().get();
         GenericType<List<Producto>> listType = new GenericType<List<Producto>>(){};
         List<Producto> product = response.readEntity(listType); 
-        assertTrue(product.size() == 3 || product.size() == 2);
+        assertTrue(product.size() == 3 || product.size() == 2 || product.size() == 1);
     }
 
     @Test
@@ -302,4 +318,32 @@ public class ServerIntegrationTest {
         Response response2 = target.path("eliminarProducto").request(MediaType.APPLICATION_JSON).post(Entity.entity(producto, MediaType.APPLICATION_JSON));
         assertEquals(Status.OK.getStatusCode(), response2.getStatus());
     }
+    @Test
+    public void testModifyHistorial(){
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setNombre("john");
+        cliente.setContrasena("1234");
+        Historial historial = new Historial();
+        historial.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setNombre("ProductoTest");
+        producto.setTipo("TipoTest");
+        producto.setId(1);
+        producto.setPrecio(15);
+        historial.addProducto(producto);
+        Response response = target.path("modifyHistorial")
+            .request(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(historial, MediaType.APPLICATION_JSON));
+
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());       
+    }
+    @Test
+    public void testGetHistorial(){
+        String email = "EMAIL";
+        Response response = target.path("historial").queryParam("email", email).request().get();
+        assertTrue(response.readEntity(Historial.class) != null);
+        
+    }
+   
 }

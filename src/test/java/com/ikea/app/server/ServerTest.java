@@ -35,6 +35,8 @@ import com.ikea.app.server.jdo.CestaJDO;
 import javax.jdo.JDOObjectNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import com.ikea.app.pojo.Historial;
+import com.ikea.app.server.jdo.HistorialJDO;
 public class ServerTest {
     private Resource resourceTest;
     @Mock
@@ -165,7 +167,7 @@ public class ServerTest {
         productosA.add(producto2);
         @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
         String sql = "javax.jdo.query.SQL";
-        String queryStr = "SELECT * FROM PRODUCTOJDO";
+        String queryStr = "SELECT * FROM PRODUCTOJDO WHERE isnull(productoshistorial)";
         when(persistenceManager.newQuery(sql, queryStr)).thenReturn(query);
         List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
         ProductoJDO productojdo = new ProductoJDO(10,"nombre", "descripcion", 10.0);
@@ -175,7 +177,7 @@ public class ServerTest {
         when(query.executeList()).thenReturn(productos);
         when(transaction.isActive()).thenReturn(false);
         List response = resourceTest.listaProductos();
-        assertEquals(response.toString(), productosA.toString());
+        assertEquals(productosA.toString(),response.toString());
     }
     @Test
     public void testListProductsSize() {
@@ -854,10 +856,14 @@ public class ServerTest {
         @SuppressWarnings("unchecked") Query<CestaJDO> query = mock(Query.class);
         when(persistenceManager.getExtent(CestaJDO.class, true)).thenReturn(Extent);
         when(persistenceManager.newQuery(Extent, "cliente.email == '" + cliente.getEmail() + "'")).thenReturn(query);
-        Extent<ClienteJDO> Extent2 = mock(Extent.class);
-        @SuppressWarnings("unchecked") Query<ClienteJDO> query2 = mock(Query.class);
-        when(persistenceManager.getExtent(ClienteJDO.class,true)).thenReturn(Extent2);
-        when(persistenceManager.newQuery(Extent2,"email == '" + cliente.getEmail() + "'")).thenReturn(query2);
+        Extent<HistorialJDO> Extent2 = mock(Extent.class);
+        @SuppressWarnings("unchecked") Query<HistorialJDO> query2 = mock(Query.class);
+        when(persistenceManager.getExtent(HistorialJDO.class,true)).thenReturn(Extent2);
+        when(persistenceManager.newQuery(Extent2,"cliente.email == '" + cliente.getEmail() + "'")).thenReturn(query2);
+        Extent<ClienteJDO> Extent3 = mock(Extent.class);
+        @SuppressWarnings("unchecked") Query<ClienteJDO> query3 = mock(Query.class);
+        when(persistenceManager.getExtent(ClienteJDO.class,true)).thenReturn(Extent3);
+        when(persistenceManager.newQuery(Extent3,"email == '" + cliente.getEmail() + "'")).thenReturn(query3);
         when(transaction.isActive()).thenReturn(false);
         Response response = resourceTest.borrarCliente(cliente);
         assertEquals(Response.Status.OK, response.getStatusInfo());
@@ -1101,5 +1107,211 @@ public class ServerTest {
         Response response = resourceTest.eliminarProducto(producto);
         assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo());
     } 
+    @Test
+    public void testGetHistorial() {
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        Historial historial = new Historial();
+        historial.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        Producto producto2 = new Producto();
+        producto2.setId(20);
+        producto2.setNombre("nombre2");
+        producto2.setTipo("descripcion2");
+        producto2.setPrecio(20.0);
+        historial.addProducto(producto);
+        historial.addProducto(producto2);
+        @SuppressWarnings("unchecked") Query<HistorialJDO> query = mock(Query.class);
+        String sql = "javax.jdo.query.SQL";
+        String queryStr = "SELECT * FROM HISTORIALJDO WHERE CLIENTE_EMAIL_OID = '" + cliente.getEmail() +"'";
+        when(persistenceManager.newQuery(sql, queryStr)).thenReturn(query);
+        ClienteJDO clienteJDO = new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE");
+        HistorialJDO historialJDO = new HistorialJDO(clienteJDO);
+        ProductoJDO productoJDO = new ProductoJDO(10,"nombre", "descripcion", 10.0);
+        ProductoJDO productoJDO2 = new ProductoJDO(20,"nombre2", "descripcion2", 20.0);
+        historialJDO.addProducto(productoJDO);
+        historialJDO.addProducto(productoJDO2);
+        List<HistorialJDO> historiales = new ArrayList<HistorialJDO>();
+        historiales.add(historialJDO);
+        when(query.executeList()).thenReturn(historiales);
+        when(transaction.isActive()).thenReturn(false);
+        Historial response = resourceTest.getHistorial(cliente.getEmail());
+        assertEquals(historial.getCliente().getEmail(), response.getCliente().getEmail());
+    }
+    @Test
+    public void testGetHistorialCaso2() {
+        String email = "EMAIL";
+        @SuppressWarnings("unchecked") Query<HistorialJDO> query = mock(Query.class);
+        String sql = "javax.jdo.query.SQL";
+        String queryStr = "SELECT * FROM HISTORIALJDO WHERE CLIENTE_EMAIL_OID = '" + email +"'";
+        when(persistenceManager.newQuery(sql, queryStr)).thenThrow(new JDOObjectNotFoundException(""));
+        when(transaction.isActive()).thenReturn(true);
+        Historial response = resourceTest.getHistorial(email);
+        assertNull(response);
+    }
+    @Test
+    public void testGetHistorialCaso3() {
+        String email = "EMAIL";
+        doThrow(new RuntimeException("Test exception")).when(transaction).commit();
+        when(transaction.isActive()).thenReturn(true);
+        Historial response = resourceTest.getHistorial(email);
+        assertNull(response);
+    }
+    @Test
+    public void testmodifyHistorial() {
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        Historial historial = new Historial();
+        historial.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        Producto producto2 = new Producto();
+        producto2.setId(20);
+        producto2.setNombre("nombre2");
+        producto2.setTipo("descripcion2");
+        producto2.setPrecio(20.0);
+        historial.addProducto(producto);
+        historial.addProducto(producto2);
+        ClienteJDO clienteJDO = new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE");
+        HistorialJDO historialJDO = new HistorialJDO(clienteJDO);
+        ProductoJDO productoJDO = new ProductoJDO(10,"nombre", "descripcion", 10.0);
+        ProductoJDO productoJDO2 = new ProductoJDO(20,"nombre2", "descripcion2", 20.0);
+        historialJDO.addProducto(productoJDO);
+        List<HistorialJDO> historiales = new ArrayList<HistorialJDO>();
+        historiales.add(historialJDO);
+        List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
+        productos.add(productoJDO2);
+        @SuppressWarnings("unchecked") Query<HistorialJDO> query = mock(Query.class);
+        String sql = "javax.jdo.query.SQL";
+        String queryStr = "SELECT * FROM HISTORIALJDO WHERE CLIENTE_EMAIL_OID = '"+cliente.getEmail() +"'";
+        when(persistenceManager.newQuery(sql, queryStr)).thenReturn(query);
+        when(query.executeList()).thenReturn(historiales);
+        @SuppressWarnings("unchecked") Query<ProductoJDO> query2 = mock(Query.class);
+        String sql2 = "javax.jdo.query.SQL";
+        String queryStr2 = "SELECT * FROM PRODUCTOJDO WHERE ID = '"+10 +"'";
+        when(persistenceManager.newQuery(sql2, queryStr2)).thenReturn(query2);
+        String queryStr3 = "SELECT * FROM PRODUCTOJDO WHERE ID = '"+20 +"'";
+        when(persistenceManager.newQuery(sql2, queryStr3)).thenReturn(query2);
+        when(query2.executeList()).thenReturn(productos);
+        when(transaction.isActive()).thenReturn(false);
+        Response response = resourceTest.modifyHistorial(historial);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testmodifyHistorialCaso2() {
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        Historial historial = new Historial();
+        historial.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        Producto producto2 = new Producto();
+        producto2.setId(20);
+        producto2.setNombre("nombre2");
+        producto2.setTipo("descripcion2");
+        producto2.setPrecio(20.0);
+        historial.addProducto(producto);
+        historial.addProducto(producto2);
+        ClienteJDO clienteJDO = new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE");
+        HistorialJDO historialJDO = new HistorialJDO(clienteJDO);
+        ProductoJDO productoJDO = new ProductoJDO(10,"nombre", "descripcion", 10.0);
+        ProductoJDO productoJDO2 = new ProductoJDO(20,"nombre2", "descripcion2", 20.0);
+        historialJDO.addProducto(productoJDO);
+        List<HistorialJDO> historiales = new ArrayList<HistorialJDO>();
+        historiales.add(historialJDO);
+        List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
+        productos.add(productoJDO2);
+        @SuppressWarnings("unchecked") Query<HistorialJDO> query = mock(Query.class);
+        String sql = "javax.jdo.query.SQL";
+        String queryStr = "SELECT * FROM HISTORIALJDO WHERE CLIENTE_EMAIL_OID = '"+cliente.getEmail() +"'";
+        when(persistenceManager.newQuery(sql, queryStr)).thenThrow(new JDOObjectNotFoundException(""));
+        when(transaction.isActive()).thenReturn(true);
+        Response response = resourceTest.modifyHistorial(historial);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testmodifyHistorialCaso3() {
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        Historial historial = new Historial();
+        historial.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        Producto producto2 = new Producto();
+        producto2.setId(20);
+        producto2.setNombre("nombre2");
+        producto2.setTipo("descripcion2");
+        producto2.setPrecio(20.0);
+        historial.addProducto(producto);
+        historial.addProducto(producto2);
+        ClienteJDO clienteJDO = new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE");
+        HistorialJDO historialJDO = new HistorialJDO(clienteJDO);
+        ProductoJDO productoJDO = new ProductoJDO(10,"nombre", "descripcion", 10.0);
+        ProductoJDO productoJDO2 = new ProductoJDO(20,"nombre2", "descripcion2", 20.0);
+        historialJDO.addProducto(productoJDO);
+        List<HistorialJDO> historiales = new ArrayList<HistorialJDO>();
+        historiales.add(historialJDO);
+        List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
+        productos.add(productoJDO2);
+        @SuppressWarnings("unchecked") Query<HistorialJDO> query = mock(Query.class);
+        String sql = "javax.jdo.query.SQL";
+        String queryStr = "SELECT * FROM HISTORIALJDO WHERE CLIENTE_EMAIL_OID = '"+cliente.getEmail() +"'";
+        when(persistenceManager.newQuery(sql, queryStr)).thenReturn(query);
+        when(query.executeList()).thenReturn(historiales);
+        @SuppressWarnings("unchecked") Query<ProductoJDO> query2 = mock(Query.class);
+        String sql2 = "javax.jdo.query.SQL";
+        String queryStr2 = "SELECT * FROM PRODUCTOJDO WHERE ID = '"+10 +"'";
+        when(persistenceManager.newQuery(sql2, queryStr2)).thenThrow(new JDOObjectNotFoundException(""));
+        String queryStr3 = "SELECT * FROM PRODUCTOJDO WHERE ID = '"+20 +"'";
+        when(persistenceManager.newQuery(sql2, queryStr3)).thenThrow(new JDOObjectNotFoundException(""));
+        when(transaction.isActive()).thenReturn(true);
+        Response response = resourceTest.modifyHistorial(historial);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testmodifyHistorialCaso4() {
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        Historial historial = new Historial();
+        historial.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        Producto producto2 = new Producto();
+        producto2.setId(20);
+        producto2.setNombre("nombre2");
+        producto2.setTipo("descripcion2");
+        producto2.setPrecio(20.0);
+        historial.addProducto(producto);
+        historial.addProducto(producto2);
+        doThrow(new RuntimeException("Test exception")).when(transaction).commit();
+        Response response = resourceTest.modifyHistorial(historial);
 
+        assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo());
+    }      
 }
