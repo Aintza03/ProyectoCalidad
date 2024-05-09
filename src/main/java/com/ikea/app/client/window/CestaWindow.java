@@ -18,13 +18,17 @@ import com.ikea.app.client.ClientMain;
 import com.ikea.app.pojo.Cesta;
 import com.ikea.app.pojo.Producto;
 import com.ikea.app.client.controller.CestaWindowController;
+import com.ikea.app.pojo.Historial;
 public class CestaWindow extends JFrame{
 	protected DefaultListModel<Producto> modeloCesta;
 	protected JList<Producto> listaCesta;
     protected double precioTotal = 0;
     protected JLabel labelPrecioTotal; 
     protected CestaWindowController cestaWindowController = new CestaWindowController();
+    protected HistorialWindow historialWindow;
    public CestaWindow(WebTarget webTargets, Cesta cesta){
+    Historial historial = cestaWindowController.getHistorial(webTargets, cesta.getCliente().getEmail());
+    historialWindow = new HistorialWindow(webTargets, historial);
     Container cp = this.getContentPane();
     cp.setLayout(new GridLayout(1, 2));
     JPanel panel = new JPanel();
@@ -39,6 +43,11 @@ public class CestaWindow extends JFrame{
             if (e.getSource()==comprarCestaButton) {
                 JFrame jFrame = new JFrame();
                 JOptionPane.showMessageDialog(jFrame, "Se ha confirmado la compra de la cesta, el precio total de la compra es "+ precioTotal);
+                for(Producto producto : cesta.getCesta()){
+                    historialWindow.addProducto(producto);
+                    historial.addProducto(producto);
+                }
+                cestaWindowController.guardarHistorial(webTargets, historial);
                 cesta.getCesta().clear();
                 modeloCesta.clear();
                 precioTotal=0;

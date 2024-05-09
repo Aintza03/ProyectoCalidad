@@ -31,6 +31,8 @@ import org.apache.logging.log4j.LogManager;
 import java.util.List;
 import java.util.HashSet;
 import javax.jdo.JDOObjectNotFoundException;
+import com.ikea.app.server.jdo.HistorialJDO;
+import com.ikea.app.pojo.Historial;
 @Path("/resource")
 @Produces(MediaType.APPLICATION_JSON)
 public class Resource{
@@ -71,8 +73,10 @@ public class Resource{
 				logger.info("Creando usuario: {}", clienteJDO);
 				clienteJDO = new ClienteJDO(cliente.getEmail(), cliente.getContrasena(), cliente.getNombre());
 				CestaJDO cestaJDO = new CestaJDO(clienteJDO);
+				HistorialJDO historialJDO = new HistorialJDO(clienteJDO);
 				pm.makePersistent(clienteJDO);
-				pm.makePersistent(cestaJDO);					 
+				pm.makePersistent(cestaJDO);
+				pm.makePersistent(historialJDO);					 
 				logger.info("Usuario creado: {}", clienteJDO);
 			}
 			tx.commit();
@@ -135,7 +139,7 @@ public class Resource{
 		try {	
             tx.begin();
             logger.info("Obteniendo productos");
-			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO")) {
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO WHERE isnull(productoshistorial)")) {
 				q.setClass(ProductoJDO.class);
 				List<ProductoJDO> results = q.executeList();
 				System.out.println("Productos: " + results);
@@ -471,9 +475,19 @@ public class Resource{
                 e.printStackTrace();
             }
 			tx.begin();
-			Extent<ClienteJDO> ext2 = pm.getExtent(ClienteJDO.class,true);
-            try (Query<ClienteJDO> q2 = pm.newQuery(ext2, "email == '" + cliente.getEmail() + "'")) {
-                long numberInstancesDeleted = q2.deletePersistentAll();
+			Extent<HistorialJDO> ext2 = pm.getExtent(HistorialJDO.class,true);
+			try (Query<HistorialJDO> q2 = pm.newQuery(ext2, "cliente.email == '" + cliente.getEmail() + "'")) {
+                q2.deletePersistentAll();
+                logger.info("Historial del cliente " + cliente.getNombre() +" borrada");
+                tx.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+			
+			tx.begin();
+			Extent<ClienteJDO> ext3 = pm.getExtent(ClienteJDO.class,true);
+            try (Query<ClienteJDO> q3 = pm.newQuery(ext3, "email == '" + cliente.getEmail() + "'")) {
+                long numberInstancesDeleted = q3.deletePersistentAll();
                 logger.info("Cliente " + cliente.getNombre() + " borrado");
 
                 tx.commit();
@@ -587,6 +601,7 @@ public class Resource{
 			pm.close();
 		}	
 	}	
+
 	@POST
 	@Path("/eliminarProducto")
 	public Response eliminarProducto(Producto producto){
@@ -616,4 +631,98 @@ public class Resource{
 			pm.close();
 		}
 	}
+	@GET
+	@Path("/historial")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Historial getHistorial(@QueryParam("email") String email) {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
+		Historial historial = new Historial();
+		Cliente cliente = new Cliente();
+		Producto producto;
+		try{
+			tx.begin();
+			logger.info("Obteniendo historial del cliente: " + email);
+			HistorialJDO historialjdo = null;
+			try (Query<HistorialJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM HISTORIALJDO WHERE CLIENTE_EMAIL_OID = '" + email +"'")) {
+				q.setClass(HistorialJDO.class);
+				List<HistorialJDO> results = q.executeList();
+				historialjdo = results.get(0);
+				logger.info("Se ha obtenido historial: " + historialjdo);
+				cliente.setEmail(historialjdo.getCliente().getEmail());
+				cliente.setContrasena(historialjdo.getCliente().getContrasena());
+				cliente.setNombre(historialjdo.getCliente().getNombre());
+				historial.setCliente(cliente);
+				for(ProductoJDO productoJDO: historialjdo.getProductos()){
+					producto = new Producto();
+					producto.setId(productoJDO.getId());
+					producto.setNombre(productoJDO.getNombre());
+					producto.setTipo(productoJDO.getTipo());
+					producto.setPrecio(productoJDO.getPrecio());
+					historial.addProducto(producto);
+				}
+			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
+				logger.info("Exception1 launched: {}", ex1.getMessage());
+			}
+			tx.commit();
+			if(historialjdo != null){
+				logger.info("Historial encontrado");
+				return historial;
+			}else{
+				logger.info("No hay historial");
+				return null;
+			}
+		}catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+				return null;
+		}finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+	@POST
+	@Path("/modifyHistorial")
+	public Response modifyHistorial(Historial historial){
+		try{
+			logger.info("Modificando historial del cliente: " + historial.getCliente());
+			tx.begin();
+			
+				HistorialJDO historialjdo = null;
+				try (Query<HistorialJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM HISTORIALJDO WHERE CLIENTE_EMAIL_OID = '"+historial.getCliente().getEmail() +"'")) {
+				//try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","UPDATE productojdo SET PRODUCTOS = '"+ cestajdo.getCliente() +"' WHERE ID = '"+productojdo.getId() +"'")) {
+				q.setClass(HistorialJDO.class);
+				List<HistorialJDO> results = q.executeList();
+				historialjdo = results.get(0);
+				for(Producto producto : historial.getProductos()){
+					ProductoJDO productojdo = null;
+					try(Query<ProductoJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO WHERE ID = '"+producto.getId() +"'")){
+						q2.setClass(ProductoJDO.class);
+						List<ProductoJDO> resultsP = q2.executeList();
+						productojdo = resultsP.get(0);
+						historialjdo.addProducto(productojdo);
+					}catch(javax.jdo.JDOObjectNotFoundException ex1){
+						logger.info("Exception1 launched: {}", ex1.getMessage());
+					}	
+				}
+				pm.makePersistent(historialjdo);
+				logger.info("Historial guardado: {}", historial);
+			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
+				logger.info("Exception1 launched: {}", ex1.getMessage());
+			}	
+			tx.commit();
+			return Response.ok().build();
+		}catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+				return Response.status(Status.NOT_FOUND).build();
+		}finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+	
 }

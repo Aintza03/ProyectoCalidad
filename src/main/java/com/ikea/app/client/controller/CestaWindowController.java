@@ -11,6 +11,8 @@ import javax.ws.rs.core.Response.Status;
 import com.ikea.app.client.window.ProductList;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.pojo.Cesta;
+import com.ikea.app.pojo.Historial;
+import javax.ws.rs.ProcessingException;
 public class CestaWindowController{
     
    public CestaWindowController(){
@@ -42,4 +44,38 @@ public class CestaWindowController{
             return true;
         }
     }
+
+    public Historial getHistorial(WebTarget webTarget,String email){
+		try {
+            Response response = webTarget.path("historial")
+                .queryParam("email", email)
+				.request(MediaType.APPLICATION_JSON)
+				.get();
+
+            // check that the response was HTTP OK
+            if (response.getStatusInfo().toEnum() == Status.OK) {
+                Historial historial = response.readEntity(Historial.class);
+				System.out.println(historial);
+				return historial;		
+            } else {
+				System.out.format("Error obtaining historial. %s%n", response);
+				return null;
+            }
+        } catch (ProcessingException e) {
+            System.out.format("Error obtaining historial. %s%n", e.getMessage());
+			return null;
+        }	
+	}
+    public boolean guardarHistorial(WebTarget webTarget, Historial historial) {
+		WebTarget WebTargetHistorial = webTarget.path("modifyHistorial");
+		Invocation.Builder invocationBuilder = WebTargetHistorial.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.post(Entity.entity(historial, MediaType.APPLICATION_JSON));
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+            return false;
+		} else {	
+			ClientMain.getLogger().info("Historial guardado correctamente");
+            return true;
+		}
+	}   
 }

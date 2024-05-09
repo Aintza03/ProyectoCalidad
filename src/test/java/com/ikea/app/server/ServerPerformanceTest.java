@@ -38,6 +38,8 @@ import java.util.UUID;
 import java.util.*;
 import com.ikea.app.pojo.Producto;
 import com.ikea.app.pojo.Cesta;
+import com.ikea.app.pojo.Historial;
+import com.ikea.app.server.jdo.HistorialJDO;
 @Category(PerformanceTest.class)
 public class ServerPerformanceTest {
     private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
@@ -67,6 +69,9 @@ public class ServerPerformanceTest {
             CestaJDO cestaJDO = new CestaJDO(clienteJDO);
             CestaJDO cestaJDO2 = new CestaJDO(clienteJDO2);
             CestaJDO cestaJDO3 = new CestaJDO(clienteJDO3);
+            HistorialJDO historial = new HistorialJDO(clienteJDO);
+            HistorialJDO historial2 = new HistorialJDO(clienteJDO2);
+            HistorialJDO historial3 = new HistorialJDO(clienteJDO3);
             AdminJDO adminJDO = new AdminJDO("ADMINS","1212");
             AdminJDO adminJDO2 = new AdminJDO("ADMINS2","12121");
             cestaJDO.AnadirCesta(productoJDO2);
@@ -79,6 +84,9 @@ public class ServerPerformanceTest {
             pm.makePersistent(cestaJDO);
             pm.makePersistent(cestaJDO2);
             pm.makePersistent(cestaJDO3);
+            pm.makePersistent(historial);
+            pm.makePersistent(historial2);
+            pm.makePersistent(historial3);
             pm.makePersistent(adminJDO);
             pm.makePersistent(adminJDO2);
             tx.commit();
@@ -114,6 +122,14 @@ public class ServerPerformanceTest {
             }
             tx.begin();
             try (Query<CestaJDO> q = pm.newQuery(CestaJDO.class)) {
+                long numberInstancesDeleted = q.deletePersistentAll();
+
+                tx.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            tx.begin();
+            try (Query<HistorialJDO> q = pm.newQuery(HistorialJDO.class)) {
                 long numberInstancesDeleted = q.deletePersistentAll();
 
                 tx.commit();
@@ -181,7 +197,7 @@ public class ServerPerformanceTest {
         Response response = target.path("listProducts").request().get();
         GenericType<List<Producto>> listType = new GenericType<List<Producto>>(){};
         List<Producto> product = response.readEntity(listType); 
-        assertTrue(product.size() >= 2);
+        assertTrue(product.size() >= 1);
     }
     @Test
     @JUnitPerfTest(threads = 10, durationMs = 2000)
@@ -326,5 +342,34 @@ public class ServerPerformanceTest {
         assertEquals(Status.OK.getStatusCode(), response.getStatus()); 
         Response response2 = target.path("eliminarProducto").request(MediaType.APPLICATION_JSON).post(Entity.entity(producto, MediaType.APPLICATION_JSON));
         assertEquals(Status.OK.getStatusCode(), response2.getStatus());
+    }
+    @Test
+    @JUnitPerfTest(threads = 10, durationMs = 2000)
+    public void testModifyHistorial(){
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setNombre("john");
+        cliente.setContrasena("1234");
+        Historial historial = new Historial();
+        historial.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setNombre("ProductoTest");
+        producto.setTipo("TipoTest");
+        producto.setId(1);
+        producto.setPrecio(15);
+        historial.addProducto(producto);
+        Response response = target.path("modifyHistorial")
+            .request(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(historial, MediaType.APPLICATION_JSON));
+
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());       
+    }
+    @Test
+    @JUnitPerfTest(threads = 10, durationMs = 2000)
+    public void testGetHistorial(){
+        String email = "EMAIL";
+        Response response = target.path("historial").queryParam("email", email).request().get();
+        assertTrue(response.readEntity(Historial.class) != null);
+        
     }
     }
