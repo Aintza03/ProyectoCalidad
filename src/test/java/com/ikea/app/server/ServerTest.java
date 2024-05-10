@@ -915,7 +915,7 @@ public class ServerTest {
         String admin = "Admin";
         @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
         String sql = "javax.jdo.query.SQL";
-        String queryStr = "SELECT * FROM PRODUCTOJDO WHERE VENDEDOR = '" + admin + "'";
+        String queryStr = "SELECT * FROM PRODUCTOJDO WHERE VENDEDOR = '" + admin + "' AND isnull(productoshistorial)";
         when(persistenceManager.newQuery(sql, queryStr)).thenReturn(query);
         List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
         ProductoJDO productojdo = new ProductoJDO(10,"nombre", "descripcion", 10.0);
@@ -933,7 +933,7 @@ public class ServerTest {
         String admin = "Admin";
         @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
         String sql = "javax.jdo.query.SQL";
-        String queryStr = "SELECT * FROM PRODUCTOJDO WHERE VENDEDOR = '" + admin + "'";
+        String queryStr = "SELECT * FROM PRODUCTOJDO WHERE VENDEDOR = '" + admin + "' AND isnull(productoshistorial)";
         when(persistenceManager.newQuery(sql, queryStr)).thenThrow(new JDOObjectNotFoundException(""));
         when(transaction.isActive()).thenReturn(true);
         List response = resourceTest.listaProductosAdministrador(admin);
@@ -1313,5 +1313,49 @@ public class ServerTest {
         Response response = resourceTest.modifyHistorial(historial);
 
         assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo());
-    }      
+    }  
+    
+    @Test
+    public void testListPedidosAdmin() {
+        List<Producto> productosA = new ArrayList<Producto>();
+        Producto producto = new Producto();
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        producto.setId(10);
+        productosA.add(producto);
+        Producto producto2 = new Producto();
+        producto2.setNombre("nombre2");
+        producto2.setTipo("descripcion2");
+        producto2.setPrecio(20.0);
+        producto2.setId(20);
+        productosA.add(producto2);
+        String admin = "Admin";
+        @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
+        String sql = "javax.jdo.query.SQL";
+        String queryStr = "SELECT * FROM PRODUCTOJDO WHERE VENDEDOR = '" + admin + "' AND NOT isnull(productoshistorial)";
+        when(persistenceManager.newQuery(sql, queryStr)).thenReturn(query);
+        List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
+        ProductoJDO productojdo = new ProductoJDO(10,"nombre", "descripcion", 10.0);
+        productos.add(productojdo);
+        ProductoJDO productojdo2 = new ProductoJDO(20,"nombre2", "descripcion2", 20.0);
+
+        productos.add(productojdo2);
+        when(query.executeList()).thenReturn(productos);
+        when(transaction.isActive()).thenReturn(false);
+        List response = resourceTest.listaPedidosAdministrador(admin);
+        assertEquals(response.toString(), productosA.toString());
+    }
+    @Test
+    public void testListPedidosSizeAdmin() {
+        List<Producto> productosA = new ArrayList<Producto>(); 
+        String admin = "Admin";
+        @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
+        String sql = "javax.jdo.query.SQL";
+        String queryStr = "SELECT * FROM PRODUCTOJDO WHERE VENDEDOR = '" + admin + "' AND NOT isnull(productoshistorial)";
+        when(persistenceManager.newQuery(sql, queryStr)).thenThrow(new JDOObjectNotFoundException(""));
+        when(transaction.isActive()).thenReturn(true);
+        List response = resourceTest.listaPedidosAdministrador(admin);
+        assertEquals(response.toString(), productosA.toString());
+    } 
 }
