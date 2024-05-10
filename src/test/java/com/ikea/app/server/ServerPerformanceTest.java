@@ -1,7 +1,6 @@
 package com.ikea.app.server;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import java.util.UUID;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
@@ -34,7 +33,7 @@ import com.ikea.app.server.jdo.AdminJDO;
 import com.ikea.app.server.jdo.CestaJDO;
 import com.ikea.app.server.jdo.ClienteJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
-import java.util.UUID;
+
 import java.util.*;
 import com.ikea.app.pojo.Producto;
 import com.ikea.app.pojo.Cesta;
@@ -371,5 +370,15 @@ public class ServerPerformanceTest {
         Response response = target.path("historial").queryParam("email", email).request().get();
         assertTrue(response.readEntity(Historial.class) != null);
         
+    }
+
+    @Test
+    @JUnitPerfTest(threads = 10, durationMs = 2000)
+    public void testListaPedidosAdministrador(){
+        String admin = "ADMINS2";
+        Response response = target.path("listPedidosAdmin").queryParam("admin", admin).request().get();
+        GenericType<List<Producto>> listType = new GenericType<List<Producto>>(){};
+        List<Producto> product = response.readEntity(listType); 
+        assertTrue(product.size() == 1);    
     }
     }
