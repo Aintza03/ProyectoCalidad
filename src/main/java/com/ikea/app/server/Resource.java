@@ -515,7 +515,7 @@ public class Resource{
 		try {	
             tx.begin();
             logger.info("Obteniendo productos");
-			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO WHERE VENDEDOR = '" + admin + "'")) {
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO WHERE VENDEDOR = '" + admin + "' AND isnull(productoshistorial)")) {
 				q.setClass(ProductoJDO.class);
 				List<ProductoJDO> results = q.executeList();
 				System.out.println("Productos: " + results);
@@ -724,5 +724,47 @@ public class Resource{
 			pm.close();
 		}
 	}
-	
+	@GET
+	@Path("/listPedidosAdmin")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Producto> listaPedidosAdministrador(@QueryParam("admin") String admin) {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
+		List<Producto> productos = new ArrayList<Producto>();
+		try {	
+            tx.begin();
+            logger.info("Obteniendo productos");
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO WHERE VENDEDOR = '" + admin + "' AND NOT isnull(productoshistorial)") ) {
+				q.setClass(ProductoJDO.class);
+				List<ProductoJDO> results = q.executeList();
+				System.out.println("Productos: " + results);
+				for (ProductoJDO productoJDO : results) {
+					Producto producto = new Producto();
+					producto.setNombre(productoJDO.getNombre());
+					producto.setPrecio(productoJDO.getPrecio());
+					producto.setTipo(productoJDO.getTipo());
+					producto.setId(productoJDO.getId());
+					Producto.setIdGeneral(producto.getId());
+					productos.add(producto);
+					logger.info("Product retrieved: {}", productoJDO);
+				}
+				
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
+			tx.commit();
+			if (productos.size() != 0) {	
+        		return productos;
+			}else{
+				System.out.println("Producto Vacio");
+				return productos;
+			}
+		}
+		finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+		}
 }

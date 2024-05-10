@@ -28,69 +28,55 @@ import com.ikea.app.pojo.Producto;
 import com.ikea.app.pojo.Cesta;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.client.window.CestaWindow;
-import com.ikea.app.client.controller.ProductListAdminController;
+import com.ikea.app.client.controller.ListaPedidosAdminController;
 import com.ikea.app.pojo.Admin;
-public class ProductListAdmin extends JFrame{
+public class ListaPedidosAdminWindow extends JFrame{
 
     protected List<Producto> productoList = new ArrayList<Producto>();
-    protected JTable tablaProductos;
+    protected JTable tablaPedidos;
     protected DefaultTableModel modeloTablaProductos;
     protected int mouseRow = -1;
 	protected int mouseCol = -1;
 	protected WebTarget webTargets;
-	protected ProductListAdminController controller = new ProductListAdminController();
+	protected ListaPedidosAdminController controller = new ListaPedidosAdminController();
 
-    public ProductListAdmin(WebTarget webTargets, Admin usuario){
+    public ListaPedidosAdminWindow(WebTarget webTargets, Admin usuario){
         Container cp = this.getContentPane();
         cp.setLayout(new GridLayout(1,2));
 		this.webTargets = webTargets;
 		this.initTable();
-        this.loadProducto(webTargets,usuario.getUsuario());
-        JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
-        scrollPaneProductos.setBorder(new TitledBorder("Productos"));
+        this.loadPedidos(webTargets,usuario.getUsuario());
+        JScrollPane scrollPaneProductos = new JScrollPane(tablaPedidos);
+        scrollPaneProductos.setBorder(new TitledBorder("Pedidos"));
         cp.add(scrollPaneProductos);
-		JButton anadirProducto=new JButton("Añadir producto");
 		
-		JButton eliminarProducto=new JButton("Eliminar producto");
+		JButton eliminarProducto=new JButton("Eliminar pedido");
 		eliminarProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource()==eliminarProducto) {
-					int row = tablaProductos.getSelectedRow();
+					int row = tablaPedidos.getSelectedRow();
 					if (row != -1) {
 						Producto producto= productoList.get(row);
-						controller.eliminarProducto(webTargets, producto);
-						loadProducto(webTargets, usuario.getUsuario());
+						controller.eliminarPedido(webTargets, producto);
+						JFrame jFrame = new JFrame();
+						JOptionPane.showMessageDialog(jFrame, "Se ha eliminado el pedido "+ producto.getNombre() + " Notificando al comprador y la entidad bancaria para la devolución del dinero");
+						loadPedidos(webTargets, usuario.getUsuario());
 					}
 				}
 			}
 		});
 		
-		JButton verListaPedidos = new JButton("Ver pedidos");
-		verListaPedidos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource()==verListaPedidos) {
-					new ListaPedidosAdminWindow(webTargets, usuario);
-				}
-			}
-		});
+		
 		JPanel jpanel = new JPanel();
 		jpanel.setLayout(new GridLayout(2,1));
 		cp.add(jpanel);
 		jpanel.add(eliminarProducto);
-		jpanel.add(verListaPedidos);
-    	jpanel.add(anadirProducto);
-    	anadirProducto.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource()==anadirProducto) {	
-				new AnadirProducto(webTargets, usuario, ProductListAdmin.this);
-			}
-                
-                }
-            });
+
+    	
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
-        this.setSize(800,400);
-        this.setTitle("Lista de Productos de Administrador");
+        this.setSize(400,200);
+        this.setTitle("Lista de Pedidos de Administrador");
         this.setLocationRelativeTo(null);
     }
 
@@ -108,8 +94,8 @@ public class ProductListAdmin extends JFrame{
 			}
 		};
 		//Se crea la tabla de comics con el modelo de datos		
-		this.tablaProductos = new JTable(this.modeloTablaProductos);
-		tablaProductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.tablaPedidos = new JTable(this.modeloTablaProductos);
+		tablaPedidos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		//Render para las celdas de la Editorial se define como un Label un logo
 		DefaultTableCellRenderer a = new DefaultTableCellRenderer() {
@@ -156,42 +142,42 @@ public class ProductListAdmin extends JFrame{
         }
 		};
 		
-		for(int i = 0; i < this.tablaProductos.getColumnModel().getColumnCount(); i++ ) {
-			this.tablaProductos.getColumnModel().getColumn(i).setCellRenderer(a);
+		for(int i = 0; i < this.tablaPedidos.getColumnModel().getColumnCount(); i++ ) {
+			this.tablaPedidos.getColumnModel().getColumn(i).setCellRenderer(a);
 			
 		}
 					
 			
-		this.tablaProductos.addMouseListener(new MouseAdapter() {						
+		this.tablaPedidos.addMouseListener(new MouseAdapter() {						
 			@Override
 			public void mousePressed(MouseEvent e) {
-				int row = tablaProductos.rowAtPoint(e.getPoint());
-				int col = tablaProductos.columnAtPoint(e.getPoint());
+				int row = tablaPedidos.rowAtPoint(e.getPoint());
+				int col = tablaPedidos.columnAtPoint(e.getPoint());
 			}
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				int row = tablaProductos.rowAtPoint(e.getPoint());
-				int col = tablaProductos.columnAtPoint(e.getPoint());
+				int row = tablaPedidos.rowAtPoint(e.getPoint());
+				int col = tablaPedidos.columnAtPoint(e.getPoint());
 			}
 			
 			
 			@Override
             public void mouseClicked(MouseEvent e) {
-				int row = tablaProductos.rowAtPoint(e.getPoint());
-				int col = tablaProductos.columnAtPoint(e.getPoint());
+				int row = tablaPedidos.rowAtPoint(e.getPoint());
+				int col = tablaPedidos.columnAtPoint(e.getPoint());
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				int row = tablaProductos.rowAtPoint(e.getPoint());
-				int col = tablaProductos.columnAtPoint(e.getPoint());
+				int row = tablaPedidos.rowAtPoint(e.getPoint());
+				int col = tablaPedidos.columnAtPoint(e.getPoint());
 			}
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				int row = tablaProductos.rowAtPoint(e.getPoint());
-				int col = tablaProductos.columnAtPoint(e.getPoint());
+				int row = tablaPedidos.rowAtPoint(e.getPoint());
+				int col = tablaPedidos.columnAtPoint(e.getPoint());
 				//Cuando el ratÃ³n sale de la tabla, se resetea la columna/fila sobre la que estÃ¡ el ratÃ³n				
 				mouseRow = -1;
 				mouseCol = -1;
@@ -199,12 +185,12 @@ public class ProductListAdmin extends JFrame{
 			
 		});
 		
-		tablaProductos.addMouseMotionListener(new MouseMotionAdapter() {
+		tablaPedidos.addMouseMotionListener(new MouseMotionAdapter() {
 			
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				int row = tablaProductos.rowAtPoint(e.getPoint());
-				int col = tablaProductos.columnAtPoint(e.getPoint());
+				int row = tablaPedidos.rowAtPoint(e.getPoint());
+				int col = tablaPedidos.columnAtPoint(e.getPoint());
 				mouseRow = row;
 				mouseCol = col;
 				
@@ -216,13 +202,14 @@ public class ProductListAdmin extends JFrame{
 		
 	}
     
-    protected void loadProducto(WebTarget webTarget, String usuario) {
+    protected void loadPedidos(WebTarget webTarget, String usuario) {
 		this.modeloTablaProductos.setRowCount(0);
-		this.productoList = controller.datosDeProductos(webTarget,usuario);
+		this.productoList = controller.verPedidos(webTarget,usuario);
 		for (Producto a : this.productoList) {
 			this.modeloTablaProductos.addRow( new Object[] {a.getId(),a.getNombre(), a.getTipo(), a.getPrecio()} );
 		}		
 	}
     }
     
+
 
