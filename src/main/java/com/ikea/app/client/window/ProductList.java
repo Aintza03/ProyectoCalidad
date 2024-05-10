@@ -34,17 +34,25 @@ public class ProductList extends JFrame{
     protected List<Producto> productoList = new ArrayList<Producto>();
     protected JTable tablaProductos;
     protected DefaultTableModel modeloTablaProductos;
+
 	protected Cesta cesta;
+
     protected int mouseRow = -1;
 	protected int mouseCol = -1;
+
 	protected WebTarget webTargets;
 	protected CestaWindow cestaWindow;
 	protected JLabel imagenProducto;
+
 	protected ProductListController controller = new ProductListController();
+
 	protected JLabel idProducto = new JLabel();
 	protected JLabel nombre = new JLabel();
 	protected JLabel tipo = new JLabel();
 	protected JLabel precio = new JLabel();
+
+	protected JComboBox combo;
+
     public ProductList(WebTarget webTargets, String email){
         Container cp = this.getContentPane();
         cp.setLayout(new GridBagLayout());
@@ -54,12 +62,142 @@ public class ProductList extends JFrame{
 		container.add(nombre);
 		container.add(tipo);
 		container.add(precio);
+
 		GridBagConstraints constraints = new GridBagConstraints();
 		cesta = controller.getCesta(webTargets,email);
 		this.cestaWindow = new CestaWindow(webTargets,cesta);
         this.webTargets = webTargets;
 		this.initTable();
         this.loadProducto(webTargets);
+
+		combo = new JComboBox();
+		combo.addItem("Salon");
+		combo.addItem("Baño");
+		combo.addItem("Habitacion");
+		combo.addItem("Comedor");
+		combo.addItem("Jardin");
+		combo.addItem("Entrada");
+		combo.addItem("Productos ordenados por Tipo:");
+
+		 RowFilter<Object,Object> startsWithAFilter = new RowFilter<Object,Object>() {
+			   public boolean include(Entry<? extends Object, ? extends Object> entry) {
+			     
+			       if (entry.getStringValue(1).equals("Salon")) {
+			         // The value starts with "a", include it
+			         return true;
+			       }else {
+			     
+			     // None of the columns start with "a"; return false so that this
+			     // entry is not shown
+			     return false;
+			       }
+			   }
+			 };
+			 RowFilter<Object,Object> startsWithAFilter1 = new RowFilter<Object,Object>() {
+				   public boolean include(Entry<? extends Object, ? extends Object> entry) {
+				     
+				       if (entry.getStringValue(1).equals("Baño")) {
+				         // The value starts with "a", include it
+				         return true;
+				       }else {
+				     
+				     // None of the columns start with "a"; return false so that this
+				     // entry is not shown
+				     return false;
+				       }
+				   }
+				 };
+			RowFilter<Object,Object> startsWithAFilter2 = new RowFilter<Object,Object>() {
+				   public boolean include(Entry<? extends Object, ? extends Object> entry) {
+				     
+				       if (entry.getStringValue(1).equals("Habitacion")) {
+				         // The value starts with "a", include it
+				         return true;
+				       }else {
+				     
+				     // None of the columns start with "a"; return false so that this
+				     // entry is not shown
+				     return false;
+				       }
+				   }
+				 };	
+				 RowFilter<Object,Object> startsWithAFilter3 = new RowFilter<Object,Object>() {
+				   public boolean include(Entry<? extends Object, ? extends Object> entry) {
+				     
+				       if (entry.getStringValue(1).equals("Comedor")) {
+				         // The value starts with "a", include it
+				         return true;
+				       }else {
+				     
+				     // None of the columns start with "a"; return false so that this
+				     // entry is not shown
+				     return false;
+				       }
+				   }
+				 }; 
+				 RowFilter<Object,Object> startsWithAFilter4 = new RowFilter<Object,Object>() {
+				   public boolean include(Entry<? extends Object, ? extends Object> entry) {
+				     
+				       if (entry.getStringValue(1).equals("Jardin")) {
+				         // The value starts with "a", include it
+				         return true;
+				       }else {
+				     
+				     // None of the columns start with "a"; return false so that this
+				     // entry is not shown
+				     return false;
+				       }
+				   }
+				 };
+				 RowFilter<Object,Object> startsWithAFilter5 = new RowFilter<Object,Object>() {
+				   public boolean include(Entry<? extends Object, ? extends Object> entry) {
+				     
+				       if (entry.getStringValue(1).equals("Entrada")) {
+				         // The value starts with "a", include it
+				         return true;
+				       }else {
+				     
+				     // None of the columns start with "a"; return false so that this
+				     // entry is not shown
+				     return false;
+				       }
+				   }
+				 };
+			 combo.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						if(combo.getSelectedIndex() == 0) {
+							TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modeloTablaProductos);
+							sorter.setRowFilter(startsWithAFilter);
+							tablaProductos.setRowSorter(sorter);
+						}else if(combo.getSelectedIndex() == 1){
+							TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modeloTablaProductos);
+							sorter.setRowFilter(startsWithAFilter1);
+							tablaProductos.setRowSorter(sorter);}
+						else if(combo.getSelectedIndex() == 2){
+							TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modeloTablaProductos);
+							sorter.setRowFilter(startsWithAFilter2);
+							tablaProductos.setRowSorter(sorter);}
+						else if(combo.getSelectedIndex() == 3){
+							TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modeloTablaProductos);
+							sorter.setRowFilter(startsWithAFilter3);
+							tablaProductos.setRowSorter(sorter);}
+						else if(combo.getSelectedIndex() == 4){
+							TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modeloTablaProductos);
+							sorter.setRowFilter(startsWithAFilter4);
+							tablaProductos.setRowSorter(sorter);}
+						else if(combo.getSelectedIndex() == 5){
+							TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modeloTablaProductos);
+							sorter.setRowFilter(startsWithAFilter5);
+							tablaProductos.setRowSorter(sorter);
+						}else if(combo.getSelectedIndex() == 6) {
+							tablaProductos.setRowSorter(null);
+						}
+						}	
+					
+				});
+
         JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
         scrollPaneProductos.setBorder(new TitledBorder("Productos"));
         constraints.gridx = 0;
@@ -71,6 +209,7 @@ public class ProductList extends JFrame{
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.PAGE_START;
 		cp.add(scrollPaneProductos, constraints);
+		cp.add(combo, constraints);
 		imagenProducto = new JLabel("");
 		constraints.gridy = 1;
 		constraints.fill = GridBagConstraints.NONE;
