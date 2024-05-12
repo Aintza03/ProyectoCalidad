@@ -28,7 +28,7 @@ public class CestaWindow extends JFrame{
     protected HistorialWindow historialWindow;
    public CestaWindow(WebTarget webTargets, Cesta cesta){
     Historial historial = cestaWindowController.getHistorial(webTargets, cesta.getCliente().getEmail());
-    historialWindow = new HistorialWindow(webTargets, historial);
+    historialWindow = new HistorialWindow(webTargets, historial, cesta.getCliente());
     Container cp = this.getContentPane();
     cp.setLayout(new GridLayout(1, 2));
     JPanel panel = new JPanel();

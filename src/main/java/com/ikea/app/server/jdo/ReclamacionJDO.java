@@ -1,10 +1,20 @@
+package com.ikea.app.server.jdo;
+
 import com.ikea.app.server.jdo.ProductoJDO;
 import com.ikea.app.server.jdo.ClienteJDO;
+
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.Join;
+import javax.jdo.annotations.Element;
+import javax.jdo.annotations.Column;
+import javax.jdo.annotations.IdGeneratorStrategy;
 @PersistenceCapable
 public class ReclamacionJDO{
     @PrimaryKey
     ClienteJDO cliente = null;
-    Producto producto = null;
+    ProductoJDO producto = null;
     String reclamacion = null;
 
     public ReclamacionJDO(String reclamacion, ProductoJDO producto, ClienteJDO cliente) {

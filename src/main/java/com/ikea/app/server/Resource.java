@@ -6,16 +6,20 @@ import javax.jdo.JDOHelper;
 import javax.jdo.Transaction;
 import javax.jdo.Extent;
 
-import com.ikea.app.server.jdo.ClienteJDO;
-import com.ikea.app.server.jdo.AdminJDO;
 import com.ikea.app.pojo.Cliente;
+import com.ikea.app.server.jdo.ClienteJDO;
 import com.ikea.app.pojo.Admin;
+import com.ikea.app.server.jdo.AdminJDO;
+import com.ikea.app.pojo.Cesta;
 import com.ikea.app.server.jdo.CestaJDO;
+import com.ikea.app.pojo.Producto;
 import com.ikea.app.server.jdo.ProductoJDO;
+import com.ikea.app.pojo.Reclamacion;
+import com.ikea.app.server.jdo.ReclamacionJDO;
+
 import javax.ws.rs.QueryParam;
 import java.util.ArrayList;
 
-import com.ikea.app.pojo.Producto;
 import java.util.stream.*;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -25,7 +29,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import com.ikea.app.pojo.Cesta;
+
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import java.util.List;
@@ -767,46 +771,49 @@ public class Resource{
 			pm.close();
 		}
 	}
-	/*@POST
+	@POST
 	@Path("/hacerReclamacion")
-	public Response makeReclamation(){
+	public Response makeReclamation(Reclamacion reclamacion){
 		try{
-			logger.info("Modificando historial del cliente: " + historial.getCliente());
+			logger.info("Insertando la reclamacion de: " + reclamacion.getCliente());
 			tx.begin();
-			
-				HistorialJDO historialjdo = null;
-				try (Query<HistorialJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM HISTORIALJDO WHERE CLIENTE_EMAIL_OID = '"+historial.getCliente().getEmail() +"'")) {
-				//try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","UPDATE productojdo SET PRODUCTOS = '"+ cestajdo.getCliente() +"' WHERE ID = '"+productojdo.getId() +"'")) {
-				q.setClass(HistorialJDO.class);
-				List<HistorialJDO> results = q.executeList();
-				historialjdo = results.get(0);
-				for(Producto producto : historial.getProductos()){
-					ProductoJDO productojdo = null;
-					try(Query<ProductoJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO WHERE ID = '"+producto.getId() +"'")){
-						q2.setClass(ProductoJDO.class);
-						List<ProductoJDO> resultsP = q2.executeList();
-						productojdo = resultsP.get(0);
-						historialjdo.addProducto(productojdo);
-					}catch(javax.jdo.JDOObjectNotFoundException ex1){
-						logger.info("Exception1 launched: {}", ex1.getMessage());
-					}	
-				}
-				pm.makePersistent(historialjdo);
-				logger.info("Historial guardado: {}", historial);
-			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
-				logger.info("Exception1 launched: {}", ex1.getMessage());
-			}	
+			ReclamacionJDO reclamacionJDO = null;
+			ClienteJDO clienteJDO = null;
+			ProductoJDO productoJDO = null;
+			try {
+				reclamacionJDO = pm.getObjectById(ReclamacionJDO.class, reclamacion.getCliente());
+			} catch (JDOObjectNotFoundException ex1) {
+				logger.error("Exception launched: {}", ex1.getMessage());
+			}
+			logger.info("Cliente: {}", reclamacionJDO);
+			if (reclamacionJDO != null) {
+				logger.info("Añadiendo cliente: {}", reclamacion.getCliente());
+				clienteJDO = new ClienteJDO(reclamacion.getCliente().getEmail(), reclamacion.getCliente().getContrasena(), reclamacion.getCliente().getNombre());
+				reclamacionJDO.setCliente(clienteJDO);
+				logger.info("Cliente añadida: {}", reclamacionJDO.getCliente());
+                logger.info("Añadiendo producto: {}", reclamacion.getProducto());
+				productoJDO = new ProductoJDO(reclamacion.getProducto().getId(), reclamacion.getProducto().getNombre(), reclamacion.getProducto().getTipo(), reclamacion.getProducto().getPrecio());
+				reclamacionJDO.setProducto(productoJDO);
+				logger.info("Producto Añadido: {}", reclamacionJDO.getProducto());
+                logger.info("Añadiendo Reclamacion: {}", reclamacion.getReclamacion());
+				reclamacionJDO.setReclamacion(reclamacion.getReclamacion());
+				logger.info("Producto Añadido: {}", reclamacionJDO.getReclamacion());
+                
+			} else {
+				logger.info("Creando reclamacion: {}", reclamacionJDO);
+				reclamacionJDO = new ReclamacionJDO(reclamacion.getReclamacion(), productoJDO, clienteJDO);
+				pm.makePersistent(reclamacionJDO);					 
+				logger.info("Reclamacion creada: {}", reclamacionJDO);
+			}
 			tx.commit();
 			return Response.ok().build();
-		}catch (Exception ex1) {
-				logger.info("Exception launched: {}", ex1.getMessage());
-				ex1.printStackTrace();
-				return Response.status(Status.NOT_FOUND).build();
-		}finally {
-			if (tx.isActive()) {
-				tx.rollback();
-			}
-			pm.close();
+        }
+        finally {
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+			//pm.close();
 		}
-	}*/
+	}
 }

@@ -12,7 +12,7 @@ public class HistorialWindow extends JFrame{
 	protected JList<Producto> listaHistorial;
     protected JButton reclamacion = new JButton("Hacer reclamacion");
     //protected CestaWindowController cestaWindowController = new CestaWindowController();
-   public HistorialWindow(WebTarget webTargets, Historial historial){
+   public HistorialWindow(WebTarget webTargets, Historial historial, Cliente cliente){
     Container cp = this.getContentPane();
     cp.setLayout(new GridLayout(2, 1));
     
@@ -37,8 +37,8 @@ public class HistorialWindow extends JFrame{
             
         @Override
         public void actionPerformed(ActionEvent e) {
-            Producto producto = listaCesta.getSelectedValue();
-            HacerReclamacionWindow hrw = new HacerReclamacionWindow(webTargets, producto);
+            Producto producto = listaHistorial.getSelectedValue();
+            HacerReclamacionWindow hrw = new HacerReclamacionWindow(webTargets, producto, cliente);
         }
     });	
    }          

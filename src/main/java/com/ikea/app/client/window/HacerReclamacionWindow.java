@@ -14,14 +14,19 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-//import com.ikea.app.client.controller.HacerReclamacionWindowController;
+
+import com.ikea.app.pojo.Reclamacion;
+import com.ikea.app.pojo.Cliente;
+import com.ikea.app.pojo.Producto;
+import com.ikea.app.client.controller.HacerRaclamacionWindowController;
 
 public class HacerReclamacionWindow extends JFrame{
     protected JButton reclamacion = new JButton("Enviar Reclamacion");
     protected JLabel labelText = new JLabel("Escriba su reclamacion");
     protected JTextField reclamacionText = new JTextField();
+    protected HacerRaclamacionWindowController controller = new HacerRaclamacionWindowController();
     
-    public HacerReclamacionWindow(WebTarget webTargets, Producto producto) {
+    public HacerReclamacionWindow(WebTarget webTargets, Producto producto, Cliente cliente) {
         Container cp = this.getContentPane();
         cp.setLayout(new GridLayout(3, 1));
         cp.add(labelText);
@@ -38,7 +43,8 @@ public class HacerReclamacionWindow extends JFrame{
                 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //controller.borrarCliente(webTargets, cliente);
+                String reclamacion = reclamacionText.getText();
+                controller.hacerReclamacion(webTargets, reclamacion, cliente, producto);
                 JFrame jFrame = new JFrame();
                 JOptionPane.showMessageDialog(jFrame, "Se ha enviado la reclamacion correctamente");
                 dispose();
