@@ -766,5 +766,47 @@ public class Resource{
 			}
 			pm.close();
 		}
+	}
+	/*@POST
+	@Path("/hacerReclamacion")
+	public Response makeReclamation(){
+		try{
+			logger.info("Modificando historial del cliente: " + historial.getCliente());
+			tx.begin();
+			
+				HistorialJDO historialjdo = null;
+				try (Query<HistorialJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM HISTORIALJDO WHERE CLIENTE_EMAIL_OID = '"+historial.getCliente().getEmail() +"'")) {
+				//try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","UPDATE productojdo SET PRODUCTOS = '"+ cestajdo.getCliente() +"' WHERE ID = '"+productojdo.getId() +"'")) {
+				q.setClass(HistorialJDO.class);
+				List<HistorialJDO> results = q.executeList();
+				historialjdo = results.get(0);
+				for(Producto producto : historial.getProductos()){
+					ProductoJDO productojdo = null;
+					try(Query<ProductoJDO> q2 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO WHERE ID = '"+producto.getId() +"'")){
+						q2.setClass(ProductoJDO.class);
+						List<ProductoJDO> resultsP = q2.executeList();
+						productojdo = resultsP.get(0);
+						historialjdo.addProducto(productojdo);
+					}catch(javax.jdo.JDOObjectNotFoundException ex1){
+						logger.info("Exception1 launched: {}", ex1.getMessage());
+					}	
+				}
+				pm.makePersistent(historialjdo);
+				logger.info("Historial guardado: {}", historial);
+			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
+				logger.info("Exception1 launched: {}", ex1.getMessage());
+			}	
+			tx.commit();
+			return Response.ok().build();
+		}catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+				return Response.status(Status.NOT_FOUND).build();
+		}finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
 		}
+	}*/
 }

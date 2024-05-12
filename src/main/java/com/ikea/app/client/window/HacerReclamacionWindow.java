@@ -21,7 +21,7 @@ public class HacerReclamacionWindow extends JFrame{
     protected JLabel labelText = new JLabel("Escriba su reclamacion");
     protected JTextField reclamacionText = new JTextField();
     
-    public HacerReclamacionWindow(WebTarget webTargets) {
+    public HacerReclamacionWindow(WebTarget webTargets, Producto producto) {
         Container cp = this.getContentPane();
         cp.setLayout(new GridLayout(3, 1));
         cp.add(labelText);

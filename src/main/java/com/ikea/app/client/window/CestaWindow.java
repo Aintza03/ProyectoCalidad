@@ -53,9 +53,9 @@ public class CestaWindow extends JFrame{
                 precioTotal=0;
                 labelPrecioTotal.setText(precioTotal + "€");
                 cestaWindowController.vaciarCesta(webTargets, cesta);
-                }
-                }
-            });
+            }
+        }
+    });
     JButton borrarProductoButton=new JButton("Borrar producto");
     borrarProductoButton.setBounds(250,120,50,30);
     panel.add(borrarProductoButton);

@@ -6,6 +6,7 @@ import javax.swing.*;
 import com.ikea.app.pojo.*;
 import javax.ws.rs.client.WebTarget;
 import com.ikea.app.client.window.HacerReclamacionWindow;
+import com.ikea.app.pojo.Producto;
 public class HistorialWindow extends JFrame{
 	protected DefaultListModel<Producto> modeloHistorial;
 	protected JList<Producto> listaHistorial;
@@ -36,7 +37,8 @@ public class HistorialWindow extends JFrame{
             
         @Override
         public void actionPerformed(ActionEvent e) {
-            HacerReclamacionWindow hrw = new HacerReclamacionWindow(webTargets);
+            Producto producto = listaCesta.getSelectedValue();
+            HacerReclamacionWindow hrw = new HacerReclamacionWindow(webTargets, producto);
         }
     });	
    }          
