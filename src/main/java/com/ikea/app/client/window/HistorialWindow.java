@@ -38,10 +38,14 @@ public class HistorialWindow extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
             Producto producto = listaHistorial.getSelectedValue();
-            HacerReclamacionWindow hrw = new HacerReclamacionWindow(webTargets, producto, cliente);
+            if(producto != null){
+                HacerReclamacionWindow hrw = new HacerReclamacionWindow(webTargets, producto, cliente);
+            } else {
+                JOptionPane.showMessageDialog(null, "Seleccione un producto");
+            }
         }
     });	
-   }          
+    }          
     
     public void addProducto(Producto producto){
         modeloHistorial.addElement(producto);

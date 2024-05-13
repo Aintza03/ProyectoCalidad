@@ -13,15 +13,25 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 @PersistenceCapable
 public class ReclamacionJDO{
     @PrimaryKey
+    int id;
     ClienteJDO cliente = null;
     ProductoJDO producto = null;
     String reclamacion = null;
 
-    public ReclamacionJDO(String reclamacion, ProductoJDO producto, ClienteJDO cliente) {
-		this.reclamacion = reclamacion;
+    public ReclamacionJDO(int id, String reclamacion, ProductoJDO producto, ClienteJDO cliente) {
+		this.id = id;
+        this.reclamacion = reclamacion;
         this.producto = producto;
         this.cliente = cliente;
 	}
+
+    public int getId() {
+        return this.id;
+    }
+	
+	public void setId(int id) {
+        this.id = id;
+    }
     
     public ClienteJDO getCliente() {
         return this.cliente;

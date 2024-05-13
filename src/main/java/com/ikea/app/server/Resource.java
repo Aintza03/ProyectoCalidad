@@ -773,35 +773,52 @@ public class Resource{
 	}
 	@POST
 	@Path("/hacerReclamacion")
-	public Response makeReclamation(Reclamacion reclamacion){
+	public Response makeReclamation(Reclamacion reclamacionA){
 		try{
-			logger.info("Insertando la reclamacion de: " + reclamacion.getCliente());
+			logger.info("Insertando la reclamacion de: " + reclamacionA.getCliente());
 			tx.begin();
 			ReclamacionJDO reclamacionJDO = null;
 			ClienteJDO clienteJDO = null;
+			try (Query<ClienteJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM CLIENTEJDO WHERE CLIENTE_EMAIL_OID = '" + reclamacionA.getCliente().getEmail() + "'")) {
+				q.setClass(ClienteJDO.class);
+				q.setParameters(reclamacionA.getCliente().getEmail());
+				List<ClienteJDO> results = q.executeList();
+				clienteJDO = results.get(0);
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
 			ProductoJDO productoJDO = null;
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO WHERE ID = '" + reclamacionA.getProducto().getId() +"'")) {
+				q.setClass(ProductoJDO.class);
+				List<ProductoJDO> results = q.executeList();
+				productoJDO = results.get(0);
+				logger.info("Product retrieved: {}", productoJDO);
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
 			try {
-				reclamacionJDO = pm.getObjectById(ReclamacionJDO.class, reclamacion.getCliente());
+				reclamacionJDO = pm.getObjectById(ReclamacionJDO.class, reclamacionA.getId());
+				logger.info("3");
 			} catch (JDOObjectNotFoundException ex1) {
 				logger.error("Exception launched: {}", ex1.getMessage());
 			}
-			logger.info("Cliente: {}", reclamacionJDO);
+			logger.info("Reclamacion: {}", reclamacionJDO);
 			if (reclamacionJDO != null) {
-				logger.info("Añadiendo cliente: {}", reclamacion.getCliente());
-				clienteJDO = new ClienteJDO(reclamacion.getCliente().getEmail(), reclamacion.getCliente().getContrasena(), reclamacion.getCliente().getNombre());
+				logger.info("Añadiendo cliente: {}", reclamacionA.getCliente());
 				reclamacionJDO.setCliente(clienteJDO);
 				logger.info("Cliente añadida: {}", reclamacionJDO.getCliente());
-                logger.info("Añadiendo producto: {}", reclamacion.getProducto());
-				productoJDO = new ProductoJDO(reclamacion.getProducto().getId(), reclamacion.getProducto().getNombre(), reclamacion.getProducto().getTipo(), reclamacion.getProducto().getPrecio());
+                logger.info("Añadiendo producto: {}", reclamacionA.getProducto());
 				reclamacionJDO.setProducto(productoJDO);
 				logger.info("Producto Añadido: {}", reclamacionJDO.getProducto());
-                logger.info("Añadiendo Reclamacion: {}", reclamacion.getReclamacion());
-				reclamacionJDO.setReclamacion(reclamacion.getReclamacion());
+                logger.info("Añadiendo Reclamacion: {}", reclamacionA.getReclamacion());
+				reclamacionJDO.setReclamacion(reclamacionA.getReclamacion());
 				logger.info("Producto Añadido: {}", reclamacionJDO.getReclamacion());
                 
 			} else {
 				logger.info("Creando reclamacion: {}", reclamacionJDO);
-				reclamacionJDO = new ReclamacionJDO(reclamacion.getReclamacion(), productoJDO, clienteJDO);
+				reclamacionJDO = new ReclamacionJDO(reclamacionA.getId(), reclamacionA.getReclamacion(), productoJDO, clienteJDO);
 				pm.makePersistent(reclamacionJDO);					 
 				logger.info("Reclamacion creada: {}", reclamacionJDO);
 			}
