@@ -767,4 +767,38 @@ public class Resource{
 			pm.close();
 		}
 		}
+
+		//HAY QUE HACERLO DE MOMENTO ESTA CON LO QUE HE COPIADO
+	@POST
+	@Path("/modifyProduct")
+	public Response modifyProduct(Producto producto){
+		try{
+			logger.info("Editando el producto: " + producto.getId());
+			tx.begin();
+			ProductoJDO productoJDO;
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO WHERE ID = '" + producto.getId() + "'")) {
+				q.setClass(ProductoJDO.class);
+				List<ProductoJDO> results = q.executeList();
+				productoJDO = results.get(0);
+				productoJDO.setNombre(producto.getNombre());
+				productoJDO.setTipo(producto.gettipo());
+				productoJDO.setPrecio(producto.getPrecio());
+				pm.makePersistent(productoJDO);
+				logger.info("Producto editado: {}", productoJDO);
+			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
+				logger.info("Exception1 launched: {}", ex1.getMessage());
+			}	
+			tx.commit();
+			return Response.ok().build();
+		}catch (Exception ex1) {
+			logger.info("Exception launched: {}", ex1.getMessage());
+			ex1.printStackTrace();
+			return Response.status(Status.NOT_FOUND).build();
+		}finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
 }
