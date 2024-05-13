@@ -779,7 +779,7 @@ public class Resource{
 			tx.begin();
 			ReclamacionJDO reclamacionJDO = null;
 			ClienteJDO clienteJDO = null;
-			try (Query<ClienteJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM CLIENTEJDO WHERE CLIENTE_EMAIL_OID = '" + reclamacionA.getCliente().getEmail() + "'")) {
+			try (Query<ClienteJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM CLIENTEJDO WHERE EMAIL = '" + reclamacionA.getCliente().getEmail() + "'")) {
 				q.setClass(ClienteJDO.class);
 				q.setParameters(reclamacionA.getCliente().getEmail());
 				List<ClienteJDO> results = q.executeList();
