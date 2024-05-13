@@ -71,6 +71,7 @@ public class ProductList extends JFrame{
         this.loadProducto(webTargets);
 
 		combo = new JComboBox();
+		
 		combo.addItem("Salon");
 		combo.addItem("Baño");
 		combo.addItem("Habitacion");
@@ -78,11 +79,11 @@ public class ProductList extends JFrame{
 		combo.addItem("Jardin");
 		combo.addItem("Entrada");
 		combo.addItem("Productos ordenados por Tipo:");
-
+		
 		 RowFilter<Object,Object> startsWithAFilter = new RowFilter<Object,Object>() {
 			   public boolean include(Entry<? extends Object, ? extends Object> entry) {
 			     
-			       if (entry.getStringValue(1).equals("Salon")) {
+			       if (entry.getStringValue(2).equals("Salon")) {
 			         // The value starts with "a", include it
 			         return true;
 			       }else {
@@ -96,7 +97,7 @@ public class ProductList extends JFrame{
 			 RowFilter<Object,Object> startsWithAFilter1 = new RowFilter<Object,Object>() {
 				   public boolean include(Entry<? extends Object, ? extends Object> entry) {
 				     
-				       if (entry.getStringValue(1).equals("Baño")) {
+				       if (entry.getStringValue(2).equals("Baño")) {
 				         // The value starts with "a", include it
 				         return true;
 				       }else {
@@ -110,7 +111,7 @@ public class ProductList extends JFrame{
 			RowFilter<Object,Object> startsWithAFilter2 = new RowFilter<Object,Object>() {
 				   public boolean include(Entry<? extends Object, ? extends Object> entry) {
 				     
-				       if (entry.getStringValue(1).equals("Habitacion")) {
+				       if (entry.getStringValue(2).equals("Habitacion")) {
 				         // The value starts with "a", include it
 				         return true;
 				       }else {
@@ -124,7 +125,7 @@ public class ProductList extends JFrame{
 				 RowFilter<Object,Object> startsWithAFilter3 = new RowFilter<Object,Object>() {
 				   public boolean include(Entry<? extends Object, ? extends Object> entry) {
 				     
-				       if (entry.getStringValue(1).equals("Comedor")) {
+				       if (entry.getStringValue(2).equals("Comedor")) {
 				         // The value starts with "a", include it
 				         return true;
 				       }else {
@@ -138,7 +139,7 @@ public class ProductList extends JFrame{
 				 RowFilter<Object,Object> startsWithAFilter4 = new RowFilter<Object,Object>() {
 				   public boolean include(Entry<? extends Object, ? extends Object> entry) {
 				     
-				       if (entry.getStringValue(1).equals("Jardin")) {
+				       if (entry.getStringValue(2).equals("Jardin")) {
 				         // The value starts with "a", include it
 				         return true;
 				       }else {
@@ -152,7 +153,7 @@ public class ProductList extends JFrame{
 				 RowFilter<Object,Object> startsWithAFilter5 = new RowFilter<Object,Object>() {
 				   public boolean include(Entry<? extends Object, ? extends Object> entry) {
 				     
-				       if (entry.getStringValue(1).equals("Entrada")) {
+				       if (entry.getStringValue(2).equals("Entrada")) {
 				         // The value starts with "a", include it
 				         return true;
 				       }else {
@@ -208,8 +209,11 @@ public class ProductList extends JFrame{
 		constraints.weighty = 1;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.PAGE_START;
-		cp.add(scrollPaneProductos, constraints);
-		cp.add(combo, constraints);
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(2,1));
+		panel.add(scrollPaneProductos);
+		panel.add(combo);
+		cp.add(panel, constraints);
 		imagenProducto = new JLabel("");
 		constraints.gridy = 1;
 		constraints.fill = GridBagConstraints.NONE;
@@ -222,10 +226,10 @@ public class ProductList extends JFrame{
 		cp.add(total, constraints);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
-        this.setSize(400,200);
+        this.setSize(400,600);
         this.setTitle("Lista de Productos");
         this.setLocationRelativeTo(null);
-    	this.setLocation(450,400);
+    	this.setLocation(300,300);
     }
 
     private void initTable() {
@@ -331,7 +335,7 @@ public class ProductList extends JFrame{
 							nombre.setText("");
 							tipo.setText("");
 							precio.setText("");
-							setSize(400,200);
+							setSize(400,600);
 					} catch (Exception e2) {
 						System.err.println("No se ha escogido animal");
 					}	
