@@ -21,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.math3.analysis.function.Max;
 import org.apache.logging.log4j.core.config.builder.api.Component;
 
 import com.ikea.app.pojo.Cliente;
@@ -79,6 +80,10 @@ public class ProductList extends JFrame{
 		combo.addItem("Jardin");
 		combo.addItem("Entrada");
 		combo.addItem("Productos ordenados por Tipo:");
+		combo.setPreferredSize(new Dimension(100, 20));
+		combo.setMaximumSize(new Dimension(100, 20));
+		combo.setMinimumSize(new Dimension(100, 20));
+
 		
 		 RowFilter<Object,Object> startsWithAFilter = new RowFilter<Object,Object>() {
 			   public boolean include(Entry<? extends Object, ? extends Object> entry) {
@@ -209,10 +214,13 @@ public class ProductList extends JFrame{
 		constraints.weighty = 1;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.PAGE_START;
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(2,1));
-		panel.add(scrollPaneProductos);
-		panel.add(combo);
+		JSplitPane panel = new JSplitPane();
+		panel.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		
+		// Set the size ratio to 80:20
+		panel.setBottomComponent(scrollPaneProductos);
+		panel.setTopComponent(combo);
+		panel.setDividerLocation(-1);
 		cp.add(panel, constraints);
 		imagenProducto = new JLabel("");
 		constraints.gridy = 1;
