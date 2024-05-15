@@ -17,12 +17,14 @@ public class ReclamacionJDO{
     ClienteJDO cliente = null;
     ProductoJDO producto = null;
     String reclamacion = null;
+    AdminJDO admin = null;
 
-    public ReclamacionJDO(int id, String reclamacion, ProductoJDO producto, ClienteJDO cliente) {
+    public ReclamacionJDO(int id, String reclamacion, ProductoJDO producto, ClienteJDO cliente, AdminJDO admin) {
 		this.id = id;
         this.reclamacion = reclamacion;
         this.producto = producto;
         this.cliente = cliente;
+        this.admin = admin;
 	}
 
     public int getId() {
@@ -57,7 +59,15 @@ public class ReclamacionJDO{
         this.reclamacion = reclamacion;
     }
 
+    public AdminJDO getAdmin() {
+        return this.admin;
+    }
+
+    public void setAdmin(AdminJDO admin) {
+        this.admin = admin;
+    }
+
 	public String toString(){
-		return "Cliente: " + this.cliente + " Producto: " + this.producto;
+		return "Cliente: " + this.cliente + " Producto: " + this.producto + " Admin: " + this.admin;
 	}	
 }

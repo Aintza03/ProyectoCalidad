@@ -18,13 +18,13 @@ import javax.ws.rs.core.Response.Status;
 import com.ikea.app.pojo.Reclamacion;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.pojo.Producto;
-import com.ikea.app.client.controller.HacerRaclamacionWindowController;
+import com.ikea.app.client.controller.HacerReclamacionWindowController;
 
 public class HacerReclamacionWindow extends JFrame{
     protected JButton reclamacion = new JButton("Enviar Reclamacion");
     protected JLabel labelText = new JLabel("Escriba su reclamacion");
     protected JTextField reclamacionText = new JTextField();
-    protected HacerRaclamacionWindowController controller = new HacerRaclamacionWindowController();
+    protected HacerReclamacionWindowController controller = new HacerReclamacionWindowController();
     
     public HacerReclamacionWindow(WebTarget webTargets, Producto producto, Cliente cliente) {
         Container cp = this.getContentPane();

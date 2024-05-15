@@ -29,6 +29,7 @@ import com.ikea.app.pojo.Cesta;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.client.window.CestaWindow;
 import com.ikea.app.client.controller.ProductListAdminController;
+import com.ikea.app.client.window.ResolverReclamacionWindow;
 import com.ikea.app.pojo.Admin;
 public class ProductListAdmin extends JFrame{
 
@@ -73,12 +74,23 @@ public class ProductListAdmin extends JFrame{
 				}
 			}
 		});
+
+		JButton verReclamaciones = new JButton("Ver reclamaciones");
+		verReclamaciones.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource()==verReclamaciones) {
+					new ResolverReclamacionWindow(webTargets, usuario);
+				}
+			}
+		});
+
 		JPanel jpanel = new JPanel();
 		jpanel.setLayout(new GridLayout(2,1));
 		cp.add(jpanel);
 		jpanel.add(eliminarProducto);
 		jpanel.add(verListaPedidos);
     	jpanel.add(anadirProducto);
+		jpanel.add(verReclamaciones);
     	anadirProducto.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource()==anadirProducto) {	

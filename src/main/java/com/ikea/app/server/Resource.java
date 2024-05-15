@@ -798,6 +798,16 @@ public class Resource{
 				logger.info("Exception launched: {}", ex1.getMessage());
 				ex1.printStackTrace();
 			}
+			AdminJDO adminJDO = null;
+			try (Query<AdminJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM ADMINJDO WHERE usuario = (SELECT VENDEDOR FROM PRODUCTOJDO WHERE ID = '" + reclamacionA.getProducto().getId() +"')")) {
+				q.setClass(AdminJDO.class);
+				List<AdminJDO> results = q.executeList();
+				adminJDO = results.get(0);
+				logger.info("Admin retrieved: {}", adminJDO);
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
 			try {
 				reclamacionJDO = pm.getObjectById(ReclamacionJDO.class, reclamacionA.getId());
 				logger.info("3");
@@ -818,7 +828,7 @@ public class Resource{
                 
 			} else {
 				logger.info("Creando reclamacion: {}", reclamacionJDO);
-				reclamacionJDO = new ReclamacionJDO(reclamacionA.getId(), reclamacionA.getReclamacion(), productoJDO, clienteJDO);
+				reclamacionJDO = new ReclamacionJDO(reclamacionA.getId(), reclamacionA.getReclamacion(), productoJDO, clienteJDO, adminJDO);
 				pm.makePersistent(reclamacionJDO);					 
 				logger.info("Reclamacion creada: {}", reclamacionJDO);
 			}
@@ -831,6 +841,111 @@ public class Resource{
                 tx.rollback();
             }
 			//pm.close();
+		}
+	}
+
+	@GET
+	@Path("/sendReclamation")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Reclamacion> sendReclamation(@QueryParam("admin") String adminString) {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
+		Admin admin = null;
+		try (Query<AdminJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM ADMINJDO WHERE usuario = '" + adminString + "'")) {
+			q.setClass(AdminJDO.class);
+			logger.info("Obteniendo admin: {}", adminString);
+			List<AdminJDO> results = q.executeList();
+			admin = new Admin();
+			admin.setUsuario(results.get(0).getUsuario());
+			logger.info("Admin retrieved: {}", admin);
+			admin.setContrasena(results.get(0).getContrasena());
+			admin.setLista(new HashSet<Producto>());
+			logger.info("Admin retrieved: {}", admin);
+			for(ProductoJDO productoJDO: results.get(0).getLista()){
+				Producto producto = new Producto();
+				producto.setId(productoJDO.getId());
+				producto.setNombre(productoJDO.getNombre());
+				producto.setTipo(productoJDO.getTipo());
+				producto.setPrecio(productoJDO.getPrecio());
+				admin.anadirLista(producto);
+			}
+			logger.info("Admin retrieved: {}", admin);
+		} catch (Exception ex1) {
+			logger.info("Exception launched: {}", ex1.getMessage());
+			ex1.printStackTrace();
+		}
+		List<Reclamacion> reclamaciones = new ArrayList<Reclamacion>();
+		try {	
+            tx.begin();
+            logger.info("Obteniendo reclamaciones de admin: {}", admin.getUsuario());
+			try (Query<ReclamacionJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM RECLAMACIONJDO WHERE ADMIN_USUARIO_OID = '" + admin + "'") ) {
+				q.setClass(ReclamacionJDO.class);
+				List<ReclamacionJDO> results = q.executeList();
+				System.out.println("Reclamacion: " + results);
+				for (ReclamacionJDO reclamacionJDO : results) {
+					Reclamacion reclamacion = new Reclamacion();
+					reclamacion.setId(reclamacionJDO.getId());
+					reclamacion.setReclamacion(reclamacionJDO.getReclamacion());
+					Cliente cliente = new Cliente();
+					cliente.setEmail(reclamacionJDO.getCliente().getEmail());
+					cliente.setContrasena(reclamacionJDO.getCliente().getContrasena());
+					cliente.setNombre(reclamacionJDO.getCliente().getNombre());
+					reclamacion.setCliente(cliente);
+					Producto producto = new Producto();
+					producto.setNombre(reclamacionJDO.getProducto().getNombre());
+					producto.setPrecio(reclamacionJDO.getProducto().getPrecio());
+					producto.setTipo(reclamacionJDO.getProducto().getTipo());
+					producto.setId(reclamacionJDO.getProducto().getId());
+					Producto.setIdGeneral(producto.getId());
+					reclamacion.setProducto(producto);
+					reclamaciones.add(reclamacion);
+					logger.info("Product retrieved: {}", reclamacionJDO);
+				}
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
+			tx.commit();
+			if (reclamaciones.size() != 0) {	
+        		return reclamaciones;
+			}else{
+				System.out.println("No hay reclamaciones");
+				return reclamaciones;
+			}
+		}
+		finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+
+	@POST
+	@Path("/resolverReclamacion")
+	public Response resolverReclamacion(Reclamacion reclamacion){
+		try{
+			tx.begin();
+			logger.info("Resolviendo reclamacion del cliente: " + reclamacion.getCliente().getNombre());
+			try (Query<ReclamacionJDO> q = pm.newQuery("javax.jdo.query.SQL", "SELECT * FROM RECLAMACIONJDO WHERE ID = '" + reclamacion.getId() + "'")) {
+				q.setClass(ReclamacionJDO.class);
+				List<ReclamacionJDO> results = q.executeList();
+				ReclamacionJDO reclamacionJDO = results.get(0);
+				pm.deletePersistent(reclamacionJDO);
+				logger.info("Reclamacion resuelta: {}", reclamacionJDO);
+				tx.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+			return Response.ok().build();
+		}catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+				return Response.status(Status.NOT_FOUND).build();
+		}finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
 		}
 	}
 }
