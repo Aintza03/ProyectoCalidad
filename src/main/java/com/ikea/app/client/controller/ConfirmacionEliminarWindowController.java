@@ -14,11 +14,14 @@ import com.ikea.app.client.window.ProductList;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.pojo.Cesta;
+
+/**Controller de la ventana ConfirmacionEliminarUsuario. */
 public class ConfirmacionEliminarWindowController{
+    /**Constructor Vacio. */
     public ConfirmacionEliminarWindowController() {
         
     }
-
+    /**Funcion que manda al servidor la instruccion de eliminar un cliente. */
     public int borrarCliente(WebTarget webTarget, Cliente cliente) {
         int i = 0;
         try {

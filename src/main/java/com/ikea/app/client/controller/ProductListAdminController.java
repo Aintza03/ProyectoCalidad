@@ -20,26 +20,27 @@ import com.ikea.app.pojo.Cesta;
 import com.ikea.app.pojo.Admin;
 import com.ikea.app.client.ClientMain;
 
+/**Controller de la ventana ListaPedidosAdmin. */
 public class ProductListAdminController {
-
+    /**Constructor Vacio. */
     public ProductListAdminController(){
 
     }
-
+    /**Funcion que pide al servidor todos los productos no comprados de ese administrador. */
     public List<Producto> datosDeProductos(WebTarget webTarget, String usuario) {
-        // issuing a GET request to the users endpoint with some query parameters
+        
         try {
             Response response = webTarget.path("listProductsAdmin")
                 .queryParam("admin", usuario)
                 .request(MediaType.APPLICATION_JSON)
                 .get();
 
-            // check that the response was HTTP OK
+            
             if (response.getStatusInfo().toEnum() == Status.OK) {
-                // the response is a generic type (a List<User>)
+                
                 GenericType<List<Producto>> listType = new GenericType<List<Producto>>(){};
                 List<Producto> product = response.readEntity(listType);
-                //System.out.println(product);
+                
                 return product;
             } else {
                 System.out.format("Error obtaining product list. %s%n", response);
@@ -50,9 +51,9 @@ public class ProductListAdminController {
             return new ArrayList<Producto>();
         }
     }
-
+    /**Funcion para eliminar un producto no comprado. */
     public boolean eliminarProducto(WebTarget webTargets, Producto producto) {
-        // TODO Auto-generated method stub
+       
         try {
             WebTarget WebTargetLogin = webTargets.path("eliminarProducto");
             Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);

@@ -11,13 +11,13 @@ import javax.ws.rs.core.Response.Status;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.ClientMain;
 
+/**Controller de la ventana ModificarUsuario. */
 public class ModificarUsuarioController{
-
-
+    /**Constructor Vacio. */
 	public ModificarUsuarioController() {
         
     }
-
+    /**Funcion que manda al servidor la instruccion de modificar un cliente. */
     public Cliente modificarUsuario(WebTarget webTarget, String gmail, String password, String name) {
         WebTarget WebTargetLogin = webTarget.path("modifyClient");
         Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);

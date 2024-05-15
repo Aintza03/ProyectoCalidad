@@ -13,12 +13,14 @@ import com.ikea.app.client.ClientMain;
 import com.ikea.app.pojo.Cesta;
 import com.ikea.app.pojo.Historial;
 import javax.ws.rs.ProcessingException;
+
+/**Controller de la ventana Cesta. */
 public class CestaWindowController{
-    
+    /**Constructor Vacio. */
    public CestaWindowController(){
     
     }          
-
+    /**Funcion que manda al servidor la instruccion de eliminar todos los productos de la cesta del usuario.*/
     public boolean vaciarCesta(WebTarget webTarget, Cesta cesta) {
 		WebTarget WebTargetLogin = webTarget.path("vaciarCesta");
 		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
@@ -31,7 +33,7 @@ public class CestaWindowController{
             return true;
 		}
 	}
-
+    /**Funcion que manda al servidor la orden de eliminar un unico producto de la cesta.*/
     public boolean borrarProductoDeCesta( WebTarget webTarget, Cesta cesta) {
         WebTarget WebTargetLogin = webTarget.path("borrarProductoDeCesta");
         Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
@@ -44,7 +46,7 @@ public class CestaWindowController{
             return true;
         }
     }
-
+    /**Funcion que pide al servidor todos los productos en el historial de ese usuario. */
     public Historial getHistorial(WebTarget webTarget,String email){
 		try {
             Response response = webTarget.path("historial")
@@ -52,7 +54,7 @@ public class CestaWindowController{
 				.request(MediaType.APPLICATION_JSON)
 				.get();
 
-            // check that the response was HTTP OK
+            
             if (response.getStatusInfo().toEnum() == Status.OK) {
                 Historial historial = response.readEntity(Historial.class);
 				System.out.println(historial);
@@ -66,6 +68,8 @@ public class CestaWindowController{
 			return null;
         }	
 	}
+    /**Funcion que manda al servidor la orden de guardar el historial de un usuario.*/
+    
     public boolean guardarHistorial(WebTarget webTarget, Historial historial) {
 		WebTarget WebTargetHistorial = webTarget.path("modifyHistorial");
 		Invocation.Builder invocationBuilder = WebTargetHistorial.request(MediaType.APPLICATION_JSON);
