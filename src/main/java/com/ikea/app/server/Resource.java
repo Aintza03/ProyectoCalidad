@@ -768,7 +768,6 @@ public class Resource{
 		}
 		}
 
-		//HAY QUE HACERLO DE MOMENTO ESTA CON LO QUE HE COPIADO
 	@POST
 	@Path("/modifyProduct")
 	public Response modifyProduct(Producto producto){
