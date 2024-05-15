@@ -54,6 +54,7 @@ public class AdminIniciarSesionWindow extends JFrame{
                 Admin result = controller.loginAdmin(webTargets,usuario.getText(),stringC); 
 				if (result != null){
 					ProductListAdmin window2 = new ProductListAdmin(webTargets, result);
+					dispose();
 				}
             }
         });	

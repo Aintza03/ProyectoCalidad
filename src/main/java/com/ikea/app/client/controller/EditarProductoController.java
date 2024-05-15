@@ -19,10 +19,10 @@ public class EditarProductoController{
         
     }
     
-    public Producto editarProducto(WebTarget webTarget, String name, String tipo, double precio) {
+    public Producto editarProducto(WebTarget webTarget, String name, String tipo, double precio, Producto producto) {
         WebTarget WebTargetLogin = webTarget.path("modifyProduct");
         Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
-        Producto producto = new Producto();
+        
         producto.setNombre(name);
         producto.setTipo(tipo);
         producto.setPrecio(precio);

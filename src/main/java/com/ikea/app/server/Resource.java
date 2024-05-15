@@ -780,8 +780,9 @@ public class Resource{
 				q.setClass(ProductoJDO.class);
 				List<ProductoJDO> results = q.executeList();
 				productoJDO = results.get(0);
+				productoJDO.setId(producto.getId());
 				productoJDO.setNombre(producto.getNombre());
-				productoJDO.setTipo(producto.gettipo());
+				productoJDO.setTipo(producto.getTipo());
 				productoJDO.setPrecio(producto.getPrecio());
 				pm.makePersistent(productoJDO);
 				logger.info("Producto editado: {}", productoJDO);
