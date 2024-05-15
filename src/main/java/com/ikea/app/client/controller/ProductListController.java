@@ -18,25 +18,27 @@ import com.ikea.app.pojo.Cliente;
 import com.ikea.app.pojo.Producto;
 import com.ikea.app.pojo.Cesta;
 import com.ikea.app.client.ClientMain;
-public class ProductListController{
 
+/**Controller de la ventana ListaPedidosAdmin. */
+public class ProductListController{
+    /**Constructor Vacio. */
     public ProductListController(){
 
     }
-
+    /**Funcion que pide al servidor todos los productos no comprados. */
     public List<Producto> datosDeProductos(WebTarget webTarget) {
-        // issuing a GET request to the users endpoint with some query parameters
+        
         try {
             Response response = webTarget.path("listProducts")
                 .request(MediaType.APPLICATION_JSON)
                 .get();
 
-            // check that the response was HTTP OK
+            
             if (response.getStatusInfo().toEnum() == Status.OK) {
-                // the response is a generic type (a List<User>)
+                
                 GenericType<List<Producto>> listType = new GenericType<List<Producto>>(){};
                 List<Producto> product = response.readEntity(listType);
-                //System.out.println(product);
+                
 				return product;
             } else {
 				System.out.format("Error obtaining product list. %s%n", response);
@@ -48,6 +50,8 @@ public class ProductListController{
         }
 
 	}
+
+    /**Funcion que pide al servidor todos los productos en la cesta de ese usuario. */
 	public Cesta getCesta(WebTarget webTarget,String email){
 		try {
             Response response = webTarget.path("cesta")
@@ -55,7 +59,7 @@ public class ProductListController{
 				.request(MediaType.APPLICATION_JSON)
 				.get();
 
-            // check that the response was HTTP OK
+            
             if (response.getStatusInfo().toEnum() == Status.OK) {
                 Cesta cesta = response.readEntity(Cesta.class);
 				System.out.println(cesta);
@@ -70,6 +74,7 @@ public class ProductListController{
         }	
 	}
 	
+    /**Funcion que manda al servidor la instruccion de modificar los productos de la cesta. */
     public boolean modificarCesta(WebTarget webTarget,Cesta cesta) {
 		WebTarget WebTargetLogin = webTarget.path("modifyCesta");
 		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);

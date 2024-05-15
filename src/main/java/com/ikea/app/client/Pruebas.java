@@ -42,26 +42,26 @@ public static void main( String[] args ) {
 
             List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
 
-            productos.add(new ProductoJDO(1,"Product 1","Tipo 1", 10));
-            productos.add(new ProductoJDO(2,"Product 2","Tipo 1", 19));
-            productos.add(new ProductoJDO(3,"Product 3","Tipo 1", 5));
-            productos.add(new ProductoJDO(4,"Product 4","Tipo 2", 15));
-            productos.add(new ProductoJDO(5,"Product 5","Tipo 2", 20));
-            productos.add(new ProductoJDO(6,"Product 6","Tipo 3", 25));
-            productos.add(new ProductoJDO(7,"Product 7","Tipo 2", 3));
-            productos.add(new ProductoJDO(8,"Product 8","Tipo 1", 13));
-            productos.add(new ProductoJDO(9,"Product 9","Tipo 4", 45));
-            productos.add(new ProductoJDO(10,"Product 10","Tipo 2", 23));
-            productos.add(new ProductoJDO(11,"Product 11","Tipo 4", 54));
-            productos.add(new ProductoJDO(12,"Product 12","Tipo 1", 76));
-            productos.add(new ProductoJDO(13,"Product 13","Tipo 4", 32));
-            productos.add(new ProductoJDO(14,"Product 14","Tipo 4", 36));
-            productos.add(new ProductoJDO(15,"Product 15","Tipo 2", 13));
-            productos.add(new ProductoJDO(16,"Product 16","Tipo 3", 57));
-            productos.add(new ProductoJDO(17,"Product 17","Tipo 4", 43));
-            productos.add(new ProductoJDO(18,"Product 18","Tipo 3", 44));
-            productos.add(new ProductoJDO(19,"Product 19","Tipo 1", 64));
-            productos.add(new ProductoJDO(20,"Product 20","Tipo 1", 16));
+            productos.add(new ProductoJDO(1,"Product 1","Salon", 10));
+            productos.add(new ProductoJDO(2,"Product 2","Salon", 19));
+            productos.add(new ProductoJDO(3,"Product 3","Salon", 5));
+            productos.add(new ProductoJDO(4,"Product 4","Baño", 15));
+            productos.add(new ProductoJDO(5,"Product 5","Salon", 20));
+            productos.add(new ProductoJDO(6,"Product 6","Baño", 25));
+            productos.add(new ProductoJDO(7,"Product 7","Salon", 3));
+            productos.add(new ProductoJDO(8,"Product 8","Habitacion", 13));
+            productos.add(new ProductoJDO(9,"Product 9","Habitacion", 45));
+            productos.add(new ProductoJDO(10,"Product 10","Comedor", 23));
+            productos.add(new ProductoJDO(11,"Product 11","Jardin", 54));
+            productos.add(new ProductoJDO(12,"Product 12","Entrada", 76));
+            productos.add(new ProductoJDO(13,"Product 13","Salon", 32));
+            productos.add(new ProductoJDO(14,"Product 14","Baño", 36));
+            productos.add(new ProductoJDO(15,"Product 15","Salon", 13));
+            productos.add(new ProductoJDO(16,"Product 16","Habitacion", 57));
+            productos.add(new ProductoJDO(17,"Product 17","Habitacion", 43));
+            productos.add(new ProductoJDO(18,"Product 18","Salon", 44));
+            productos.add(new ProductoJDO(19,"Product 19","Entrada", 64));
+            productos.add(new ProductoJDO(20,"Product 20","Salon", 16));
 
             
             AdminJDO admin = new AdminJDO("Alfredo", "1234");

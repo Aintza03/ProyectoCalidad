@@ -11,12 +11,14 @@ import javax.ws.rs.core.Response.Status;
 
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.ClientMain;
+
+/**Controller de la ventana ClientRegistration. */
 public class ClientRegistrationController{
-    
+    /**Contructor Vacio. */
 	public ClientRegistrationController(){
     
     }
-
+	/**Funcion que manda al servidor la orden de registrar un nuevo cliente. */
     public boolean registrarCliente(WebTarget webTarget,String email, String contrasena, String nombre) {
 		WebTarget WebTargetRegistrarUsuario = webTarget.path("register");
 		Invocation.Builder invocationBuilder = WebTargetRegistrarUsuario.request(MediaType.APPLICATION_JSON);
