@@ -1358,7 +1358,7 @@ public class ServerTest {
         List response = resourceTest.listaPedidosAdministrador(admin);
         assertEquals(response.toString(), productosA.toString());
     } 
-    /** 
+    
     @Test
     public void testModifyProduct(){
         Producto producto = new Producto();
@@ -1366,14 +1366,10 @@ public class ServerTest {
         producto.setNombre("nombre");
         producto.setTipo("descripcion");
         producto.setPrecio(10.0);
-        Producto producto2 = new Producto();
-        producto2.setId(20);
-        producto2.setNombre("nombre2");
-        producto2.setTipo("descripcion2");
-        producto2.setPrecio(20.0);
+
         @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
         String sql = "javax.jdo.query.SQL";
-        String queryStr = "SELECT * FROM PRODUCTOJDO where id = '" + producto.getId() +"'";
+        String queryStr = "SELECT * FROM PRODUCTOJDO WHERE ID = '" + 10 +"'";
         when(persistenceManager.newQuery(sql, queryStr)).thenReturn(query);
         
         List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
@@ -1382,5 +1378,25 @@ public class ServerTest {
         when(transaction.isActive()).thenReturn(false);
         Response response = resourceTest.modifyProduct(producto);
         assertEquals(Response.Status.OK, response.getStatusInfo());
-    } */
+    } 
+     @Test
+    public void testModifyProductError(){
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+
+        @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
+        String sql = "javax.jdo.query.SQL";
+        String queryStr = "SELECT * FROM PRODUCTOJDO WHERE ID = '" + 10 +"'";
+        when(persistenceManager.newQuery(sql, queryStr)).thenThrow(new JDOObjectNotFoundException(""));
+        
+        List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
+        productos.add(new ProductoJDO(10,"nombre", "descripcion", 10.0));
+        when(query.executeList()).thenReturn(productos);
+        when(transaction.isActive()).thenReturn(true);
+        Response response = resourceTest.modifyProduct(producto);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    } 
 }
