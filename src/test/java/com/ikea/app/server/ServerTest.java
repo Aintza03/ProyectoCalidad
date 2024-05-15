@@ -1391,12 +1391,12 @@ public class ServerTest {
         String sql = "javax.jdo.query.SQL";
         String queryStr = "SELECT * FROM PRODUCTOJDO WHERE ID = '" + 10 +"'";
         when(persistenceManager.newQuery(sql, queryStr)).thenThrow(new JDOObjectNotFoundException(""));
-        
+        doThrow(new RuntimeException("Test exception")).when(transaction).commit();
         List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
         productos.add(new ProductoJDO(10,"nombre", "descripcion", 10.0));
         when(query.executeList()).thenReturn(productos);
         when(transaction.isActive()).thenReturn(true);
         Response response = resourceTest.modifyProduct(producto);
-        assertEquals(Response.Status.OK, response.getStatusInfo());
+        assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo());
     } 
 }
