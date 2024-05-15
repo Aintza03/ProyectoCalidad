@@ -26,7 +26,7 @@ public class HacerReclamacionWindowController{
     
     }
 
-    public void hacerReclamacion(WebTarget webTarget, String reclamacion, Cliente cliente, Producto producto) {
+    public boolean hacerReclamacion(WebTarget webTarget, String reclamacion, Cliente cliente, Producto producto) {
         WebTarget WebTargetReclamacion = webTarget.path("hacerReclamacion");
         Invocation.Builder invocationBuilder = WebTargetReclamacion.request(MediaType.APPLICATION_JSON);
         Reclamacion reclamacionFinal = new Reclamacion();
@@ -37,8 +37,10 @@ public class HacerReclamacionWindowController{
         Response response = invocationBuilder.post(Entity.entity(reclamacionFinal, MediaType.APPLICATION_JSON));
         if (response.getStatus() != Status.OK.getStatusCode()) {
             ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+            return false;
         } else {	
             ClientMain.getLogger().info("Reclamacion realizada correctamente");
+            return true;
         }
     }
 
@@ -67,14 +69,16 @@ public class HacerReclamacionWindowController{
         }
     }
 
-    public void resolverReclamacion(WebTarget webTarget, Reclamacion reclamacion) {
+    public boolean resolverReclamacion(WebTarget webTarget, Reclamacion reclamacion) {
         WebTarget WebTargetReclamacion = webTarget.path("resolverReclamacion");
         Invocation.Builder invocationBuilder = WebTargetReclamacion.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.post(Entity.entity(reclamacion, MediaType.APPLICATION_JSON));
         if (response.getStatus() != Status.OK.getStatusCode()) {
             ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+            return false;
         } else {	
             ClientMain.getLogger().info("Reclamacion eliminada correctamente");
+            return true;
         }
     }
 }
