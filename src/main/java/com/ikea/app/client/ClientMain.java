@@ -22,7 +22,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.ikea.app.pojo.Cesta;
 import javax.ws.rs.ProcessingException;
-
 public class ClientMain{
     protected static final Logger logger = LogManager.getLogger();
 	private static final String EMAIL = "ABCD";
