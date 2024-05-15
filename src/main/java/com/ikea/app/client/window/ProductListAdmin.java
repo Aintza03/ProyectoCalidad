@@ -28,6 +28,7 @@ import com.ikea.app.pojo.Producto;
 import com.ikea.app.pojo.Cesta;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.client.window.CestaWindow;
+import com.ikea.app.client.window.EditarProducto;
 import com.ikea.app.client.controller.ProductListAdminController;
 import com.ikea.app.pojo.Admin;
 public class ProductListAdmin extends JFrame{
@@ -39,6 +40,7 @@ public class ProductListAdmin extends JFrame{
 	protected int mouseCol = -1;
 	protected WebTarget webTargets;
 	protected ProductListAdminController controller = new ProductListAdminController();
+	protected EditarProducto editarProducto;
 
     public ProductListAdmin(WebTarget webTargets, Admin usuario){
         Container cp = this.getContentPane();
@@ -49,9 +51,27 @@ public class ProductListAdmin extends JFrame{
         JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
         scrollPaneProductos.setBorder(new TitledBorder("Productos"));
         cp.add(scrollPaneProductos);
+
+		JButton editarProducto = new JButton("Editar producto");
+
 		JButton anadirProducto=new JButton("Añadir producto");
 		
 		JButton eliminarProducto=new JButton("Eliminar producto");
+
+		//FALTA DE MIRAR SI FUNCIONA BIEN ESTE BOTON
+		editarProducto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource()==editarProducto) {
+					int row = tablaProductos.getSelectedRow();
+					if (row != -1) {
+						Producto producto= productoList.get(row);
+						new EditarProducto(webTargets, producto, usuario);
+						dispose();
+					}
+				}
+			}
+		});
+
 		eliminarProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource()==eliminarProducto) {
@@ -77,6 +97,7 @@ public class ProductListAdmin extends JFrame{
 		jpanel.setLayout(new GridLayout(2,1));
 		cp.add(jpanel);
 		jpanel.add(eliminarProducto);
+		jpanel.add(editarProducto);
 		jpanel.add(verListaPedidos);
     	jpanel.add(anadirProducto);
     	anadirProducto.addActionListener(new ActionListener() {
