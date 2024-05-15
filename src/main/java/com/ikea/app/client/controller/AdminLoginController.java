@@ -10,12 +10,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import com.ikea.app.pojo.Admin;
 import com.ikea.app.client.ClientMain;
+/**Controller de la ventana AdminLogin */
 public class AdminLoginController{
-	
+	/**Constructor Vacio */	
     public AdminLoginController(){
     
     }
-
+	/**Funcion que busca la información de log del administrador para aceptar o denegar el inicio de sesion */
     public Admin loginAdmin(WebTarget webTarget,String usuario, String contrasena) {
 		WebTarget WebTargetLogin = webTarget.path("loginAdmin");
 		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);

@@ -10,12 +10,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.ClientMain;
+
+/**Controller de la ventana ClientLogin. */
 public class ClientLoginController{
-	
+	/**Constructor Vacio. */
     public ClientLoginController(){
     
     }
-
+	/**Función para mandar al servidor si el cliente existe y corresponde a la contrasena y iniciar sesion. */
     public String loginCliente(WebTarget webTarget,String email, String contrasena) {
 		WebTarget WebTargetLogin = webTarget.path("login");
 		Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);

@@ -12,12 +12,14 @@ import javax.ws.rs.ProcessingException;
 import com.ikea.app.pojo.Producto;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.pojo.Admin;
+
+/**Controller de la ventana AnadirProducto. */
 public class AnadirProductoController{
-    
+    /**Constructor Vacio. */
 	public AnadirProductoController(){
     
     }
-
+	/**Funcion que recoge los datos de la ventana y los manda al servidor para guardarlos en la base de datos.*/
     public boolean anadirProducto(WebTarget webTarget,String nombre, String tipo, double precio, Admin admin) {
 		int cantidad = 0;
 		try {
@@ -25,9 +27,9 @@ public class AnadirProductoController{
                 .request(MediaType.APPLICATION_JSON)
                 .get();
 
-            // check that the response was HTTP OK
+           
             if (response.getStatus() == Status.OK.getStatusCode()) {
-                // the response is a generic type (a List<User>)
+                
                 cantidad = response.readEntity(int.class);
             } else {
 				System.out.format("Error obtaining product amount. %s%n", response);
