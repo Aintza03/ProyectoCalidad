@@ -13,16 +13,27 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.ikea.app.client.controller.ClientRegistrationController;
-
+/**Ventana que se usa para que el cliente se registre, la ventana pide el email del cliente
+ * y su contrasena para poder registrarse.
+ */
 public class ClientRegistration extends JFrame{
+    /** Label que muestra donde introducir el email del cliente. */
     protected JLabel labelEmail = new JLabel("Email: ");
+    /** Label que muestra donde introducir la contrasena del cliente. */
     protected JLabel labelContrasena = new JLabel("Contrasena: ");
+    /** Label que muestra donde introducir el nombre del cliente. */
     protected JLabel labelNombre = new JLabel("Nombre: ");
+    /** JTextField en el que se introduce el email del cliente. */
     protected JTextField email = new JTextField();
+    /** JPasswordField en el que se introduce la contrasena del cliente. */
     protected JPasswordField contrasena = new JPasswordField();
+    /** JTextField en el que se introduce el nombre del cliente. */
     protected JTextField nombre = new JTextField();
+    /** Boton que llama a la funcion del controller para registrar el cliente. */
     protected JButton registrar = new JButton("Registrar");
+    /** Controller de esta ventana que guarda toda la funcionalidad. */
     protected ClientRegistrationController controller = new ClientRegistrationController();
+    /** Constructor que crea toda la parte de interfaz grafica de esta ventana y gestiona los eventos llamando a la funcionalidad del controller. */
 	public ClientRegistration(WebTarget webTargets){
     Container cp = this.getContentPane();
 	cp.setLayout(new GridLayout(2,1));

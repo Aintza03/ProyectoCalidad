@@ -17,17 +17,23 @@ import com.ikea.app.client.window.ProductList;
 import com.ikea.app.client.controller.AdminLoginController;
 import com.ikea.app.client.window.CestaWindow;
 import com.ikea.app.client.window.ClientChangeEraseWindow;
-
+/**Ventana que navegar en la parte de cliente.
+ */
 public class MenuClienteWindow extends JFrame{
-
+    /** Boton para ir a la ventana ProductList. */
     protected JButton producto = new JButton("Comprar Productos");
+    /** Boton para ir a la ventana ClientChangeEraseWindow. */
     protected JButton cuenta = new JButton("Personalizar Cuenta");
 
+    /** Ventana que se usa para mostrar la lista de productos. */
 	protected ProductList window1;
+    /** Ventana que se usa para editar o borrar el cliente. */
     protected ClientChangeEraseWindow window2;
 
+    /** Controller de esta ventana que guarda toda la funcionalidad. */
 	protected AdminLoginController controller = new AdminLoginController();
 	
+    /** Constructor que crea toda la parte de interfaz grafica de esta ventana y gestiona los eventos llamando a la funcionalidad del controller. */
     public MenuClienteWindow(WebTarget webTargets, String email, String contra, String nom){
 
     Container cp = this.getContentPane();

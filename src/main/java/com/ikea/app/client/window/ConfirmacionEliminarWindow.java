@@ -19,17 +19,30 @@ import com.ikea.app.client.ClientMain;
 import com.ikea.app.pojo.Cesta;
 import com.ikea.app.client.controller.ConfirmacionEliminarWindowController;
 
+/**Ventana que se usa para que el cliente confirme si quiere borrar su cuenta o no.
+ */
 public class ConfirmacionEliminarWindow extends JFrame{
+    /** Ventana para registrar clientes. */
     protected ClientRegistration registrar;
+    /** Ventana para iniciar sesion cliente. */
     protected ClientLogin login;
+    /** Ventana que se usa para borrar o editar el cliente. */
     protected ClientChangeEraseWindow changeErase;
+    /** Ventana que se usa para mostrar la lista de productos. */
     protected ProductList listaProductos;
+    /** Ventana que se usa para mostrar la cesta del cliente. */
     protected CestaWindow cestaWindow;
+    /** Controller de esta ventana que guarda toda la funcionalidad. */
     protected ConfirmacionEliminarWindowController controller = new ConfirmacionEliminarWindowController();
+    /** Label que muestra un mensaje de advertencia. */
 	protected JLabel labelWarning = new JLabel("  ¿Seguro que quieres borrar la cuenta?");
+    /** Boton que llama a la funcion del controller para borrar el cliente. */
     protected JButton si = new JButton("Si");
+    /** Boton que llama a la funcion del controller para no borrar el cliente. */
     protected JButton no = new JButton("No");
+    /** Cliente que se va a borrar. */
     protected Cliente cliente = new Cliente();
+    /** Constructor que crea toda la parte de interfaz grafica de esta ventana y gestiona los eventos llamando a la funcionalidad del controller. */
     public ConfirmacionEliminarWindow(WebTarget webTargets, String mail, String contra, String nom) {
         cliente.setNombre(nom);
         cliente.setEmail(mail);

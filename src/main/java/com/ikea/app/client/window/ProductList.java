@@ -30,30 +30,48 @@ import com.ikea.app.pojo.Cesta;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.client.window.CestaWindow;
 import com.ikea.app.client.controller.ProductListController;
+/**Ventana que se usa para mostrar la lista de productos.
+ */
 public class ProductList extends JFrame{
 
+	/** Lista de productos que se van a mostrar. */
     protected List<Producto> productoList = new ArrayList<Producto>();
+	/** Tabla donde se van a mostrar los productos. */
     protected JTable tablaProductos;
+	/** Modelo de la tabla de productos. */
     protected DefaultTableModel modeloTablaProductos;
 
+	/** Cesta del cliente. */
 	protected Cesta cesta;
 
+	/** Fila donde esta el raton. */
     protected int mouseRow = -1;
+	/** Columna donde esta el raton. */
 	protected int mouseCol = -1;
 
+	/** WebTarget que se usa para hacer las peticiones al servidor. */
 	protected WebTarget webTargets;
+	/** Ventana que se usa para mostrar la cesta del cliente. */
 	protected CestaWindow cestaWindow;
+	/** Label que muestra la imagen del producto. */
 	protected JLabel imagenProducto;
 
+	/** Controller de esta ventana que guarda toda la funcionalidad. */
 	protected ProductListController controller = new ProductListController();
 
+	/** Label que muestra el id del producto. */
 	protected JLabel idProducto = new JLabel();
+	/** Label que muestra el nombre del producto. */
 	protected JLabel nombre = new JLabel();
+	/** Label que muestra el tipo del producto. */
 	protected JLabel tipo = new JLabel();
+	/** Label que muestra el precio del producto. */
 	protected JLabel precio = new JLabel();
 
+	/** ComboBox que se usa para filtrar los productos por tipo. */
 	protected JComboBox combo;
 
+	/** Constructor que crea toda la parte de interfaz grafica de esta ventana y gestiona los eventos llamando a la funcionalidad del controller. */
     public ProductList(WebTarget webTargets, String email){
         Container cp = this.getContentPane();
         cp.setLayout(new GridBagLayout());
@@ -393,7 +411,8 @@ public class ProductList extends JFrame{
 		
 		
 	}
-    
+
+    /**Funcion que se usa para cargar los productos en la tabla.*/
     private void loadProducto(WebTarget webTarget) {
 		this.modeloTablaProductos.setRowCount(0);
 		List<Integer> idProductos = new ArrayList<Integer>();

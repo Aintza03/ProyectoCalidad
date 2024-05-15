@@ -16,23 +16,37 @@ import com.ikea.app.pojo.Admin;
 import com.ikea.app.pojo.Producto;
 import com.ikea.app.client.controller.EditarProductoController;
 
+/**Ventana que se usa para que el admin edite un producto, la ventana pide el nombre, tipo y precio del producto
+ * para poder editarlo.
+ */
 public class EditarProducto extends JFrame{
+    /** Label que muestra donde introducir el nombre del producto. */
     protected JLabel labelNombre = new JLabel("Nombre: ");
+    /** JTextField en el que se introduce el nombre del producto. */
     protected JTextField nombre;
 
+    /** Label que muestra donde introducir el tipo del producto. */
     protected JLabel labelTipo = new JLabel("Tipo: ");
+    /** JTextField en el que se introduce el tipo del producto. */
     protected JTextField tipo;
 
+    /** Label que muestra donde introducir el precio del producto. */
     protected JLabel labelPrecio = new JLabel("Precio: ");
+    /** JTextField en el que se introduce el precio del producto. */
     protected JTextField precio;
 
+    /** Ventana que se usa para mostrar la lista de productos del admin. */
     protected ProductListAdmin productListAdmin;
 
+    /** Boton que llama a la funcion del controller para editar el producto. */
     protected JButton editar = new JButton("Editar producto");
 
+    /** Producto que se va a editar. */
     protected Producto producto;
 
+    /** Controller de esta ventana que guarda toda la funcionalidad. */
     protected EditarProductoController controller = new EditarProductoController();
+    /** Constructor que crea toda la parte de interfaz grafica de esta ventana y gestiona los eventos llamando a la funcionalidad del controller. */
 	public EditarProducto(WebTarget webTargets, Producto producto, Admin usuario){
     this.producto = producto;
     String name = producto.getNombre();

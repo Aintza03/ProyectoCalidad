@@ -18,13 +18,19 @@ import com.ikea.app.client.window.AdminIniciarSesionWindow;
 
 public class MenuPrincipalWindow extends JFrame{
 
+    /** Boton para ir a la ventana ClientRegistration y ClientLogin. */
     protected JButton cliente = new JButton("Cliente");
+    /** Boton para ir a la ventana AdminIniciarSesionWindow. */
     protected JButton vendedor = new JButton("Vendedor");
 
+    /** Ventana que se usa para logear el cliente. */
 	protected ClientLogin window2;
+    /** Ventana que se usa para registrar el cliente. */
     protected ClientRegistration window4;
+    /** Ventana que se usa para logear el vendedor. */
     protected AdminIniciarSesionWindow window3;
 	
+    /** Constructor que crea toda la parte de interfaz grafica de esta ventana. */
     public MenuPrincipalWindow(WebTarget webTargets){
 
     Container cp = this.getContentPane();
