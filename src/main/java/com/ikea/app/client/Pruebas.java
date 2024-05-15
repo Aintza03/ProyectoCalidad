@@ -28,13 +28,10 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import java.util.List;
-
+/**Clase que permite hacer el volcado inicial de datos en la base de datos. */
 public class Pruebas{
-
-	
-    public Pruebas() {
-			}
-
+    
+/**Se guardan ciertos productos y ciertos admin en la base de datos.*/
 public static void main( String[] args ) {
         PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
 		PersistenceManager pm = pmf.getPersistenceManager();
