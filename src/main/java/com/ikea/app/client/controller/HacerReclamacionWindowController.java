@@ -67,8 +67,8 @@ public class HacerReclamacionWindowController{
         }
     }
 
-    public void deleteReclamation(WebTarget webTarget, Reclamacion reclamacion) {
-        WebTarget WebTargetReclamacion = webTarget.path("deleteReclamation");
+    public void resolverReclamacion(WebTarget webTarget, Reclamacion reclamacion) {
+        WebTarget WebTargetReclamacion = webTarget.path("resolverReclamacion");
         Invocation.Builder invocationBuilder = WebTargetReclamacion.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.post(Entity.entity(reclamacion, MediaType.APPLICATION_JSON));
         if (response.getStatus() != Status.OK.getStatusCode()) {

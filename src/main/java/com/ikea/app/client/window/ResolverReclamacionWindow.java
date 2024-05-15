@@ -58,7 +58,7 @@ public class ResolverReclamacionWindow extends JFrame{
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-            Reclamacion reclamacion = listaHistorial.getSelectedValue();
+            Reclamacion reclamacion = listaReclamaciones.getSelectedValue();
             JFrame jFrame = new JFrame();
             if(reclamacion != null){
                 controller.resolverReclamacion(webTargets, reclamacion);
