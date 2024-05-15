@@ -14,17 +14,28 @@ import javax.ws.rs.core.Response.Status;
 
 import com.ikea.app.pojo.Admin;
 import com.ikea.app.client.controller.AnadirProductoController;
-
+/**Ventana que se usa para que el administrador pueda añadir un producto, el producto automaticamente tiene asociado
+ * el nombre de la empresa como su vendedor.
+ */
 public class AnadirProducto extends JFrame{
+    /**Label que muestra donde introducir el nombre del producto. */
     protected JLabel labelNombre = new JLabel("Nombre: ");
+    /**Label que muestra donde introducir el tipo del producto. */
     protected JLabel labelTipo = new JLabel("Tipo: ");
+    /**Label que muestra donde introducir el precio del producto. */
     protected JLabel labelPrecio = new JLabel("Precio: ");
+    /**JTextField en el que se introduce el nombre del producto. */
     protected JTextField nombre = new JTextField();
+    /**JTextField en el que se introduce el tipo del producto. */
     protected JTextField tipo = new JTextField();
+    /**JTextField en el que se introduce el precio del producto. */
     protected JTextField precio = new JTextField();
+    /**Boton que llama a la funcion del controller para añadir el producto.*/
     protected JButton anadir = new JButton("Añadir producto");
+    /**Controller de esta ventana.*/
     protected AnadirProductoController controller = new AnadirProductoController();
-	public AnadirProducto(WebTarget webTargets, Admin usuario, ProductListAdmin productListAdmin){
+	/**Constructor que crea toda la parte de interfaz grafica de esta ventana y gestiona los eventos llamando a la funcionalidad del controller.*/
+    public AnadirProducto(WebTarget webTargets, Admin usuario, ProductListAdmin productListAdmin){
     Container cp = this.getContentPane();
 	cp.setLayout(new GridLayout(2,1));
     JPanel panel = new JPanel();
