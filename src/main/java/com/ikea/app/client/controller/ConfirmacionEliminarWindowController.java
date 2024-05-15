@@ -29,7 +29,6 @@ public class ConfirmacionEliminarWindowController{
                 .queryParam("email", cliente.getEmail())
 				.request(MediaType.APPLICATION_JSON)
 				.get();
-            // check that the response was HTTP OK
             if (responseEncontrar.getStatusInfo().toEnum() == Status.OK) {
                 Cesta cesta = responseEncontrar.readEntity(Cesta.class);
                 WebTarget WebTargetCesta = webTarget.path("vaciarCesta");

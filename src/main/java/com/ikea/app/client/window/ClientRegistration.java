@@ -47,7 +47,6 @@ public class ClientRegistration extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				char[] contrasenas = contrasena.getPassword();
 				String stringC = "";
 				for (char c : contrasenas) {

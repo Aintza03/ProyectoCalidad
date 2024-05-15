@@ -30,7 +30,7 @@ public class AdminIniciarSesionWindow extends JFrame{
 	protected JPasswordField contrasena = new JPasswordField();
 	/**Boton que activa el inicio de sesion. Al ser pulsado el boton llama a la funcion de inicio de sesion en el controller. */
     protected JButton login = new JButton("Iniciar sesion");
-	/**La siguiente ventana despues de iniciar Sesion, en este caso la lista de productos del administrador */
+	/**La siguiente ventana despues de iniciar Sesion, en este caso la lista de productos del administrador. */
 	protected ProductListAdmin window2;
 	/**Controller de esta ventana que guarda toda la funcionalidad.*/
 	protected AdminLoginController controller = new AdminLoginController();

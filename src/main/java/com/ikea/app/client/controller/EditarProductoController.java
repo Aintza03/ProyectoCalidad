@@ -11,14 +11,14 @@ import javax.ws.rs.core.Response.Status;
 import com.ikea.app.pojo.Admin;
 import com.ikea.app.pojo.Producto;
 import com.ikea.app.client.ClientMain;
-
+/**Controller de la ventana EditarProducto. */
 public class EditarProductoController{
 
-
+    /**Constructor Vacio. */
 	public EditarProductoController() {
         
     }
-    
+    /**Funcion que manda al servidor la peticion para editar el nombre,tipo y precio de un producto. */
     public Producto editarProducto(WebTarget webTarget, String name, String tipo, double precio, Producto producto) {
         WebTarget WebTargetLogin = webTarget.path("modifyProduct");
         Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
