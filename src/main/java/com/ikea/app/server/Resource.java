@@ -33,21 +33,26 @@ import java.util.HashSet;
 import javax.jdo.JDOObjectNotFoundException;
 import com.ikea.app.server.jdo.HistorialJDO;
 import com.ikea.app.pojo.Historial;
+
+/**Es la parte servidor de la aplicacion.La parte cliente llama al servidor que se conecta con la base de datos
+ * para devolverle al cliente lo que ha pedido a partir de los controllers.
+ */
 @Path("/resource")
 @Produces(MediaType.APPLICATION_JSON)
 public class Resource{
+	/**Variable que guarda el Logger del resource. */
     protected static final Logger logger = LogManager.getLogger();
 
 	private int cont = 0;
 	private PersistenceManager pm=null;
 	private Transaction tx=null;
-
+	/**Constructor que inicializa el servidor. */
     public Resource(){
         PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
 		this.pm = pmf.getPersistenceManager();
 		this.tx = pm.currentTransaction();
     }
-
+	/**Metodo que registra un cliente en la base de datos. */
     @POST
 	@Path("/register")
 	public Response registrarCliente(Cliente cliente) {
@@ -90,7 +95,7 @@ public class Resource{
 			//pm.close();
 		}
 	}
-
+	/**Metodo que permite al cliente iniciar sesion. */
 	@POST
 	@Path("/login")
 	public Response loginCliente(Cliente cliente){
@@ -130,6 +135,8 @@ public class Resource{
 			 
 	}
 
+	/**Metodo que devuelve la lista de productos que hay en la base de datos, solo incluye los productos que
+	 * se pueden comprar. */
 	@GET
 	@Path("/listProducts")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -172,6 +179,8 @@ public class Resource{
 			pm.close();
 		}
 		}
+
+	/**Metodo que permite obtener la cantidad de productos total. */
 	@GET
 	@Path("/cantidadProductos")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -201,6 +210,7 @@ public class Resource{
 		}
 		}
 	
+	/**Metodo que devuelve la cesta de un cliente. */
 	@GET
 	@Path("/cesta")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -252,7 +262,7 @@ public class Resource{
 			pm.close();
 		}
 	}
-	
+	/**Metodo que permite anadir un producto a la cesta del cliente. */
 	@POST
 	@Path("/modifyCesta")
 	public Response modifyCesta(Cesta cesta){
@@ -295,6 +305,7 @@ public class Resource{
 			pm.close();
 		}
 	}
+	/**Metodo que permite vaciar la cesta del cliente. */
 	@POST
 	@Path("/vaciarCesta")
 	public Response vaciarCesta(Cesta cesta){
@@ -326,7 +337,7 @@ public class Resource{
 			pm.close();
 		}
 	}
-
+	/**Metodo que permite quitar un producto concreto de la cesta del cliente. */
 	@POST
 	@Path("/borrarProductoDeCesta")
 	public Response borrarProductoDeCesta(Cesta cesta){
@@ -377,7 +388,7 @@ public class Resource{
 			pm.close();
 		}
 	}
- 
+	/**Metodo que permite modificar el nombre y la contrasena del cliente. */
 	@POST
 	@Path("/modifyClient")
 	public Response modifyClient(Cliente cliente){
@@ -409,7 +420,7 @@ public class Resource{
 			pm.close();
 		}
 	}
-
+	/**Metodo que permite iniciar sesion para el administrador. */
 	@POST
 	@Path("/loginAdmin")
 	public Response loginAdmin(Admin admin){
@@ -458,7 +469,7 @@ public class Resource{
 			pm.close();
 		}
 	}
-
+	/**Metodo que permite borrar a un cliente concreto junto a su cesta y historial. */
 	@POST
 	@Path("/borrarCliente")
 	public Response borrarCliente(Cliente cliente){
@@ -506,6 +517,7 @@ public class Resource{
 			pm.close();
 		}
 	}
+	/**Metodo que obtiene la lista de productos que son vendidos por un fabricante (administrador) en concreto. */
 	@GET
 	@Path("/listProductsAdmin")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -550,6 +562,7 @@ public class Resource{
 		}
 		}
 	
+	/**Metodo que permite crear productos y los asocia al vendedor. */
 	@POST
 	@Path("/anadirProductoAdmin")
 	public Response anadirProductoAdmin(Admin admin) {
@@ -601,7 +614,7 @@ public class Resource{
 			pm.close();
 		}	
 	}	
-
+	/**Metodo que elimina un producto concreto. */
 	@POST
 	@Path("/eliminarProducto")
 	public Response eliminarProducto(Producto producto){
@@ -631,6 +644,7 @@ public class Resource{
 			pm.close();
 		}
 	}
+	/**Metodo que obtiene el historial. */
 	@GET
 	@Path("/historial")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -682,6 +696,7 @@ public class Resource{
 			pm.close();
 		}
 	}
+	/**Metodo que anade productos comprados al historial. */
 	@POST
 	@Path("/modifyHistorial")
 	public Response modifyHistorial(Historial historial){
@@ -724,6 +739,7 @@ public class Resource{
 			pm.close();
 		}
 	}
+	/**Obtiene la lista de productos de el administrador que el usuario no ha comprado. */
 	@GET
 	@Path("/listPedidosAdmin")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -768,6 +784,7 @@ public class Resource{
 		}
 		}
 
+	/**Metodo que permite modificar el nombre, tipo y precio de un producto. */
 	@POST
 	@Path("/modifyProduct")
 	public Response modifyProduct(Producto producto){
