@@ -2,6 +2,7 @@ package com.ikea.app.server;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -28,10 +29,12 @@ import com.ikea.app.pojo.Cliente;
 import com.ikea.app.pojo.Producto;
 import com.ikea.app.pojo.Admin;
 import com.ikea.app.pojo.Cesta;
+import com.ikea.app.pojo.Reclamacion;
 import com.ikea.app.server.jdo.ClienteJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
 import com.ikea.app.server.jdo.AdminJDO;
 import com.ikea.app.server.jdo.CestaJDO;
+import com.ikea.app.server.jdo.ReclamacionJDO;
 import javax.jdo.JDOObjectNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -1357,5 +1360,163 @@ public class ServerTest {
         when(transaction.isActive()).thenReturn(true);
         List response = resourceTest.listaPedidosAdministrador(admin);
         assertEquals(response.toString(), productosA.toString());
-    } 
+    }
+    @Test
+    public void testMakeReclamation() {
+        Reclamacion reclamacion = new Reclamacion();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        reclamacion.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        reclamacion.setProducto(producto);
+        Admin admin = new Admin();
+        admin.setUsuario("nombre");
+        admin.setContrasena("contrasena");
+        reclamacion.setAdmin(admin);
+        reclamacion.setReclamacion("descripcion");
+        ReclamacionJDO reclamacionJDO = spy(ReclamacionJDO.class);
+        when(persistenceManager.getObjectById(ReclamacionJDO.class, reclamacion.getId())).thenReturn(reclamacionJDO);
+        when(transaction.isActive()).thenReturn(false);
+        Response response = resourceTest.makeReclamation(reclamacion);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testMakeReclamation2() {
+        Reclamacion reclamacion = new Reclamacion();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        reclamacion.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        reclamacion.setProducto(producto);
+        Admin admin = new Admin();
+        admin.setUsuario("nombre");
+        admin.setContrasena("contrasena");
+        reclamacion.setAdmin(admin);
+        reclamacion.setReclamacion("descripcion");
+        @SuppressWarnings("unchecked") Query<ReclamacionJDO> query = mock(Query.class);
+        String sql = "javax.jdo.query.SQL";
+        String queryStr = "SELECT * FROM RECLAMACIONJDO WHERE CLIENTE_EMAIL_OID = '"+reclamacion.getCliente() +"' AND PRODUCTO_OID = '"+reclamacion.getProducto() +"'";
+        when(persistenceManager.newQuery(sql, queryStr)).thenReturn(query);
+        when(query.executeList()).thenReturn(new ArrayList<ReclamacionJDO>());
+        when(transaction.isActive()).thenReturn(false);
+        Response response = resourceTest.makeReclamation(reclamacion);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testsendReclamation() {
+        Reclamacion reclamacion = new Reclamacion();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        reclamacion.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        reclamacion.setProducto(producto);
+        Admin admin = new Admin();
+        admin.setUsuario("nombre");
+        admin.setContrasena("contrasena");
+        reclamacion.setAdmin(admin);
+        reclamacion.setReclamacion("descripcion");
+        ReclamacionJDO reclamacionJDO = spy(ReclamacionJDO.class);
+        when(persistenceManager.getObjectById(ReclamacionJDO.class, reclamacion.getId())).thenReturn(reclamacionJDO);
+        when(transaction.isActive()).thenReturn(false);
+        List<Reclamacion> listaReclamacion  = resourceTest.sendReclamation(reclamacion.getAdmin().getUsuario());
+        assertNotNull(listaReclamacion);
+        assertEquals(1, listaReclamacion.size());
+        assertEquals(reclamacion, listaReclamacion.get(0));
+    }
+    @Test
+    public void testResolverReclamacion() {
+        Reclamacion reclamacion = new Reclamacion();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        reclamacion.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        reclamacion.setProducto(producto);
+        Admin admin = new Admin();
+        admin.setUsuario("nombre");
+        admin.setContrasena("contrasena");
+        reclamacion.setAdmin(admin);
+        reclamacion.setReclamacion("descripcion");
+        Extent<ReclamacionJDO> Extent = mock(Extent.class);
+        @SuppressWarnings("unchecked") Query<ReclamacionJDO> query = mock(Query.class);
+        when(persistenceManager.getExtent(ReclamacionJDO.class, true)).thenReturn(Extent);
+        when(persistenceManager.newQuery(Extent, "cliente.email == '" + cliente.getEmail() + "'")).thenReturn(query);
+        when(transaction.isActive()).thenReturn(false);
+        Response response = resourceTest.resolverReclamacion(reclamacion);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testResolverReclamacionEx2_3() {
+        Reclamacion reclamacion = new Reclamacion();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        reclamacion.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        reclamacion.setProducto(producto);
+        Admin admin = new Admin();
+        admin.setUsuario("nombre");
+        admin.setContrasena("contrasena");
+        reclamacion.setAdmin(admin);
+        reclamacion.setReclamacion("descripcion");
+        Extent<ReclamacionJDO> Extent = mock(Extent.class);
+        @SuppressWarnings("unchecked") Query<ReclamacionJDO> query = mock(Query.class);
+        when(persistenceManager.getExtent(ReclamacionJDO.class, true)).thenReturn(Extent);
+        when(persistenceManager.newQuery(Extent, "cliente.email == '" + cliente.getEmail() + "'")).thenThrow(new JDOObjectNotFoundException(""));
+        when(transaction.isActive()).thenReturn(true);
+        Response response = resourceTest.resolverReclamacion(reclamacion);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testResolverReclamacionEx1() {
+        Reclamacion reclamacion = new Reclamacion();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        reclamacion.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        reclamacion.setProducto(producto);
+        Admin admin = new Admin();
+        admin.setUsuario("nombre");
+        admin.setContrasena("contrasena");
+        reclamacion.setAdmin(admin);
+        reclamacion.setReclamacion("descripcion");
+        doThrow(new RuntimeException("Test exception")).when(persistenceManager).getExtent(ReclamacionJDO.class, true);
+        when(transaction.isActive()).thenReturn(true);
+        Response response = resourceTest.resolverReclamacion(reclamacion);
+        assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo());
+    }
 }
