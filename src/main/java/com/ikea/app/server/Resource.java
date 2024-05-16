@@ -876,8 +876,8 @@ public class Resource{
 		List<Reclamacion> reclamaciones = new ArrayList<Reclamacion>();
 		try {	
             tx.begin();
-            logger.info("Obteniendo reclamaciones de admin: {}", admin.getUsuario());
-			try (Query<ReclamacionJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM RECLAMACIONJDO WHERE ADMIN_USUARIO_OID = '" + admin.getUsuario() + "'") ) {
+            logger.info("Obteniendo reclamaciones de admin: {}", adminString);
+			try (Query<ReclamacionJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM RECLAMACIONJDO WHERE ADMIN_USUARIO_OID = '" + adminString + "'") ) {
 				q.setClass(ReclamacionJDO.class);
 				List<ReclamacionJDO> results = q.executeList();
 				System.out.println("Reclamacion: " + results);
