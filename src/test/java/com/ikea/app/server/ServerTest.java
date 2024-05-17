@@ -2,6 +2,7 @@ package com.ikea.app.server;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -28,10 +29,12 @@ import com.ikea.app.pojo.Cliente;
 import com.ikea.app.pojo.Producto;
 import com.ikea.app.pojo.Admin;
 import com.ikea.app.pojo.Cesta;
+import com.ikea.app.pojo.Reclamacion;
 import com.ikea.app.server.jdo.ClienteJDO;
 import com.ikea.app.server.jdo.ProductoJDO;
 import com.ikea.app.server.jdo.AdminJDO;
 import com.ikea.app.server.jdo.CestaJDO;
+import com.ikea.app.server.jdo.ReclamacionJDO;
 import javax.jdo.JDOObjectNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -1357,21 +1360,273 @@ public class ServerTest {
         when(transaction.isActive()).thenReturn(true);
         List response = resourceTest.listaPedidosAdministrador(admin);
         assertEquals(response.toString(), productosA.toString());
-    } 
-    
+    }
     @Test
-    public void testModifyProduct(){
+    public void testMakeReclamation() {
+        Reclamacion reclamacion = new Reclamacion();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        reclamacion.setCliente(cliente);
         Producto producto = new Producto();
         producto.setId(10);
         producto.setNombre("nombre");
         producto.setTipo("descripcion");
         producto.setPrecio(10.0);
-
+        reclamacion.setProducto(producto);
+        Admin admin = new Admin();
+        admin.setUsuario("nombre");
+        admin.setContrasena("contrasena");
+        reclamacion.setAdmin(admin);
+        reclamacion.setReclamacion("descripcion");
+        ReclamacionJDO reclamacionJDO = mock(ReclamacionJDO.class);
+        when(persistenceManager.getObjectById(ReclamacionJDO.class, reclamacion.getId())).thenReturn(reclamacionJDO);
+        @SuppressWarnings("unchecked") Query<ClienteJDO> query1 = mock(Query.class);
+        String sql1 = "javax.jdo.query.SQL";
+        String queryStr1 = "SELECT * FROM CLIENTEJDO WHERE EMAIL = '" + reclamacion.getCliente().getEmail() + "'";
+        when(persistenceManager.newQuery(sql1, queryStr1)).thenReturn(query1);
+        List<ClienteJDO> clientes = new ArrayList<ClienteJDO>();
+        clientes.add(new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"));
+        when(query1.executeList()).thenReturn(new ArrayList<ClienteJDO>(clientes));
+        @SuppressWarnings("unchecked") Query<ProductoJDO> query2 = mock(Query.class);
+        String sql2 = "javax.jdo.query.SQL";
+        String queryStr2 = "SELECT * FROM PRODUCTOJDO WHERE ID = '" + reclamacion.getProducto().getId() +"'";
+        when(persistenceManager.newQuery(sql2, queryStr2)).thenReturn(query2);
+        List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
+        productos.add(new ProductoJDO(10,"nombre", "descripcion", 10.0));
+        when(query2.executeList()).thenReturn(productos);
+        @SuppressWarnings("unchecked") Query<AdminJDO> query3 = mock(Query.class);
+        String sql3 = "javax.jdo.query.SQL";
+        String queryStr3 = "SELECT * FROM ADMINJDO WHERE usuario = (SELECT VENDEDOR FROM PRODUCTOJDO WHERE ID = '" + reclamacion.getProducto().getId() +"')";
+        when(persistenceManager.newQuery(sql3, queryStr3)).thenReturn(query3);
+        List<AdminJDO> admins = new ArrayList<AdminJDO>();
+        admins.add(new AdminJDO("nombre", "contrasena"));
+        when(query3.executeList()).thenReturn(admins);
+        when(persistenceManager.getObjectById(ReclamacionJDO.class, reclamacion.getId())).thenReturn(reclamacionJDO);
+        when(transaction.isActive()).thenReturn(false);
+        Response response = resourceTest.makeReclamation(reclamacion);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testMakeReclamation2() {
+        Reclamacion reclamacion = new Reclamacion();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        reclamacion.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+      reclamacion.setProducto(producto);
+        Admin admin = new Admin();
+        admin.setUsuario("nombre");
+        admin.setContrasena("contrasena");
+        reclamacion.setAdmin(admin);
+        reclamacion.setReclamacion("descripcion");
+        ReclamacionJDO reclamacionJDO = mock(ReclamacionJDO.class);
+        when(persistenceManager.getObjectById(ReclamacionJDO.class, reclamacion.getId())).thenReturn(reclamacionJDO);
+        @SuppressWarnings("unchecked") Query<ClienteJDO> query1 = mock(Query.class);
+        String sql1 = "javax.jdo.query.SQL";
+        String queryStr1 = "SELECT * FROM CLIENTEJDO WHERE EMAIL = '" + reclamacion.getCliente().getEmail() + "'";
+        when(persistenceManager.newQuery(sql1, queryStr1)).thenThrow(new JDOObjectNotFoundException(""));
+        @SuppressWarnings("unchecked") Query<ProductoJDO> query2 = mock(Query.class);
+        String sql2 = "javax.jdo.query.SQL";
+        String queryStr2 = "SELECT * FROM PRODUCTOJDO WHERE ID = '" + reclamacion.getProducto().getId() +"'";
+        when(persistenceManager.newQuery(sql2, queryStr2)).thenThrow(new JDOObjectNotFoundException(""));
+        @SuppressWarnings("unchecked") Query<AdminJDO> query3 = mock(Query.class);
+        String sql3 = "javax.jdo.query.SQL";
+        String queryStr3 = "SELECT * FROM ADMINJDO WHERE usuario = (SELECT VENDEDOR FROM PRODUCTOJDO WHERE ID = '" + reclamacion.getProducto().getId() +"')";
+        when(persistenceManager.newQuery(sql3, queryStr3)).thenThrow(new JDOObjectNotFoundException(""));
+        when(persistenceManager.getObjectById(ReclamacionJDO.class, reclamacion.getId())).thenThrow(new JDOObjectNotFoundException(""));
+        when(transaction.isActive()).thenReturn(true);
+        Response response = resourceTest.makeReclamation(reclamacion);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+  @Test
+    public void testsendReclamation() {
+        Reclamacion reclamacion = new Reclamacion();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        reclamacion.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        reclamacion.setProducto(producto);
+        Admin admin = new Admin();
+        admin.setUsuario("nombre");
+        admin.setContrasena("contrasena");
+        admin.anadirLista(producto);
+        reclamacion.setAdmin(admin);
+        reclamacion.setReclamacion("descripcion");
+        ReclamacionJDO reclamacionJDO = new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"), new AdminJDO("nombre", "contrasena"));
+        @SuppressWarnings("unchecked") Query<AdminJDO> query1 = mock(Query.class);
+        String sql1 = "javax.jdo.query.SQL";
+        String queryStr1 = "SELECT * FROM ADMINJDO WHERE usuario = '" + admin.getUsuario() + "'";
+        when(persistenceManager.newQuery(sql1, queryStr1)).thenReturn(query1);
+        List<AdminJDO> admins = new ArrayList<AdminJDO>();
+        AdminJDO adminJDO = new AdminJDO("nombre", "contrasena");
+        adminJDO.anadirLista(new ProductoJDO(10,"nombre", "descripcion", 10.0));
+        admins.add(adminJDO);
+        when(query1.executeList()).thenReturn(admins);
+        @SuppressWarnings("unchecked") Query<ReclamacionJDO> query2 = mock(Query.class);
+        String sql2 = "javax.jdo.query.SQL";
+        String queryStr2 = "SELECT * FROM RECLAMACIONJDO WHERE ADMIN_USUARIO_OID = '" + admin.getUsuario() + "'";
+        when(persistenceManager.newQuery(sql2, queryStr2)).thenReturn(query2);
+        List<ReclamacionJDO> reclamaciones = new ArrayList<ReclamacionJDO>();
+        reclamaciones.add(reclamacionJDO);
+        when(query2.executeList()).thenReturn(reclamaciones);
+        when(transaction.isActive()).thenReturn(false);
+        List<Reclamacion> listaReclamacion  = resourceTest.sendReclamation("nombre");
+        assertNotNull(listaReclamacion);
+        assertEquals(reclamaciones.size(), listaReclamacion.size());
+    }
+    @Test
+    public void testsendReclamation2() {
+        Reclamacion reclamacion = new Reclamacion();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        reclamacion.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        reclamacion.setProducto(producto);
+        Admin admin = new Admin();
+        admin.setUsuario("nombre");
+        admin.setContrasena("contrasena");
+        admin.anadirLista(producto);
+        reclamacion.setAdmin(admin);
+        reclamacion.setReclamacion("descripcion");
+        ReclamacionJDO reclamacionJDO = new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"), new AdminJDO("nombre", "contrasena"));
+        @SuppressWarnings("unchecked") Query<AdminJDO> query1 = mock(Query.class);
+        String sql1 = "javax.jdo.query.SQL";
+        String queryStr1 = "SELECT * FROM ADMINJDO WHERE usuario = '" + admin.getUsuario() + "'";
+        when(persistenceManager.newQuery(sql1, queryStr1)).thenThrow(new JDOObjectNotFoundException(""));
+        Admin admin2 = mock(Admin.class);
+        when(admin2.getUsuario()).thenReturn("nombre");
+        List<AdminJDO> admins = new ArrayList<AdminJDO>();
+        AdminJDO adminJDO = new AdminJDO("nombre", "contrasena");
+        adminJDO.anadirLista(new ProductoJDO(10,"nombre", "descripcion", 10.0));
+        admins.add(adminJDO);
+        when(query1.executeList()).thenReturn(admins);
+        @SuppressWarnings("unchecked") Query<ReclamacionJDO> query2 = mock(Query.class);
+        String sql2 = "javax.jdo.query.SQL";
+        String queryStr2 = "SELECT * FROM RECLAMACIONJDO WHERE ADMIN_USUARIO_OID = '" + admin.getUsuario() + "'";
+        when(persistenceManager.newQuery(sql2, queryStr2)).thenThrow(new JDOObjectNotFoundException(""));
+        List<ReclamacionJDO> reclamaciones = new ArrayList<ReclamacionJDO>();
+        when(transaction.isActive()).thenReturn(true);
+        List<Reclamacion> listaReclamacion  = resourceTest.sendReclamation("nombre");
+        assertNotNull(listaReclamacion);
+        assertEquals(reclamaciones.size(), listaReclamacion.size());
+    }
+    @Test
+    public void testResolverReclamacion() {
+        Reclamacion reclamacion = new Reclamacion();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        reclamacion.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        reclamacion.setProducto(producto);
+        Admin admin = new Admin();
+        admin.setUsuario("nombre");
+        admin.setContrasena("contrasena");
+        reclamacion.setAdmin(admin);
+        reclamacion.setReclamacion("descripcion");
+        @SuppressWarnings("unchecked") Query<ReclamacionJDO> query1 = mock(Query.class);
+        String sql1 = "javax.jdo.query.SQL";
+        String queryStr1 = "SELECT * FROM RECLAMACIONJDO WHERE ID = '" + reclamacion.getId() + "'";
+        when(persistenceManager.newQuery(sql1, queryStr1)).thenReturn(query1);
+        List<ReclamacionJDO> reclamaciones = new ArrayList<ReclamacionJDO>();
+        reclamaciones.add(new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"), new AdminJDO("nombre", "contrasena")));
+        when(query1.executeList()).thenReturn(reclamaciones);
+        when(transaction.isActive()).thenReturn(false);
+        Response response = resourceTest.resolverReclamacion(reclamacion);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testResolverReclamacionEx1() {
+        Reclamacion reclamacion = new Reclamacion();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        reclamacion.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        reclamacion.setProducto(producto);
+        Admin admin = new Admin();
+        admin.setUsuario("nombre");
+        admin.setContrasena("contrasena");
+        reclamacion.setAdmin(admin);
+        reclamacion.setReclamacion("descripcion");
+        @SuppressWarnings("unchecked") Query<ReclamacionJDO> query1 = mock(Query.class);
+        String sql1 = "javax.jdo.query.SQL";
+        String queryStr1 = "SELECT * FROM RECLAMACIONJDO WHERE ID = '" + reclamacion.getId() + "'";
+        when(persistenceManager.newQuery(sql1, queryStr1)).thenThrow(new JDOObjectNotFoundException(""));
+        List<ReclamacionJDO> reclamaciones = new ArrayList<ReclamacionJDO>();
+        reclamaciones.add(new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"), new AdminJDO("nombre", "contrasena")));
+        when(query1.executeList()).thenReturn(reclamaciones);
+        when(transaction.isActive()).thenReturn(true);
+        Response response = resourceTest.resolverReclamacion(reclamacion);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testResolverReclamacionEx2() {
+        Reclamacion reclamacion = new Reclamacion();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setContrasena("CONTRASENA");
+        cliente.setNombre("NOMBRE");
+        reclamacion.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        reclamacion.setProducto(producto);
+        Admin admin = new Admin();
+        admin.setUsuario("nombre");
+        admin.setContrasena("contrasena");
+        reclamacion.setAdmin(admin);
+        reclamacion.setReclamacion("descripcion");
+        doThrow(new RuntimeException("Test exception")).when(transaction).begin();
+        List<ReclamacionJDO> reclamaciones = new ArrayList<ReclamacionJDO>();
+        reclamaciones.add(new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"), new AdminJDO("nombre", "contrasena")));
+        when(transaction.isActive()).thenReturn(true);
+        Response response = resourceTest.resolverReclamacion(reclamacion);
+        assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo());
+    }
+      @Test
+      public void testModifyProduct(){
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
         @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
         String sql = "javax.jdo.query.SQL";
         String queryStr = "SELECT * FROM PRODUCTOJDO WHERE ID = '" + 10 +"'";
-        when(persistenceManager.newQuery(sql, queryStr)).thenReturn(query);
-        
+        when(persistenceManager.newQuery(sql, queryStr)).thenReturn(query);  
         List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
         productos.add(new ProductoJDO(10,"nombre", "descripcion", 10.0));
         when(query.executeList()).thenReturn(productos);
@@ -1386,7 +1641,6 @@ public class ServerTest {
         producto.setNombre("nombre");
         producto.setTipo("descripcion");
         producto.setPrecio(10.0);
-
         @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
         String sql = "javax.jdo.query.SQL";
         String queryStr = "SELECT * FROM PRODUCTOJDO WHERE ID = '" + 10 +"'";

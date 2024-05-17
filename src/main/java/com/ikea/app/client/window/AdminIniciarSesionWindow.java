@@ -15,6 +15,8 @@ import com.ikea.app.client.window.ProductList;
 import com.ikea.app.pojo.Admin;
 import com.ikea.app.client.controller.AdminLoginController;
 import com.ikea.app.client.window.ProductListAdmin;
+import com.ikea.app.client.window.ResolverReclamacionWindow;
+
 /**Ventana que se usa para que el administrador inicie sesion, la ventana pide el nombre del administrador
  * y su contrasena para verificar.
  */

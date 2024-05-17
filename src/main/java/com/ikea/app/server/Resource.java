@@ -6,16 +6,20 @@ import javax.jdo.JDOHelper;
 import javax.jdo.Transaction;
 import javax.jdo.Extent;
 
-import com.ikea.app.server.jdo.ClienteJDO;
-import com.ikea.app.server.jdo.AdminJDO;
 import com.ikea.app.pojo.Cliente;
+import com.ikea.app.server.jdo.ClienteJDO;
 import com.ikea.app.pojo.Admin;
+import com.ikea.app.server.jdo.AdminJDO;
+import com.ikea.app.pojo.Cesta;
 import com.ikea.app.server.jdo.CestaJDO;
+import com.ikea.app.pojo.Producto;
 import com.ikea.app.server.jdo.ProductoJDO;
+import com.ikea.app.pojo.Reclamacion;
+import com.ikea.app.server.jdo.ReclamacionJDO;
+
 import javax.ws.rs.QueryParam;
 import java.util.ArrayList;
 
-import com.ikea.app.pojo.Producto;
 import java.util.stream.*;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -25,7 +29,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import com.ikea.app.pojo.Cesta;
+
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import java.util.List;
@@ -782,6 +786,182 @@ public class Resource{
 			}
 			pm.close();
 		}
+	}
+	@POST
+	@Path("/hacerReclamacion")
+	public Response makeReclamation(Reclamacion reclamacionA){
+		try{
+			logger.info("Insertando la reclamacion de: " + reclamacionA.getCliente());
+			tx.begin();
+			ReclamacionJDO reclamacionJDO = null;
+			ClienteJDO clienteJDO = null;
+			try (Query<ClienteJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM CLIENTEJDO WHERE EMAIL = '" + reclamacionA.getCliente().getEmail() + "'")) {
+				q.setClass(ClienteJDO.class);
+				q.setParameters(reclamacionA.getCliente().getEmail());
+				List<ClienteJDO> results = q.executeList();
+				clienteJDO = results.get(0);
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
+			ProductoJDO productoJDO = null;
+			try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO WHERE ID = '" + reclamacionA.getProducto().getId() +"'")) {
+				q.setClass(ProductoJDO.class);
+				List<ProductoJDO> results = q.executeList();
+				productoJDO = results.get(0);
+				logger.info("Product retrieved: {}", productoJDO);
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
+			AdminJDO adminJDO = null;
+			try (Query<AdminJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM ADMINJDO WHERE usuario = (SELECT VENDEDOR FROM PRODUCTOJDO WHERE ID = '" + reclamacionA.getProducto().getId() +"')")) {
+				q.setClass(AdminJDO.class);
+				List<AdminJDO> results = q.executeList();
+				adminJDO = results.get(0);
+				logger.info("Admin retrieved: {}", adminJDO);
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
+			try {
+				reclamacionJDO = pm.getObjectById(ReclamacionJDO.class, reclamacionA.getId());
+				logger.info("3");
+			} catch (JDOObjectNotFoundException ex1) {
+				logger.error("Exception launched: {}", ex1.getMessage());
+			}
+			logger.info("Reclamacion: {}", reclamacionJDO);
+			if (reclamacionJDO != null) {
+				logger.info("Añadiendo cliente: {}", reclamacionA.getCliente());
+				reclamacionJDO.setCliente(clienteJDO);
+				logger.info("Cliente añadida: {}", reclamacionJDO.getCliente());
+                logger.info("Añadiendo producto: {}", reclamacionA.getProducto());
+				reclamacionJDO.setProducto(productoJDO);
+				logger.info("Producto Añadido: {}", reclamacionJDO.getProducto());
+                logger.info("Añadiendo Reclamacion: {}", reclamacionA.getReclamacion());
+				reclamacionJDO.setReclamacion(reclamacionA.getReclamacion());
+				logger.info("Producto Añadido: {}", reclamacionJDO.getReclamacion());
+                
+			} else {
+				logger.info("Creando reclamacion: {}", reclamacionJDO);
+				reclamacionJDO = new ReclamacionJDO(reclamacionA.getId(), reclamacionA.getReclamacion(), productoJDO, clienteJDO, adminJDO);
+				pm.makePersistent(reclamacionJDO);					 
+				logger.info("Reclamacion creada: {}", reclamacionJDO);
+			}
+			tx.commit();
+			return Response.ok().build();
+        }
+        finally {
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+			//pm.close();
+		}
+	}
+
+	@GET
+	@Path("/sendReclamation")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Reclamacion> sendReclamation(@QueryParam("admin") String adminString) {
+		//Tiene que devolver la lista de todos los productos que estan en el sistema
+		Admin admin = null;
+		try (Query<AdminJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM ADMINJDO WHERE usuario = '" + adminString + "'")) {
+			q.setClass(AdminJDO.class);
+			logger.info("Obteniendo admin: {}", adminString);
+			List<AdminJDO> results = q.executeList();
+			admin = new Admin();
+			admin.setUsuario(results.get(0).getUsuario());
+			logger.info("Admin retrieved: {}", admin);
+			admin.setContrasena(results.get(0).getContrasena());
+			admin.setLista(new HashSet<Producto>());
+			logger.info("Admin retrieved: {}", admin);
+			for(ProductoJDO productoJDO: results.get(0).getLista()){
+				Producto producto = new Producto();
+				producto.setId(productoJDO.getId());
+				producto.setNombre(productoJDO.getNombre());
+				producto.setTipo(productoJDO.getTipo());
+				producto.setPrecio(productoJDO.getPrecio());
+				admin.anadirLista(producto);
+			}
+			logger.info("Admin retrieved: {}", admin);
+		} catch (Exception ex1) {
+			logger.info("Exception launched: {}", ex1.getMessage());
+			ex1.printStackTrace();
+		}
+		List<Reclamacion> reclamaciones = new ArrayList<Reclamacion>();
+		try {	
+            tx.begin();
+            logger.info("Obteniendo reclamaciones de admin: {}", adminString);
+			try (Query<ReclamacionJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM RECLAMACIONJDO WHERE ADMIN_USUARIO_OID = '" + adminString + "'") ) {
+				q.setClass(ReclamacionJDO.class);
+				List<ReclamacionJDO> results = q.executeList();
+				System.out.println("Reclamacion: " + results);
+				for (ReclamacionJDO reclamacionJDO : results) {
+					Reclamacion reclamacion = new Reclamacion();
+					reclamacion.setId(reclamacionJDO.getId());
+					reclamacion.setReclamacion(reclamacionJDO.getReclamacion());
+					Cliente cliente = new Cliente();
+					cliente.setEmail(reclamacionJDO.getCliente().getEmail());
+					cliente.setContrasena(reclamacionJDO.getCliente().getContrasena());
+					cliente.setNombre(reclamacionJDO.getCliente().getNombre());
+					reclamacion.setCliente(cliente);
+					Producto producto = new Producto();
+					producto.setNombre(reclamacionJDO.getProducto().getNombre());
+					producto.setPrecio(reclamacionJDO.getProducto().getPrecio());
+					producto.setTipo(reclamacionJDO.getProducto().getTipo());
+					producto.setId(reclamacionJDO.getProducto().getId());
+					Producto.setIdGeneral(producto.getId());
+					reclamacion.setProducto(producto);
+					reclamaciones.add(reclamacion);
+					logger.info("Product retrieved: {}", reclamacionJDO);
+				}
+			} catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+			}
+			tx.commit();
+			if (reclamaciones.size() != 0) {	
+        		return reclamaciones;
+			}else{
+				System.out.println("No hay reclamaciones");
+				return reclamaciones;
+			}
+		}
+		finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+
+	@POST
+	@Path("/resolverReclamacion")
+	public Response resolverReclamacion(Reclamacion reclamacion){
+		try{
+			tx.begin();
+			logger.info("Resolviendo reclamacion del cliente: " + reclamacion.getCliente().getNombre());
+			try (Query<ReclamacionJDO> q = pm.newQuery("javax.jdo.query.SQL", "SELECT * FROM RECLAMACIONJDO WHERE ID = '" + reclamacion.getId() + "'")) {
+				q.setClass(ReclamacionJDO.class);
+				List<ReclamacionJDO> results = q.executeList();
+				ReclamacionJDO reclamacionJDO = results.get(0);
+				pm.deletePersistent(reclamacionJDO);
+				logger.info("Reclamacion resuelta: {}", reclamacionJDO);
+				tx.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+			return Response.ok().build();
+		}catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+				return Response.status(Status.NOT_FOUND).build();
+		}finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
 		}
 
 	/**Metodo que permite modificar el nombre, tipo y precio de un producto. */

@@ -42,7 +42,7 @@ public class CestaWindow extends JFrame{
      */
    public CestaWindow(WebTarget webTargets, Cesta cesta){
     Historial historial = cestaWindowController.getHistorial(webTargets, cesta.getCliente().getEmail());
-    historialWindow = new HistorialWindow(webTargets, historial);
+    historialWindow = new HistorialWindow(webTargets, historial, cesta.getCliente());
     Container cp = this.getContentPane();
     cp.setLayout(new GridLayout(1, 2));
     JPanel panel = new JPanel();
@@ -67,9 +67,9 @@ public class CestaWindow extends JFrame{
                 precioTotal=0;
                 labelPrecioTotal.setText(precioTotal + "€");
                 cestaWindowController.vaciarCesta(webTargets, cesta);
-                }
-                }
-            });
+            }
+        }
+    });
     JButton borrarProductoButton=new JButton("Borrar producto");
     borrarProductoButton.setBounds(250,120,50,30);
     panel.add(borrarProductoButton);
