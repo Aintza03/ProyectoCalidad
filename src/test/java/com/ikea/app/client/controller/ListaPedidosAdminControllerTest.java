@@ -167,6 +167,19 @@ public class ListaPedidosAdminControllerTest {
         when(response.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
         assertTrue(!controllerTest.eliminarPedido(webTarget, producto));
     }
-    
+    @Test
+    public void testEliminarPedidoError2() {
+        Producto producto = new Producto();
+        producto.setId(1);
+        producto.setNombre("Mesa");
+        producto.setPrecio(10);
+        producto.setTipo("10");
+
+        when(webTarget.path("modifyPedidos")).thenReturn(webTarget);
+        when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
+        when(invocation.post(any(Entity.class))).thenThrow(new ProcessingException("Error"));
+        when(response.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());
+        assertTrue(!controllerTest.eliminarPedido(webTarget, producto));
+    }
     
 }
