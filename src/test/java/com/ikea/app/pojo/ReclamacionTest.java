@@ -11,16 +11,13 @@ public class ReclamacionTest{
     Cliente cliente;
     @Mock
     Producto producto;
-    @Mock
-    Admin admin;
-
+    
     @Before
     public void setUp() {
         reclamacionTest = new Reclamacion();
         reclamacionTest.setReclamacion("LMN");
         reclamacionTest.setCliente(cliente);
         reclamacionTest.setProducto(producto);
-        reclamacionTest.setAdmin(admin);
     }
     @Test
     public void getId() {
@@ -50,10 +47,6 @@ public class ReclamacionTest{
         assertEquals(producto, reclamacionTest.getProducto());
     }
     @Test
-    public void getAdmin() {
-        assertEquals(admin, reclamacionTest.getAdmin());
-    }
-    @Test
     public void setReclamacion() {
         reclamacionTest.setReclamacion("LMN2");
         assertEquals("LMN2", reclamacionTest.getReclamacion());
@@ -73,13 +66,6 @@ public class ReclamacionTest{
         assertEquals(producto, reclamacionTest.getProducto());
     }
     @Test
-    public void setAdmin() {
-        Admin admin = new Admin();
-        admin.setUsuario("admin");
-        reclamacionTest.setAdmin(admin);
-        assertEquals(admin, reclamacionTest.getAdmin());
-    }
-    @Test
     public void toStringTest() {
         reclamacionTest.setId(1);
         reclamacionTest.setReclamacion("LMN");
@@ -93,12 +79,6 @@ public class ReclamacionTest{
         productos.setPrecio(1.0);
         productos.setTipo("ABC");
         reclamacionTest.setProducto(productos);
-        Admin admins = new Admin();
-        admins.setUsuario("HIJ");
-        admins.setContrasena("HIJ");
-        Set<Producto> lista = new HashSet<Producto>();
-        admins.setLista(lista);
-        reclamacionTest.setAdmin(admins);
-        assertEquals("-" + reclamacionTest.getId() + ": " + " (" + reclamacionTest.getCliente() + " , " + reclamacionTest.getProducto() + ") '" + reclamacionTest.getAdmin() + "'", reclamacionTest.toString());
+        assertEquals("-" + reclamacionTest.getId() + ": " + " (" + reclamacionTest.getCliente() + " , " + reclamacionTest.getProducto() + ") '", reclamacionTest.toString());
     }
 }

@@ -45,10 +45,23 @@ public class ListaPedidosAdminController {
         }
     }
     /**Funcion para eliminar un producto ya comprado. */
-    public boolean eliminarPedido(WebTarget webTargets, Producto producto) {
-        
-        ProductListAdminController controller = new ProductListAdminController();
-        return controller.eliminarProducto(webTargets, producto);
+    public boolean eliminarPedido(WebTarget webTargets, Producto producto) {    
+        try {
+            WebTarget WebTargetLogin = webTargets.path("modifyPedidos");
+            Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.post(Entity.entity(producto, MediaType.APPLICATION_JSON));
+            if (response.getStatus() != Status.OK.getStatusCode()) {
+                ClientMain.getLogger().error("Error connecting with the server. Code: {}", response.getStatus());
+                return false;
+            } else {	
+                ClientMain.getLogger().info("Producto eliminado correctamente");
+                return true;
+            }
+        } catch (ProcessingException e) {
+            System.out.format("Error obtaining product list. %s%n", e.getMessage());
+            return false;
+        }
+
         
     }
 

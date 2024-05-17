@@ -814,16 +814,6 @@ public class Resource{
 				logger.info("Exception launched: {}", ex1.getMessage());
 				ex1.printStackTrace();
 			}
-			AdminJDO adminJDO = null;
-			try (Query<AdminJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM ADMINJDO WHERE usuario = (SELECT VENDEDOR FROM PRODUCTOJDO WHERE ID = '" + reclamacionA.getProducto().getId() +"')")) {
-				q.setClass(AdminJDO.class);
-				List<AdminJDO> results = q.executeList();
-				adminJDO = results.get(0);
-				logger.info("Admin retrieved: {}", adminJDO);
-			} catch (Exception ex1) {
-				logger.info("Exception launched: {}", ex1.getMessage());
-				ex1.printStackTrace();
-			}
 			try {
 				reclamacionJDO = pm.getObjectById(ReclamacionJDO.class, reclamacionA.getId());
 				logger.info("3");
@@ -844,7 +834,7 @@ public class Resource{
                 
 			} else {
 				logger.info("Creando reclamacion: {}", reclamacionJDO);
-				reclamacionJDO = new ReclamacionJDO(reclamacionA.getId(), reclamacionA.getReclamacion(), productoJDO, clienteJDO, adminJDO);
+				reclamacionJDO = new ReclamacionJDO(reclamacionA.getId(), reclamacionA.getReclamacion(), productoJDO, clienteJDO);
 				pm.makePersistent(reclamacionJDO);					 
 				logger.info("Reclamacion creada: {}", reclamacionJDO);
 			}
@@ -893,7 +883,7 @@ public class Resource{
 		try {	
             tx.begin();
             logger.info("Obteniendo reclamaciones de admin: {}", adminString);
-			try (Query<ReclamacionJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM RECLAMACIONJDO WHERE ADMIN_USUARIO_OID = '" + adminString + "'") ) {
+			try (Query<ReclamacionJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM RECLAMACIONJDO WHERE PRODUCTO_ID_OID IN (SELECT ID FROM PRODUCTOJDO WHERE VENDEDOR = '"+adminString+"')") ) {
 				q.setClass(ReclamacionJDO.class);
 				List<ReclamacionJDO> results = q.executeList();
 				System.out.println("Reclamacion: " + results);
@@ -963,7 +953,7 @@ public class Resource{
 			}
 			pm.close();
 		}
-
+	}
 	/**Metodo que permite modificar el nombre, tipo y precio de un producto. */
 	@POST
 	@Path("/modifyProduct")
@@ -998,4 +988,46 @@ public class Resource{
 			pm.close();
 		}
 	}
+	/**Metodo que anade productos comprados al historial. */
+	@POST
+	@Path("/modifyPedidos")
+	public Response modifyPedidos(Producto pedido){
+		try{
+			logger.info("Modificando pedido: " + pedido);
+			tx.begin();
+			
+				ProductoJDO pedidojdo = null;
+				HistorialJDO historialjdo = null;
+				try (Query<ProductoJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM PRODUCTOJDO WHERE ID = '"+ pedido.getId() +"'")) {
+				q.setClass(ProductoJDO.class);
+				List<ProductoJDO> results = q.executeList();
+				pedidojdo = results.get(0);
+					try(Query<HistorialJDO> q3 = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM HISTORIALJDO where CLIENTE_EMAIL_OID = (SELECT PRODUCTOSHISTORIAL FROM PRODUCTOJDO WHERE ID = '"+pedido.getId()+"')")){
+						q3.setClass(HistorialJDO.class);
+						List<HistorialJDO> resultsH = q3.executeList();
+						historialjdo = resultsH.get(0);
+						historialjdo.getProductos().remove(pedidojdo);
+					}catch(javax.jdo.JDOObjectNotFoundException ex1){
+						logger.info("Exception1 launched: {}", ex1.getMessage());
+					}
+				pm.makePersistent(pedidojdo);
+				pm.makePersistent(historialjdo);
+				logger.info("Pedido borrado");
+			} catch (javax.jdo.JDOObjectNotFoundException ex1) {
+				logger.info("Exception1 launched: {}", ex1.getMessage());
+			}	
+			tx.commit();
+			return Response.ok().build();
+		}catch (Exception ex1) {
+				logger.info("Exception launched: {}", ex1.getMessage());
+				ex1.printStackTrace();
+				return Response.status(Status.NOT_FOUND).build();
+		}finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+	
 }

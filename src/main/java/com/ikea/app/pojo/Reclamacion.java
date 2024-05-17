@@ -6,8 +6,6 @@ public class Reclamacion {
     private String reclamacion;
     private Cliente cliente;
     private Producto producto;
-    private Admin admin;
-    
     public Reclamacion(){
         this.id = idGeneral + 1;
     }
@@ -48,15 +46,8 @@ public class Reclamacion {
         this.producto = producto;
     }
 
-    public Admin getAdmin(){
-        return this.admin;
-    }
-
-    public void setAdmin(Admin admin){
-        this.admin = admin;
-    }
-
+    
     public String toString(){
-        return "-" + this.id + ": " + " (" + this.cliente + " , " + this.producto + ") '" + this.admin + "'";
+        return "-" + this.id + ": " + " (" + this.cliente + " , " + this.producto + ") '";
     }   
 }

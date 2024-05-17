@@ -63,6 +63,7 @@ public class ResolverReclamacionWindow extends JFrame{
             if(reclamacion != null){
                 controller.resolverReclamacion(webTargets, reclamacion);
                 JOptionPane.showMessageDialog(jFrame, "Se ha resuelto la reclamacion correctamente");
+                modeloReclamaciones.removeElement(reclamacion);
             } else {
                 JOptionPane.showMessageDialog(jFrame, "Seleccione una reclamacion");
             }

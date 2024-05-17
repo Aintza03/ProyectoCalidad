@@ -64,7 +64,7 @@ public class ListaPedidosAdminWindow extends JFrame{
 				if (e.getSource()==eliminarProducto) {
 					int row = tablaPedidos.getSelectedRow();
 					if (row != -1) {
-						Producto producto= productoList.get(row);
+						Producto producto = productoList.get(row);
 						controller.eliminarPedido(webTargets, producto);
 						JFrame jFrame = new JFrame();
 						JOptionPane.showMessageDialog(jFrame, "Se ha eliminado el pedido "+ producto.getNombre() + " Notificando al comprador y la entidad bancaria para la devolución del dinero");

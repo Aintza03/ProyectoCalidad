@@ -147,7 +147,7 @@ public class ListaPedidosAdminControllerTest {
         producto.setPrecio(10);
         producto.setTipo("10");
 
-        when(webTarget.path("eliminarProducto")).thenReturn(webTarget);
+        when(webTarget.path("modifyPedidos")).thenReturn(webTarget);
         when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
         when(invocation.post(any(Entity.class))).thenReturn(response);
         when(response.getStatus()).thenReturn(Status.OK.getStatusCode());
@@ -161,7 +161,7 @@ public class ListaPedidosAdminControllerTest {
         producto.setPrecio(10);
         producto.setTipo("10");
 
-        when(webTarget.path("eliminarProducto")).thenReturn(webTarget);
+        when(webTarget.path("modifyPedidos")).thenReturn(webTarget);
         when(webTarget.request(MediaType.APPLICATION_JSON)).thenReturn(invocation);
         when(invocation.post(any(Entity.class))).thenReturn(response);
         when(response.getStatus()).thenReturn(Status.BAD_REQUEST.getStatusCode());

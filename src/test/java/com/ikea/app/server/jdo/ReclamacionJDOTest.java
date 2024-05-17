@@ -19,8 +19,7 @@ public class ReclamacionJDOTest{
     public void setUp() {
         cliente = new ClienteJDO("test-email", "test-contrasena", "test-nombre");
         producto = new ProductoJDO(1, "test-nombre", "test-tipo", 1.0);
-        admin = new AdminJDO("test-usuario", "test-contrasena");
-        reclamacionTest = new ReclamacionJDO(1,"LMN", producto, cliente, admin);
+        reclamacionTest = new ReclamacionJDO(1,"LMN", producto, cliente);
     }
     @Test
     public void getId() {
@@ -40,10 +39,6 @@ public class ReclamacionJDOTest{
         assertEquals(producto, reclamacionTest.getProducto());
     }
     @Test
-    public void getAdmin() {
-        assertEquals(admin, reclamacionTest.getAdmin());
-    }
-    @Test
     public void setReclamacion() {
         reclamacionTest.setReclamacion("LMN2");
         assertEquals("LMN2", reclamacionTest.getReclamacion());
@@ -61,13 +56,7 @@ public class ReclamacionJDOTest{
         assertEquals(producto, reclamacionTest.getProducto());
     }
     @Test
-    public void setAdmin() {
-        AdminJDO admin = new AdminJDO("usuario", "contrasena");
-        reclamacionTest.setAdmin(admin);
-        assertEquals(admin, reclamacionTest.getAdmin());
-    }
-    @Test
     public void toStringTest() {
-        assertEquals("Cliente: " + cliente + " Producto: " + producto + " Admin: " + admin, reclamacionTest.toString());
+        assertEquals("Cliente: " + cliente + " Producto: " + producto, reclamacionTest.toString());
     }
 }

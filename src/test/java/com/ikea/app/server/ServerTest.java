@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.ikea.app.pojo.Historial;
 import com.ikea.app.server.jdo.HistorialJDO;
+import java.util.*;
 public class ServerTest {
     private Resource resourceTest;
     @Mock
@@ -1375,10 +1376,6 @@ public class ServerTest {
         producto.setTipo("descripcion");
         producto.setPrecio(10.0);
         reclamacion.setProducto(producto);
-        Admin admin = new Admin();
-        admin.setUsuario("nombre");
-        admin.setContrasena("contrasena");
-        reclamacion.setAdmin(admin);
         reclamacion.setReclamacion("descripcion");
         ReclamacionJDO reclamacionJDO = mock(ReclamacionJDO.class);
         when(persistenceManager.getObjectById(ReclamacionJDO.class, reclamacion.getId())).thenReturn(reclamacionJDO);
@@ -1421,11 +1418,7 @@ public class ServerTest {
         producto.setNombre("nombre");
         producto.setTipo("descripcion");
         producto.setPrecio(10.0);
-      reclamacion.setProducto(producto);
-        Admin admin = new Admin();
-        admin.setUsuario("nombre");
-        admin.setContrasena("contrasena");
-        reclamacion.setAdmin(admin);
+        reclamacion.setProducto(producto);
         reclamacion.setReclamacion("descripcion");
         ReclamacionJDO reclamacionJDO = mock(ReclamacionJDO.class);
         when(persistenceManager.getObjectById(ReclamacionJDO.class, reclamacion.getId())).thenReturn(reclamacionJDO);
@@ -1464,9 +1457,8 @@ public class ServerTest {
         admin.setUsuario("nombre");
         admin.setContrasena("contrasena");
         admin.anadirLista(producto);
-        reclamacion.setAdmin(admin);
         reclamacion.setReclamacion("descripcion");
-        ReclamacionJDO reclamacionJDO = new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"), new AdminJDO("nombre", "contrasena"));
+        ReclamacionJDO reclamacionJDO = new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"));
         @SuppressWarnings("unchecked") Query<AdminJDO> query1 = mock(Query.class);
         String sql1 = "javax.jdo.query.SQL";
         String queryStr1 = "SELECT * FROM ADMINJDO WHERE usuario = '" + admin.getUsuario() + "'";
@@ -1478,7 +1470,7 @@ public class ServerTest {
         when(query1.executeList()).thenReturn(admins);
         @SuppressWarnings("unchecked") Query<ReclamacionJDO> query2 = mock(Query.class);
         String sql2 = "javax.jdo.query.SQL";
-        String queryStr2 = "SELECT * FROM RECLAMACIONJDO WHERE ADMIN_USUARIO_OID = '" + admin.getUsuario() + "'";
+        String queryStr2 = "SELECT * FROM RECLAMACIONJDO WHERE PRODUCTO_ID_OID IN (SELECT ID FROM PRODUCTOJDO WHERE VENDEDOR = '"+adminJDO.getUsuario()+"')";
         when(persistenceManager.newQuery(sql2, queryStr2)).thenReturn(query2);
         List<ReclamacionJDO> reclamaciones = new ArrayList<ReclamacionJDO>();
         reclamaciones.add(reclamacionJDO);
@@ -1506,9 +1498,8 @@ public class ServerTest {
         admin.setUsuario("nombre");
         admin.setContrasena("contrasena");
         admin.anadirLista(producto);
-        reclamacion.setAdmin(admin);
         reclamacion.setReclamacion("descripcion");
-        ReclamacionJDO reclamacionJDO = new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"), new AdminJDO("nombre", "contrasena"));
+        ReclamacionJDO reclamacionJDO = new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"));
         @SuppressWarnings("unchecked") Query<AdminJDO> query1 = mock(Query.class);
         String sql1 = "javax.jdo.query.SQL";
         String queryStr1 = "SELECT * FROM ADMINJDO WHERE usuario = '" + admin.getUsuario() + "'";
@@ -1547,14 +1538,13 @@ public class ServerTest {
         Admin admin = new Admin();
         admin.setUsuario("nombre");
         admin.setContrasena("contrasena");
-        reclamacion.setAdmin(admin);
         reclamacion.setReclamacion("descripcion");
         @SuppressWarnings("unchecked") Query<ReclamacionJDO> query1 = mock(Query.class);
         String sql1 = "javax.jdo.query.SQL";
         String queryStr1 = "SELECT * FROM RECLAMACIONJDO WHERE ID = '" + reclamacion.getId() + "'";
         when(persistenceManager.newQuery(sql1, queryStr1)).thenReturn(query1);
         List<ReclamacionJDO> reclamaciones = new ArrayList<ReclamacionJDO>();
-        reclamaciones.add(new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"), new AdminJDO("nombre", "contrasena")));
+        reclamaciones.add(new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE")));
         when(query1.executeList()).thenReturn(reclamaciones);
         when(transaction.isActive()).thenReturn(false);
         Response response = resourceTest.resolverReclamacion(reclamacion);
@@ -1577,14 +1567,13 @@ public class ServerTest {
         Admin admin = new Admin();
         admin.setUsuario("nombre");
         admin.setContrasena("contrasena");
-        reclamacion.setAdmin(admin);
         reclamacion.setReclamacion("descripcion");
         @SuppressWarnings("unchecked") Query<ReclamacionJDO> query1 = mock(Query.class);
         String sql1 = "javax.jdo.query.SQL";
         String queryStr1 = "SELECT * FROM RECLAMACIONJDO WHERE ID = '" + reclamacion.getId() + "'";
         when(persistenceManager.newQuery(sql1, queryStr1)).thenThrow(new JDOObjectNotFoundException(""));
         List<ReclamacionJDO> reclamaciones = new ArrayList<ReclamacionJDO>();
-        reclamaciones.add(new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"), new AdminJDO("nombre", "contrasena")));
+        reclamaciones.add(new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE")));
         when(query1.executeList()).thenReturn(reclamaciones);
         when(transaction.isActive()).thenReturn(true);
         Response response = resourceTest.resolverReclamacion(reclamacion);
@@ -1607,11 +1596,10 @@ public class ServerTest {
         Admin admin = new Admin();
         admin.setUsuario("nombre");
         admin.setContrasena("contrasena");
-        reclamacion.setAdmin(admin);
         reclamacion.setReclamacion("descripcion");
         doThrow(new RuntimeException("Test exception")).when(transaction).begin();
         List<ReclamacionJDO> reclamaciones = new ArrayList<ReclamacionJDO>();
-        reclamaciones.add(new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"), new AdminJDO("nombre", "contrasena")));
+        reclamaciones.add(new ReclamacionJDO(3,"reclamacion",new ProductoJDO(10,"nombre", "descripcion", 10.0),  new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE")));
         when(transaction.isActive()).thenReturn(true);
         Response response = resourceTest.resolverReclamacion(reclamacion);
         assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo());
@@ -1652,5 +1640,85 @@ public class ServerTest {
         when(transaction.isActive()).thenReturn(true);
         Response response = resourceTest.modifyProduct(producto);
         assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo());
+    }
+    @Test
+    public void testModificarPedido(){
+        Producto pedido = new Producto();
+        pedido.setId(10);
+        pedido.setNombre("nombre");
+        pedido.setTipo("descripcion");
+        pedido.setPrecio(10.0); 
+        ProductoJDO pedidoJDO = new ProductoJDO(10,"nombre", "descripcion", 10.0);
+        HistorialJDO historialJDO = new HistorialJDO(new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"));
+        historialJDO.addProducto(pedidoJDO);
+        @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
+        String sql = "javax.jdo.query.SQL";
+        String queryStr = "SELECT * FROM PRODUCTOJDO WHERE ID = '"+ pedido.getId() +"'";
+        when(persistenceManager.newQuery(sql, queryStr)).thenReturn(query);
+        when(query.executeList()).thenReturn(new ArrayList<ProductoJDO>(Arrays.asList(pedidoJDO)));
+        @SuppressWarnings("unchecked") Query<HistorialJDO> query1 = mock(Query.class);
+        String sql1 = "javax.jdo.query.SQL";
+        String queryStr1 = "SELECT * FROM HISTORIALJDO where CLIENTE_EMAIL_OID = (SELECT PRODUCTOSHISTORIAL FROM PRODUCTOJDO WHERE ID = '"+pedido.getId()+"')";
+        when(persistenceManager.newQuery(sql1, queryStr1)).thenReturn(query1);
+        when(query1.executeList()).thenReturn(new ArrayList<HistorialJDO>(Arrays.asList(historialJDO)));
+        when(transaction.isActive()).thenReturn(false);
+        Response response = resourceTest.modifyPedidos(pedido);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testModificarPedidoEx1(){
+        Producto pedido = new Producto();
+        pedido.setId(10);
+        pedido.setNombre("nombre");
+        pedido.setTipo("descripcion");
+        pedido.setPrecio(10.0); 
+        ProductoJDO pedidoJDO = new ProductoJDO(10,"nombre", "descripcion", 10.0);
+        HistorialJDO historialJDO = new HistorialJDO(new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"));
+        historialJDO.addProducto(pedidoJDO);
+        doThrow(new RuntimeException("Test exception")).when(transaction).commit();
+        when(transaction.isActive()).thenReturn(true);
+        Response response = resourceTest.modifyPedidos(pedido);
+        assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo());
     } 
+    @Test
+    public void testModificarPedidoEx2(){
+        Producto pedido = new Producto();
+        pedido.setId(10);
+        pedido.setNombre("nombre");
+        pedido.setTipo("descripcion");
+        pedido.setPrecio(10.0); 
+        ProductoJDO pedidoJDO = new ProductoJDO(10,"nombre", "descripcion", 10.0);
+        HistorialJDO historialJDO = new HistorialJDO(new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"));
+        historialJDO.addProducto(pedidoJDO);
+        @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
+        String sql = "javax.jdo.query.SQL";
+        String queryStr = "SELECT * FROM PRODUCTOJDO WHERE ID = '"+ pedido.getId() +"'";
+        when(persistenceManager.newQuery(sql, queryStr)).thenReturn(query);
+        when(query.executeList()).thenReturn(new ArrayList<ProductoJDO>(Arrays.asList(pedidoJDO)));
+        @SuppressWarnings("unchecked") Query<HistorialJDO> query1 = mock(Query.class);
+        String sql1 = "javax.jdo.query.SQL";
+        String queryStr1 = "SELECT * FROM HISTORIALJDO where CLIENTE_EMAIL_OID = (SELECT PRODUCTOSHISTORIAL FROM PRODUCTOJDO WHERE ID = '"+pedido.getId()+"')";
+        when(persistenceManager.newQuery(sql1, queryStr1)).thenThrow(new JDOObjectNotFoundException(""));
+        when(transaction.isActive()).thenReturn(true);
+        Response response = resourceTest.modifyPedidos(pedido);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
+    @Test
+    public void testModificarPedidoEx3(){
+        Producto pedido = new Producto();
+        pedido.setId(10);
+        pedido.setNombre("nombre");
+        pedido.setTipo("descripcion");
+        pedido.setPrecio(10.0); 
+        ProductoJDO pedidoJDO = new ProductoJDO(10,"nombre", "descripcion", 10.0);
+        HistorialJDO historialJDO = new HistorialJDO(new ClienteJDO("EMAIL", "CONTRASENA", "NOMBRE"));
+        historialJDO.addProducto(pedidoJDO);
+        @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
+        String sql = "javax.jdo.query.SQL";
+        String queryStr = "SELECT * FROM PRODUCTOJDO WHERE ID = '"+ pedido.getId() +"'";
+        when(persistenceManager.newQuery(sql, queryStr)).thenThrow(new JDOObjectNotFoundException(""));
+        when(transaction.isActive()).thenReturn(false);
+        Response response = resourceTest.modifyPedidos(pedido);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    }
 }
