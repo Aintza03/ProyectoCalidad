@@ -19,13 +19,27 @@ import com.ikea.app.pojo.Cesta;
 import com.ikea.app.pojo.Producto;
 import com.ikea.app.client.controller.CestaWindowController;
 import com.ikea.app.pojo.Historial;
+/**Ventana que se usa para mostrar la cesta de un cliente y las acciones con la cesta como centro. Las acciones permitidas son
+ * 1.Borrar producto de la cesta.
+ * 2.Comprar cesta.
+ * Adicionalmente tambien muestra el precio total de la cesta en todo momento.
+ */
 public class CestaWindow extends JFrame{
+    /**Modelo en el que se basa la JList de la cesta. */
 	protected DefaultListModel<Producto> modeloCesta;
+    /**JList que muestra los productos de la cesta. */
 	protected JList<Producto> listaCesta;
+    /**Variable que guarda el precio total de la cesta. */
     protected double precioTotal = 0;
+    /**Label que muestra el precio total de la cesta. */
     protected JLabel labelPrecioTotal; 
+    /**Controller de esta ventana que guarda toda la funcionalidad.*/
     protected CestaWindowController cestaWindowController = new CestaWindowController();
+    /**La siguiente ventana, se muestra a la par de cestaWindow pero se asocian entre si. */
     protected HistorialWindow historialWindow;
+    /**Constructor que crea toda la interfaz de usuario y se encarga de llamar al controller correspondiente
+     * a la ventana que tiene toda la funcionalidad.
+     */
    public CestaWindow(WebTarget webTargets, Cesta cesta){
     Historial historial = cestaWindowController.getHistorial(webTargets, cesta.getCliente().getEmail());
     historialWindow = new HistorialWindow(webTargets, historial, cesta.getCliente());
@@ -93,6 +107,7 @@ public class CestaWindow extends JFrame{
 	this.setLocationRelativeTo(null);
     this.setLocation(750,400);
 }          
+/**Funcion que añade un producto a la JList de la cesta y actualiza el precio total de la cesta.*/
 public void addProducto(Producto producto){
     modeloCesta.addElement(producto);
     precioTotal=precioTotal + producto.getPrecio();

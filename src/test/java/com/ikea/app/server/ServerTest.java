@@ -1421,7 +1421,7 @@ public class ServerTest {
         producto.setNombre("nombre");
         producto.setTipo("descripcion");
         producto.setPrecio(10.0);
-        reclamacion.setProducto(producto);
+      reclamacion.setProducto(producto);
         Admin admin = new Admin();
         admin.setUsuario("nombre");
         admin.setContrasena("contrasena");
@@ -1446,7 +1446,7 @@ public class ServerTest {
         Response response = resourceTest.makeReclamation(reclamacion);
         assertEquals(Response.Status.OK, response.getStatusInfo());
     }
-    @Test
+  @Test
     public void testsendReclamation() {
         Reclamacion reclamacion = new Reclamacion();
         Cliente cliente = new Cliente();
@@ -1616,4 +1616,41 @@ public class ServerTest {
         Response response = resourceTest.resolverReclamacion(reclamacion);
         assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo());
     }
+      @Test
+      public void testModifyProduct(){
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
+        String sql = "javax.jdo.query.SQL";
+        String queryStr = "SELECT * FROM PRODUCTOJDO WHERE ID = '" + 10 +"'";
+        when(persistenceManager.newQuery(sql, queryStr)).thenReturn(query);  
+        List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
+        productos.add(new ProductoJDO(10,"nombre", "descripcion", 10.0));
+        when(query.executeList()).thenReturn(productos);
+        when(transaction.isActive()).thenReturn(false);
+        Response response = resourceTest.modifyProduct(producto);
+        assertEquals(Response.Status.OK, response.getStatusInfo());
+    } 
+     @Test
+    public void testModifyProductError(){
+        Producto producto = new Producto();
+        producto.setId(10);
+        producto.setNombre("nombre");
+        producto.setTipo("descripcion");
+        producto.setPrecio(10.0);
+        @SuppressWarnings("unchecked") Query<ProductoJDO> query = mock(Query.class);
+        String sql = "javax.jdo.query.SQL";
+        String queryStr = "SELECT * FROM PRODUCTOJDO WHERE ID = '" + 10 +"'";
+        when(persistenceManager.newQuery(sql, queryStr)).thenThrow(new JDOObjectNotFoundException(""));
+        doThrow(new RuntimeException("Test exception")).when(transaction).commit();
+        List<ProductoJDO> productos = new ArrayList<ProductoJDO>();
+        productos.add(new ProductoJDO(10,"nombre", "descripcion", 10.0));
+        when(query.executeList()).thenReturn(productos);
+        when(transaction.isActive()).thenReturn(true);
+        Response response = resourceTest.modifyProduct(producto);
+        assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo());
+    } 
 }

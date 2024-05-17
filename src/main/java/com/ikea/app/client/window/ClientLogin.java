@@ -14,14 +14,27 @@ import javax.ws.rs.core.Response.Status;
 import com.ikea.app.client.window.MenuClienteWindow;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.controller.ClientLoginController;
+/**Ventana que se usa para que el cliente inicie sesion, la ventana pide el email del cliente
+ * y su contrasena para verificar.
+ */
 public class ClientLogin extends JFrame{
+	/**Label que se utiliza para mostrar donde incluir el email del cliente. */
 	protected JLabel labelEmail = new JLabel("Email: ");
+	/**Label que se utiliza para mostrar donde incluir la contrasena del cliente. */
     protected JLabel labelContrasena = new JLabel("Contrasena: ");
+	/**JTextField en el que se escribe el email del cliente.*/
     protected JTextField email = new JTextField();
+	/**Password field utilizado para introducir la contrasena de modo que lo que el usuario escribe no pueda ser. */
     protected JPasswordField contrasena = new JPasswordField();
+	/**Boton que activa el inicio de sesion. Al ser pulsado el boton llama a la funcion de inicio de sesion en el controller. */
     protected JButton login = new JButton("Iniciar sesion");
+	/**La siguiente ventana despues de iniciar Sesion, en este caso la lista de productos del cliente. */
 	protected MenuClienteWindow window;
+	/**Controller de esta ventana que guarda toda la funcionalidad. */
 	protected ClientLoginController controller = new ClientLoginController();
+	/**Constructor que crea toda la interfaz de usuario y se encarga de llamar al controller correspondiente
+	 * a la ventana que tiene toda la funcionalidad.
+	 */
 	public ClientLogin(WebTarget webTargets){
     Container cp = this.getContentPane();
 	cp.setLayout(new GridLayout(2, 1));
@@ -45,7 +58,6 @@ public class ClientLogin extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				char[] contrasenas = contrasena.getPassword();
 				String stringC = "";
 				for (char c : contrasenas) {

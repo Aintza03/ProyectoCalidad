@@ -28,19 +28,32 @@ import com.ikea.app.pojo.Producto;
 import com.ikea.app.pojo.Cesta;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.client.window.CestaWindow;
+import com.ikea.app.client.window.EditarProducto;
 import com.ikea.app.client.controller.ProductListAdminController;
 import com.ikea.app.client.window.ResolverReclamacionWindow;
 import com.ikea.app.pojo.Admin;
+/**Ventana que se usa para mostrar la lista de productos del cliente.
+ */
 public class ProductListAdmin extends JFrame{
 
+	/**Lista de productos que se van a mostrar en la tabla. */
     protected List<Producto> productoList = new ArrayList<Producto>();
+	/**Tabla que muestra los productos. */
     protected JTable tablaProductos;
+	/**Modelo de la tabla que se usa para mostrar los productos. */
     protected DefaultTableModel modeloTablaProductos;
+	/**Fila en la que se encuentra el raton. */
     protected int mouseRow = -1;
+	/**Columna en la que se encuentra el raton. */
 	protected int mouseCol = -1;
+	/** WebTarget que se usa para llamar a los servicios REST. */
 	protected WebTarget webTargets;
+	/** Controller de esta ventana que guarda toda la funcionalidad. */
 	protected ProductListAdminController controller = new ProductListAdminController();
+	/** Ventana que se usa para editar un producto. */
+	protected EditarProducto editarProducto;
 
+	/** Constructor que crea toda la parte de interfaz grafica de esta ventana y gestiona los eventos llamando a la funcionalidad del controller. */
     public ProductListAdmin(WebTarget webTargets, Admin usuario){
         Container cp = this.getContentPane();
         cp.setLayout(new GridLayout(1,2));
@@ -50,9 +63,26 @@ public class ProductListAdmin extends JFrame{
         JScrollPane scrollPaneProductos = new JScrollPane(tablaProductos);
         scrollPaneProductos.setBorder(new TitledBorder("Productos"));
         cp.add(scrollPaneProductos);
+
+		JButton editarProducto = new JButton("Editar producto");
+
 		JButton anadirProducto=new JButton("Añadir producto");
 		
 		JButton eliminarProducto=new JButton("Eliminar producto");
+
+		editarProducto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource()==editarProducto) {
+					int row = tablaProductos.getSelectedRow();
+					if (row != -1) {
+						Producto producto= productoList.get(row);
+						new EditarProducto(webTargets, producto, usuario);
+						dispose();
+					}
+				}
+			}
+		});
+
 		eliminarProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource()==eliminarProducto) {
@@ -88,6 +118,7 @@ public class ProductListAdmin extends JFrame{
 		jpanel.setLayout(new GridLayout(2,1));
 		cp.add(jpanel);
 		jpanel.add(eliminarProducto);
+		jpanel.add(editarProducto);
 		jpanel.add(verListaPedidos);
     	jpanel.add(anadirProducto);
 		jpanel.add(verReclamaciones);
@@ -107,23 +138,18 @@ public class ProductListAdmin extends JFrame{
     }
 
     private void initTable() {
-		//Cabecera del modelo de datos
 		Vector<String> cabeceraProducto = new Vector<String>(Arrays.asList( "ID","Nombre", "Tipo", "Precio"));				
-		//Se crea el modelo de datos para la tabla de comics sÃ³lo con la cabecera	
 		
 		this.modeloTablaProductos = new DefaultTableModel(new Vector<Vector<Object>>(), cabeceraProducto) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				// TODO Auto-generated method stub
 				return false;
 			}
-		};
-		//Se crea la tabla de comics con el modelo de datos		
+		};	
 		this.tablaProductos = new JTable(this.modeloTablaProductos);
 		tablaProductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		//Render para las celdas de la Editorial se define como un Label un logo
 		DefaultTableCellRenderer a = new DefaultTableCellRenderer() {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -132,10 +158,8 @@ public class ProductListAdmin extends JFrame{
 				if(!(value instanceof JButton)) {
 				JLabel label = new JLabel(value.toString());
 				
-				//El label se alinea a la izquierda
 				label.setHorizontalAlignment(JLabel.CENTER);
 						
-				//Se diferencia el color de fondo en filas pares e impares
 				if (row % 2 == 0) {
 					label.setForeground(Color.BLACK);
 					label.setBackground(Color.CYAN);
@@ -144,19 +168,16 @@ public class ProductListAdmin extends JFrame{
 					label.setBackground(Color.WHITE);
 				}
 				
-				//Si la celda estÃ¡ seleccionada se asocia un color de fondo y letra
 				if (mouseRow == row ) {
 					label.setBackground(Color.GREEN);
 					label.setForeground(Color.BLACK);
 				}
-				
-				//Si la celda estÃ¡ seleccionada se asocia un color de fondo y letra
+
 				if (isSelected) {
 					label.setBackground(table.getSelectionBackground().BLUE);
 					label.setForeground(table.getSelectionForeground().WHITE);
 				}
 
-				//Es necesaria esta sentencia para pintar correctamente el color de fondo
 				label.setOpaque(true);
 				
 				return label;
@@ -203,8 +224,7 @@ public class ProductListAdmin extends JFrame{
 			@Override
 			public void mouseExited(MouseEvent e) {
 				int row = tablaProductos.rowAtPoint(e.getPoint());
-				int col = tablaProductos.columnAtPoint(e.getPoint());
-				//Cuando el ratÃ³n sale de la tabla, se resetea la columna/fila sobre la que estÃ¡ el ratÃ³n				
+				int col = tablaProductos.columnAtPoint(e.getPoint());				
 				mouseRow = -1;
 				mouseCol = -1;
 			}
@@ -228,6 +248,7 @@ public class ProductListAdmin extends JFrame{
 		
 	}
     
+	/** Metodo que se usa para cargar los productos en la tabla.*/
     protected void loadProducto(WebTarget webTarget, String usuario) {
 		this.modeloTablaProductos.setRowCount(0);
 		this.productoList = controller.datosDeProductos(webTarget,usuario);

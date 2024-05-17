@@ -14,21 +14,36 @@ import javax.ws.rs.core.Response.Status;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.client.controller.ModificarUsuarioController;
+/**Ventana que se usa para que el cliente pueda cambiar su nombre y contrasena o eliminar su cuenta. */
 public class ClientChangeEraseWindow extends JFrame{
+    /** Label que muestra donde introducir el nombre del cliente. */
 	protected JLabel labelNombre = new JLabel("Nombre: ");
+    /** JTextField en el que se introduce el nombre del cliente. */
     protected JTextField nombre;
+    /** Label que muestra el email del cliente. */
     protected JLabel labelEmail = new JLabel("Email: ");
+    /** Label que muestra el email del cliente. */
     protected JLabel labelEmailAnt;
+    /** Label que muestra donde introducir la contrasena del cliente. */
     protected JLabel labelContrasena = new JLabel("Contrasena: ");
+    /** JPasswordField en el que se introduce la contrasena del cliente. */
     protected JPasswordField contrasena;
+    /** Label que muestra donde introducir la contrasena del cliente por segunda vez. */
     protected JLabel labelContrasenaRep = new JLabel("Contraseña Repetida: ");
+    /** JPasswordField en el que se introduce la contrasena del cliente por segunda vez. */
     protected JPasswordField contrasenaRep;
+    /** Boton que llama a la funcion del controller para cambiar los datos del cliente. */
     protected JButton cambiar = new JButton("Cambiar");
+    /** Boton que llama a la funcion del controller para eliminar el cliente. */
     protected JButton eliminar = new JButton("Eliminar Usuario");
+    /** La siguiente ventana despues de cambiar los datos, en este caso la misma ventana. */
     protected ClientChangeEraseWindow window3;
+    /** Controller de esta ventana que guarda toda la funcionalidad. */
     protected ModificarUsuarioController controller = new ModificarUsuarioController();
+    /** Cliente que se va a modificar. */
     protected Cliente cliente;
 
+    /** Constructor que crea toda la parte de interfaz grafica de esta ventana y gestiona los eventos llamando a la funcionalidad del controller. */
 	public ClientChangeEraseWindow(WebTarget webTargets,String mail, String contra, String nom) {
         nombre = new JTextField(nom);
         labelEmailAnt = new JLabel(mail);

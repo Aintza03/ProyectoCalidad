@@ -7,11 +7,16 @@ import com.ikea.app.pojo.*;
 import javax.ws.rs.client.WebTarget;
 import com.ikea.app.client.window.HacerReclamacionWindow;
 import com.ikea.app.pojo.Producto;
+
+/**Ventana que se usa para mostrar el historial de compras del cliente.
+ */
 public class HistorialWindow extends JFrame{
+    /**Modelo de la lista que se usa para mostrar los productos del historial. */
 	protected DefaultListModel<Producto> modeloHistorial;
+    /**Lista que muestra los productos del historial. */
 	protected JList<Producto> listaHistorial;
     protected JButton reclamacion = new JButton("Hacer reclamacion");
-    //protected CestaWindowController cestaWindowController = new CestaWindowController();
+    /**Constructor que crea toda la parte de interfaz grafica de esta ventana y gestiona los eventos llamando a la funcionalidad del controller. */
    public HistorialWindow(WebTarget webTargets, Historial historial, Cliente cliente){
     Container cp = this.getContentPane();
     cp.setLayout(new GridLayout(2, 1));
@@ -46,10 +51,11 @@ public class HistorialWindow extends JFrame{
         }
     });	
     }          
-    
-    public void addProducto(Producto producto){
-        modeloHistorial.addElement(producto);
-    }
-
-
+              
+/**Funcion que se usa para anadir un producto al historial.
+ * @param producto Producto que se va a anadir al historial.
+ */
+public void addProducto(Producto producto){
+    modeloHistorial.addElement(producto);
+}
 }

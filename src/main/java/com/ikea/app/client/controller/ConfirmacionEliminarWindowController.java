@@ -14,11 +14,14 @@ import com.ikea.app.client.window.ProductList;
 import com.ikea.app.pojo.Cliente;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.pojo.Cesta;
+
+/**Controller de la ventana ConfirmacionEliminarUsuario. */
 public class ConfirmacionEliminarWindowController{
+    /**Constructor Vacio. */
     public ConfirmacionEliminarWindowController() {
         
     }
-
+    /**Funcion que manda al servidor la instruccion de eliminar un cliente. */
     public int borrarCliente(WebTarget webTarget, Cliente cliente) {
         int i = 0;
         try {
@@ -26,7 +29,6 @@ public class ConfirmacionEliminarWindowController{
                 .queryParam("email", cliente.getEmail())
 				.request(MediaType.APPLICATION_JSON)
 				.get();
-            // check that the response was HTTP OK
             if (responseEncontrar.getStatusInfo().toEnum() == Status.OK) {
                 Cesta cesta = responseEncontrar.readEntity(Cesta.class);
                 WebTarget WebTargetCesta = webTarget.path("vaciarCesta");

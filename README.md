@@ -1,12 +1,20 @@
 
 Maven-Client-ProjectCalidad
 ========================================================================================================================================
+### Obtener la documentación
+Para acceder a la documentación primero hay que acceder a la carpeta  *../src/main/resources* donde se encuentra el fichero *Doxyfile*. Después, hay que escribir el siguiente comando:
+
+      doxygen
+Entonces, doxygen creara la documentación en formato html en la carpeta  *target/doxygen/* .
+
+Nota: Para que la documentación sea generada tiene que existir la carpeta target. Es decir, que si se ha ejecutado ***mvn clean*** habra desaparecido la carpeta target y por lo tanto habrá que ejecutar ***mvn compile*** para crearla de nuevo.
+
 ### Ejecutar Test
 
 Para ejecutar los test hace falta que se ejecute:  
 
       mvn test
-Nota: Para que funcione bien primero habría que ejecutar ***mvn clean***, sino como las classes habran pasado por ***mvn datanucleus:enhance***, mockito mostraria codigo que ha insertado datanucleus en nuestra clase como **NO TESTADO**. Para ver la cobertura de los test hay que hacer click en * *index.html* * que se encuentra en * *target>site>jacoco* *
+Nota: Para que funcione bien primero habría que ejecutar ***mvn clean***, sino como las classes habran pasado por ***mvn datanucleus:enhance***, mockito mostraria codigo que ha insertado datanucleus en nuestra clase como **NO TESTADO**. Para ver la cobertura de los test hay que hacer click en  *index.html*  que se encuentra en  *target>site>jacoco* 
 
 ### Ejecutar el programa por primera vez
 
@@ -98,7 +106,7 @@ Por ultimo, hay que ejecutar el siguiente comando relacionado a un perfil que se
 
       mvn verify -Pperformance-tests
       
-Nota: Para ver las graficas de los performance test hay que hacer click en * *report.html* * que esta en * *target>junitperf* *
+Nota: Para ver las graficas de los performance test hay que hacer click en  *report.html*  que esta en *target>junitperf*
 
 
 
