@@ -10,10 +10,15 @@ import javax.ws.rs.core.Response.Status;
 import com.ikea.app.client.ClientMain;
 import com.ikea.app.pojo.Producto;
 
+/** Controller de la ventana historial */
 public class HistorialWindowController{
+
+    /** Constructor Vacio*/
     public HistorialWindowController(){
     
     }          
+
+    /** Metodo para devolver un producto*/
     public boolean devolverProducto(WebTarget webTarget, Producto producto) {
         WebTarget WebTargetLogin = webTarget.path("modifyPedidos");
         Invocation.Builder invocationBuilder = WebTargetLogin.request(MediaType.APPLICATION_JSON);

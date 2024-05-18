@@ -276,7 +276,6 @@ public class Resource{
 			
 				CestaJDO cestajdo = null;
 				try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM CESTAJDO WHERE CLIENTE_EMAIL_OID = '"+cesta.getCliente().getEmail() +"'")) {
-				//try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","UPDATE productojdo SET PRODUCTOS = '"+ cestajdo.getCliente() +"' WHERE ID = '"+productojdo.getId() +"'")) {
 				q.setClass(CestaJDO.class);
 				List<CestaJDO> results = q.executeList();
 				cestajdo = results.get(0);
@@ -526,7 +525,6 @@ public class Resource{
 	@Path("/listProductsAdmin")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Producto> listaProductosAdministrador(@QueryParam("admin") String admin) {
-		//Tiene que devolver la lista de todos los productos que estan en el sistema
 		List<Producto> productos = new ArrayList<Producto>();
 		try {	
             tx.begin();
@@ -653,7 +651,6 @@ public class Resource{
 	@Path("/historial")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Historial getHistorial(@QueryParam("email") String email) {
-		//Tiene que devolver la lista de todos los productos que estan en el sistema
 		Historial historial = new Historial();
 		Cliente cliente = new Cliente();
 		Producto producto;
@@ -710,7 +707,6 @@ public class Resource{
 			
 				HistorialJDO historialjdo = null;
 				try (Query<HistorialJDO> q = pm.newQuery( "javax.jdo.query.SQL","SELECT * FROM HISTORIALJDO WHERE CLIENTE_EMAIL_OID = '"+historial.getCliente().getEmail() +"'")) {
-				//try (Query<CestaJDO> q = pm.newQuery( "javax.jdo.query.SQL","UPDATE productojdo SET PRODUCTOS = '"+ cestajdo.getCliente() +"' WHERE ID = '"+productojdo.getId() +"'")) {
 				q.setClass(HistorialJDO.class);
 				List<HistorialJDO> results = q.executeList();
 				historialjdo = results.get(0);
@@ -748,7 +744,6 @@ public class Resource{
 	@Path("/listPedidosAdmin")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Producto> listaPedidosAdministrador(@QueryParam("admin") String admin) {
-		//Tiene que devolver la lista de todos los productos que estan en el sistema
 		List<Producto> productos = new ArrayList<Producto>();
 		try {	
             tx.begin();
@@ -789,6 +784,7 @@ public class Resource{
 	}
 	@POST
 	@Path("/hacerReclamacion")
+	/** Guarda la reclamacion en la base de datos */
 	public Response makeReclamation(Reclamacion reclamacionA){
 		try{
 			logger.info("Insertando la reclamacion de: " + reclamacionA.getCliente());
@@ -853,6 +849,7 @@ public class Resource{
 	@GET
 	@Path("/sendReclamation")
 	@Produces(MediaType.APPLICATION_JSON)
+	/** Recupera una lista de reclamaciones de la lista de datos. */
 	public List<Reclamacion> sendReclamation(@QueryParam("admin") String adminString) {
 		//Tiene que devolver la lista de todos los productos que estan en el sistema
 		Admin admin = null;
@@ -928,6 +925,7 @@ public class Resource{
 
 	@POST
 	@Path("/resolverReclamacion")
+	/** Resuelve una reclamacion eliminandola de la base de datos. */
 	public Response resolverReclamacion(Reclamacion reclamacion){
 		try{
 			tx.begin();
