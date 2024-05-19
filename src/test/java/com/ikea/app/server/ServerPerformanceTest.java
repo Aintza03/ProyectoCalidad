@@ -39,6 +39,8 @@ import com.ikea.app.pojo.Producto;
 import com.ikea.app.pojo.Cesta;
 import com.ikea.app.pojo.Historial;
 import com.ikea.app.server.jdo.HistorialJDO;
+import com.ikea.app.pojo.Reclamacion;
+import com.ikea.app.server.jdo.ReclamacionJDO;
 @Category(PerformanceTest.class)
 public class ServerPerformanceTest {
     private static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
@@ -62,32 +64,41 @@ public class ServerPerformanceTest {
             ClienteJDO clienteJDO2 = new ClienteJDO("EMAILS","johnny","1234457");
             ClienteJDO clienteJDO3 = new ClienteJDO("EMAIL2","1234","john2");
             ProductoJDO productoJDO = new ProductoJDO(1,"ProductoTest","TipoTest",15);
-            id = 1;
+            id++;
             ProductoJDO productoJDO2 = new ProductoJDO(2,"ProductoTest2","TipoTest2",20);
-            id = 2;
+            id++;
+            ProductoJDO productoJDO3 = new ProductoJDO(3,"ProductoTest3","TipoTest3",25);
+            id++;
             CestaJDO cestaJDO = new CestaJDO(clienteJDO);
             CestaJDO cestaJDO2 = new CestaJDO(clienteJDO2);
             CestaJDO cestaJDO3 = new CestaJDO(clienteJDO3);
-            HistorialJDO historial = new HistorialJDO(clienteJDO);
-            HistorialJDO historial2 = new HistorialJDO(clienteJDO2);
-            HistorialJDO historial3 = new HistorialJDO(clienteJDO3);
+            HistorialJDO historialJDO = new HistorialJDO(clienteJDO);
+            HistorialJDO historialJDO2 = new HistorialJDO(clienteJDO2);
+            HistorialJDO historialJDO3 = new HistorialJDO(clienteJDO3);
+            historialJDO.addProducto(productoJDO3);
+            ReclamacionJDO reclamacionJDO = new ReclamacionJDO(1,"ReclamacionTest",productoJDO2,clienteJDO2);
             AdminJDO adminJDO = new AdminJDO("ADMINS","1212");
             AdminJDO adminJDO2 = new AdminJDO("ADMINS2","12121");
+            AdminJDO adminJDO3 = new AdminJDO("ADMINS3","12122");
+            adminJDO3.anadirLista(productoJDO3);
             cestaJDO.AnadirCesta(productoJDO2);
             adminJDO2.anadirLista(productoJDO2);
             pm.makePersistent(productoJDO);
             pm.makePersistent(productoJDO2);
+            pm.makePersistent(productoJDO3);
             pm.makePersistent(clienteJDO);
             pm.makePersistent(clienteJDO2);
             pm.makePersistent(clienteJDO3);
             pm.makePersistent(cestaJDO);
             pm.makePersistent(cestaJDO2);
             pm.makePersistent(cestaJDO3);
-            pm.makePersistent(historial);
-            pm.makePersistent(historial2);
-            pm.makePersistent(historial3);
+            pm.makePersistent(historialJDO);
+            pm.makePersistent(historialJDO2);
+            pm.makePersistent(historialJDO3);
             pm.makePersistent(adminJDO);
             pm.makePersistent(adminJDO2);
+            pm.makePersistent(adminJDO3);
+            pm.makePersistent(reclamacionJDO);
             tx.commit();
         } finally {
             if (tx.isActive()) {
@@ -111,6 +122,14 @@ public class ServerPerformanceTest {
         PersistenceManager pm = pmf.getPersistenceManager();
         Transaction tx = pm.currentTransaction();
         try {
+            tx.begin();
+            try (Query<ReclamacionJDO> q = pm.newQuery(ReclamacionJDO.class)) {
+                long numberInstancesDeleted = q.deletePersistentAll();
+
+                tx.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             tx.begin();
             try (Query<ProductoJDO> q1 = pm.newQuery(ProductoJDO.class)) {
                 long numberInstancesDeleted1 = q1.deletePersistentAll();
@@ -159,8 +178,6 @@ public class ServerPerformanceTest {
         }
     }
     
-
-    //POST
     @Test
     @JUnitPerfTest(threads = 10, durationMs = 2000)
     public void testRegistrarClientePerf() {
@@ -375,10 +392,103 @@ public class ServerPerformanceTest {
     @Test
     @JUnitPerfTest(threads = 10, durationMs = 2000)
     public void testListaPedidosAdministrador(){
-        String admin = "ADMINS2";
+        String admin = "ADMINS3";
         Response response = target.path("listPedidosAdmin").queryParam("admin", admin).request().get();
         GenericType<List<Producto>> listType = new GenericType<List<Producto>>(){};
         List<Producto> product = response.readEntity(listType); 
         assertTrue(product.size() == 1);    
     }
+    @Test
+    @JUnitPerfTest(threads = 1, durationMs = 2000)
+    public void testmakeReclamacion(){
+        Reclamacion reclamacion = new Reclamacion();
+        reclamacion.setId(2);
+        reclamacion.setReclamacion("ReclamacionTest");
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setNombre("johnRegister");
+        cliente.setContrasena("12345678910");
+        reclamacion.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setNombre("ProductoTest");
+        producto.setTipo("TipoTest");
+        producto.setId(1);
+        producto.setPrecio(15);
+        reclamacion.setProducto(producto);
+        Response response = target.path("hacerReclamacion")
+            .request(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(reclamacion, MediaType.APPLICATION_JSON));
+
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+    
     }
+    @Test
+    @JUnitPerfTest(threads = 10, durationMs = 2000)
+    public void testsendReclamation(){
+        String admins = "ADMINS2";
+        Response response = target.path("sendReclamation").queryParam("admin", admins).request().get();
+        GenericType<List<Reclamacion>> listType = new GenericType<List<Reclamacion>>(){};
+        List<Reclamacion> reclamacion = response.readEntity(listType); 
+        
+        assertTrue(reclamacion.size() == 1);
+    }
+    @Test
+    @JUnitPerfTest(threads = 10, durationMs = 2000)
+    public void testresolverReclamacion(){
+        Reclamacion reclamacion = new Reclamacion();
+        reclamacion.setId(1);
+        reclamacion.setReclamacion("ReclamacionTest");
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAILS");
+        cliente.setNombre("johnny");
+        cliente.setContrasena("12345678910");
+        reclamacion.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setNombre("ProductoTest2");
+        producto.setTipo("TipoTest2");
+        producto.setId(2);
+        producto.setPrecio(20);
+        reclamacion.setProducto(producto);
+        Response response = target.path("resolverReclamacion")
+            .request(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(reclamacion, MediaType.APPLICATION_JSON));
+
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        response = target.path("hacerReclamacion").request(MediaType.APPLICATION_JSON).post(Entity.entity(reclamacion, MediaType.APPLICATION_JSON));
+    }
+    @Test
+    @JUnitPerfTest(threads = 10, durationMs = 2000)
+    public void testModifyProducts(){
+        Producto producto = new Producto();
+        producto.setNombre("ProductoTestModificado");
+        producto.setTipo("TipoTest");
+        producto.setId(1);
+        producto.setPrecio(15);
+        Response response = target.path("modifyProduct")
+            .request(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(producto, MediaType.APPLICATION_JSON));
+
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());       
+    }
+    @Test
+    @JUnitPerfTest(threads = 10, durationMs = 2000)
+    public void testModifyPedidos(){
+        Historial historial = new Historial();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("EMAIL");
+        cliente.setNombre("john");
+        cliente.setContrasena("1234");
+        historial.setCliente(cliente);
+        Producto producto = new Producto();
+        producto.setNombre("ProductoTest");
+        producto.setTipo("TipoTest");
+        producto.setId(1);
+        producto.setPrecio(15);
+        historial.addProducto(producto);
+        Response response = target.path("modifyHistorial")
+            .request(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(historial, MediaType.APPLICATION_JSON));
+
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());       
+    }
+}
